@@ -100,7 +100,7 @@ class MainActivity : ComponentActivity() {
 
     private fun setupSettingsInteractions() {
         findViewById<LinearLayout>(R.id.discord)?.setOnClickListener { openWebsite("https://discord.gg/hernrd9VWc") }
-        findViewById<LinearLayout>(R.id.github)?.setOnClickListener { openWebsite("https://github.com/gofluxpl") }
+        findViewById<LinearLayout>(R.id.github)?.setOnClickListener { openWebsite("https://github.com/gofluxpl/Radio24") }
     }
 
     private fun openWebsite(url: String) {
@@ -151,9 +151,39 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    private fun displayRadioStationsOkolica(radioStations: List<RadioStationOkolica>) {
+        val radioContainer = findViewById<LinearLayout>(R.id.radio_okolice_container) ?: return
+
+        if (radioStations.isNotEmpty()) {
+            val viewPlayer = findViewById<ImageView>(R.id.radio_player)
+
+            radioStations.forEach { station ->
+                val radioView = LayoutInflater.from(this).inflate(R.layout.okolice_item, null)
+                val iconView: ImageView = radioView.findViewById(R.id.radio_icon)
+                val nameView: TextView = radioView.findViewById(R.id.radio_name)
+                val cityView: TextView = radioView.findViewById(R.id.radio_city)
+
+                iconView.setImageResource(resources.getIdentifier(station.icon.replace("@drawable/", ""), "drawable", packageName))
+                nameView.text = station.name
+                cityView.text = station.city
+
+                radioContainer.addView(radioView)
+
+                radioView.setOnClickListener {
+                    onRadioStationSelected(station, viewPlayer)
+                }
+            }
+
+            viewPlayer.setOnClickListener {
+                togglePlayPause(viewPlayer)
+            }
+        } else {
+            Toast.makeText(this, "Brak dostępnych stacji radiowych!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun displayRadioOkolicaStations(radioStations: List<Wojewodztwo>) {
-        val radioContainer = findViewById<LinearLayout>(R.id.radio_container_okolice)
-            ?: return
+        val radioContainer = findViewById<LinearLayout>(R.id.radio_container_okolice) ?: return
 
         val viewPlayer = findViewById<ImageView>(R.id.radio_player)
 
@@ -162,13 +192,20 @@ class MainActivity : ComponentActivity() {
             val nameView: TextView = wojView.findViewById(R.id.radio_name)
             val countView: TextView = wojView.findViewById(R.id.radio_count_okolice)
 
+            val container: LinearLayout = findViewById(R.id.container)
+
             val liczbaStacji = wojewodztwo.stations.size
 
             nameView.text = wojewodztwo.woj.capitalize()
             countView.text = "Liczba stacji: " + liczbaStacji
 
             wojView.setOnClickListener {
-                Toast.makeText(this, "Wybrano województwo: ${wojewodztwo.woj}", Toast.LENGTH_SHORT).show()
+                switchLayout(container, R.layout.radio_okolica_container) {
+                    displayRadioStationsOkolica(wojewodztwo.stations)
+                    findViewById<TextView>(R.id.textView).text = "${wojewodztwo.woj}"
+                    findViewById<TextView>(R.id.station_count_view).text =
+                        "${wojewodztwo.stations.size}"
+                }
             }
 
             radioContainer.addView(wojView)
@@ -219,7 +256,6 @@ class MainActivity : ComponentActivity() {
         nameViewPlayer.text = station.name
     }
 
-
     private fun togglePlayPause(viewPlayer: ImageView) {
         if (playerStatus.url.isEmpty()) {
             Toast.makeText(this, "Brak danych o stacji radiowej!", Toast.LENGTH_SHORT).show()
@@ -235,38 +271,23 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun updatePlayerUI(station: RadioStation, viewPlayer: ImageView) {
-        findViewById<ImageView>(R.id.radio_icon_player)?.setImageResource(
-            resources.getIdentifier(station.icon.trimPrefix("@drawable/"), "drawable", packageName)
-        )
-        findViewById<TextView>(R.id.radio_name_player)?.text = station.name
-        playerStatus.apply {
-            url = station.url
-            stationName = station.name
-            icon = station.icon
-            isPlaying = true
-        }
-        viewPlayer.setImageResource(R.drawable.pause_button)
-    }
-
-    private fun playRadio(radioURL: String) {
-        try {
-            exoPlayer?.apply {
-                setMediaItem(MediaItem.fromUri(radioURL))
-                prepare()
-                play()
-            }
-        } catch (e: Exception) {
-            Toast.makeText(this, "Błąd odtwarzania: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+    private fun playRadio(url: String) {
+        exoPlayer?.apply {
+            stop()
+            clearMediaItems()
+            setMediaItem(MediaItem.fromUri(Uri.parse(url)))
+            prepare()
+            play()
         }
     }
 
     private fun stopRadio() {
-        exoPlayer?.pause()
+        exoPlayer?.stop()
     }
 
     override fun onDestroy() {
-        exoPlayer?.release()
         super.onDestroy()
+        exoPlayer?.release()
+        exoPlayer = null
     }
 }

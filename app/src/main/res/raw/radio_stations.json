@@ -308,5 +308,50 @@
     "name": "Vox FM",
     "url": "http://pldm.ml/radio?url=https://www.eskago.pl/radio/vox-fm",
     "icon": "@drawable/radio_vox"
+  },
+  {
+    "name": "Meloradio",
+    "url": "https://ml01.cdn.eurozet.pl/mel-wro.mp3?redirected=01",
+    "icon": "@drawable/meloradio"
+  },
+  {
+    "name": "Radio Park FM",
+    "url": "https://sluchaj2.radiopark.biz.pl:8443/stream",
+    "icon": "@drawable/radio_park"
+  },
+  {
+    "name": "Muzyczne Radio",
+    "url": "https://stream.rcs.revma.com/gzwc1xcq042vv",
+    "icon": "@drawable/muzyczne_radio"
+  },
+  {
+    "name": "Radio Vanessa FM",
+    "url": "https://s1.slotex.pl:7358/stream/1/?1738096046789",
+    "icon": "@drawable/radio_vanessa"
+  },
+  {
+    "name": "Radio Rodzina",
+    "url": "https://sluchaj.radiorodzina.pl/RadioRodzinaWroclawLIVE.mp3",
+    "icon": "@drawable/radio_rodzina"
+  },
+  {
+    "name": "ESKA Opole",
+    "url": "https://ic1.smcdn.pl/2980-1.mp3",
+    "icon": "@drawable/eska"
+  },
+  {
+    "name": "ESKA2 Opole",
+    "url": "https://ic1.smcdn.pl/1120-1.aac",
+    "icon": "@drawable/eska2"
+  },
+  {
+    "name": "Radio Doxa FM",
+    "url": "http://81.210.92.213:8000/play.mp3",
+    "icon": "@drawable/radio_doxa"
+  },
+  {
+    "name": "Radio z Pasją",
+    "url": "https://stream10.hosterion.pl/8056/stream",
+    "icon": "@drawable/radio_park"
   }
 ]

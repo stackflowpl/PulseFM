@@ -46,5 +46,6 @@
         <domain includeSubdomains="true">poznan5-6.radio.pionier.net.pl</domain>
         <domain includeSubdomains="true">s1.radioparty.pl</domain>
         <domain includeSubdomains="true">stream9.nadaje.com</domain>
+        <domain includeSubdomains="true">81.210.92.213</domain>
     </domain-config>
 </network-security-config>
