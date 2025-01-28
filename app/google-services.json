@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1044682521181",
+    "project_id": "flux-software",
+    "storage_bucket": "flux-software.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044682521181:android:b338b4ff60a98e45c22bb4",
+        "android_client_info": {
+          "package_name": "net.gf.radio24"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBzYfv6z75WkvPK0y8jPb46dSDk6QNyrCQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

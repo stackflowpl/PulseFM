@@ -1,0 +1,19 @@
+[
+  {
+    "woj": "opolskie",
+    "stations": [
+      {
+        "name": "Meloradio",
+        "city": "Wrocław - 97.8 FM",
+        "url": "https://ml01.cdn.eurozet.pl/mel-wro.mp3?redirected=01",
+        "icon": "@drawable/meloradio"
+      },
+      {
+        "name": "Radio Park FM",
+        "city": "Kędzierzyn-Koźle 93.9 FM",
+        "url": "https://sluchaj2.radiopark.biz.pl:8443/stream",
+        "icon": "@drawable/radio_park"
+      }
+    ]
+  }
+]
