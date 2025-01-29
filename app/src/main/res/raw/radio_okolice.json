@@ -2,16 +2,34 @@
   {
     "woj": "Dolnośląskie",
     "stations": [
+      {
+        "name": "Radio Gra Wrocław",
+        "city": "Wrocław・95.1 FM",
+        "url": "http://stream4.nadaje.com:9240/prw",
+        "icon": "@drawable/radio_gra_wroclaw"
+      }
     ]
   },
   {
     "woj": "Kujawsko-pomorskie",
     "stations": [
+      {
+        "name": "Radio Gra Toruń",
+        "city": "Toruń・88.8 FM",
+        "url": "http://195.150.20.245/radio_gra",
+        "icon": "@drawable/radio_gra_torun"
+      }
     ]
   },
   {
     "woj": "Lubelskie",
     "stations": [
+      {
+        "name": "Radio Lublin",
+        "city": "Lublin・102.2 FM",
+        "url": "http://streaming.radio.lublin.pl:8000/128k",
+        "icon": "@drawable/radio_lublin"
+      }
     ]
   },
   {
@@ -32,6 +50,12 @@
   {
     "woj": "Mazowieckie",
     "stations": [
+      {
+        "name": "Eska Warszawa",
+        "city": "Waraszawa・105.6 FM",
+        "url": "http://pldm.ml/radio?url=https://www.eskago.pl/radio/eska-warszawa",
+        "icon": "@drawable/eska"
+      }
     ]
   },
   {
@@ -89,7 +113,7 @@
         "name": "Radio z Pasją",
         "city": "Brzeg・Online",
         "url": "https://stream10.hosterion.pl/8056/stream",
-        "icon": "@drawable/radio_park"
+        "icon": "@drawable/radio_z_pasja"
       }
     ]
   },
@@ -101,21 +125,45 @@
   {
     "woj": "Podlaskie",
     "stations": [
+      {
+        "name": "Radio Białystok",
+        "city": "Białystok・99.4 FM",
+        "url": "http://stream4.nadaje.com:15476/radiobialystok",
+        "icon": "@drawable/radio_bialystok"
+      }
     ]
   },
   {
     "woj": "Pomorskie",
     "stations": [
+      {
+        "name": "Radio Gdańsk",
+        "city": "Gdańsk・103.7 FM",
+        "url": "http://stream.task.gda.pl:8000/rg1",
+        "icon": "@drawable/radio_gdansk"
+      }
     ]
   },
   {
     "woj": "Śląskie",
     "stations": [
+      {
+        "name": "Radio Katowice",
+        "city": "Katowice・102.2 FM",
+        "url": "http://stream4.nadaje.com:9212/radiokatowice",
+        "icon": "@drawable/radio_katowice"
+      }
     ]
   },
   {
     "woj": "Świętokrzyskie",
     "stations": [
+      {
+        "name": "Radio Kielce",
+        "city": "Kielce・90.4 FM",
+        "url": "https://streaming.g-news.pl:8030/rk1",
+        "icon": "@drawable/radio_kielce"
+      }
     ]
   },
   {
@@ -125,18 +173,30 @@
         "name": "Radio Olsztyn",
         "city": "Olsztyn・103,2 FM",
         "url": "https://rostr1.radioolsztyn.pl:8443/RO",
-        "icon": "@drawable/radio_park"
+        "icon": "@drawable/radio_olsztyn"
       }
     ]
   },
   {
     "woj": "Wielkopolskie",
     "stations": [
+      {
+        "name": "Radio Gniezno",
+        "city": "Gniezno・104.3 FM",
+        "url": "http://stream3.nadaje.com:8012/",
+        "icon": "@drawable/radio_gniezno"
+      }
     ]
   },
   {
     "woj": "Zachodniopomorskie",
     "stations": [
+      {
+        "name": "Radio Szczecin",
+        "city": "Szczecin・94.4 FM",
+        "url": "http://stream4.nadaje.com:11986/prs",
+        "icon": "@drawable/radio_szczecin"
+      }
     ]
   }
 ]

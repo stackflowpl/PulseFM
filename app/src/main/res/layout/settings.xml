@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Wsparcie"
-            android:textColor="#FFFFFF"
+            android:textColor="#1c203c"
             android:textFontWeight="600"
             android:textSize="12sp" />
 
@@ -35,7 +35,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="@drawable/discord"
-                android:backgroundTint="#959595"
+                android:backgroundTint="#981C203C"
                 android:padding="10sp" />
 
             <TextView
@@ -44,7 +44,7 @@
                 android:layout_gravity="center"
                 android:text="Serwer wsparcia Discord"
                 android:layout_marginStart="10dp"
-                android:textColor="#FFFFFF"
+                android:textColor="#E11C203C"
                 android:textFontWeight="600"
                 android:textSize="12sp" />
 
@@ -64,7 +64,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="@drawable/github"
-                android:backgroundTint="#959595"
+                android:backgroundTint="#981C203C"
                 android:padding="10sp" />
 
             <TextView
@@ -73,7 +73,7 @@
                 android:layout_gravity="center"
                 android:text="Kod Open Source"
                 android:layout_marginStart="10dp"
-                android:textColor="#FFFFFF"
+                android:textColor="#E11C203C"
                 android:textFontWeight="600"
                 android:textSize="12sp" />
 

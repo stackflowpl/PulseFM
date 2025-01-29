@@ -3,6 +3,8 @@ package net.gf.radio24
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -27,10 +29,30 @@ class MainActivity : ComponentActivity() {
     private var exoPlayer: ExoPlayer? = null
     private val playerStatus = PlayerStatus()
 
+    private lateinit var radioTime: TextView
+    private var seconds = 0
+    private var isRunning = false
+    private val handler = Handler(Looper.getMainLooper())
+    private val updateRunnable = object : Runnable {
+        override fun run() {
+            if (isRunning) {
+                seconds++
+                val hours = seconds / 3600
+                val minutes = (seconds % 3600) / 60
+                val secs = seconds % 60
+
+                val timeFormatted = String.format("%02d:%02d:%02d", hours, minutes, secs)
+                radioTime.text = timeFormatted
+
+                handler.postDelayed(this, 1000) // Aktualizacja co sekundę
+            }
+        }
+    }
+
     data class Wojewodztwo(val woj: String, val stations: List<RadioStationOkolica>)
     data class RadioStationOkolica(val name: String, val city: String, val url: String, val icon: String)
     data class RadioStation(val name: String, val url: String, val icon: String)
-    data class PlayerStatus(var isPlaying: Boolean = false, var url: String = "", var stationName: String = "", var icon: String = "")
+    data class PlayerStatus(var isPlaying: Boolean = false, var url: String = "", var stationName: String = "", var city: String = "", var icon: String = "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,6 +107,8 @@ class MainActivity : ComponentActivity() {
 
         findViewById<View>(R.id.settings).setOnClickListener {
             switchLayout(container, R.layout.settings) { setupSettingsInteractions() }
+            findViewById<TextView>(R.id.textView).text = "Ustawienia"
+            findViewById<TextView>(R.id.station_count_view).text = ":)"
         }
     }
 
@@ -140,6 +164,9 @@ class MainActivity : ComponentActivity() {
 
                 radioView.setOnClickListener {
                     onRadioStationSelected(station, viewPlayer)
+                    radioTime = findViewById(R.id.radio_time)
+                    resetTimer()
+                    radioTime.visibility = View.VISIBLE
                 }
             }
 
@@ -171,6 +198,9 @@ class MainActivity : ComponentActivity() {
 
                 radioView.setOnClickListener {
                     onRadioStationSelected(station, viewPlayer)
+                    radioTime = findViewById(R.id.radio_time)
+                    resetTimer()
+                    radioTime.visibility = View.VISIBLE
                 }
             }
 
@@ -242,10 +272,12 @@ class MainActivity : ComponentActivity() {
 
         val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
         val nameViewPlayer: TextView = findViewById(R.id.radio_name_player)
+        val cityViewPlayer: TextView = findViewById(R.id.radio_container_city)
 
         playerStatus.apply {
             isPlaying = true
             url = station.url
+            city = station.city
             stationName = station.name
             icon = station.icon
         }
@@ -254,6 +286,16 @@ class MainActivity : ComponentActivity() {
 
         iconViewPlayer.setImageResource(resources.getIdentifier(station.icon.replace("@drawable/", ""), "drawable", packageName))
         nameViewPlayer.text = station.name
+        cityViewPlayer.text = station.city
+    }
+
+    private fun resetTimer() {
+        isRunning = false
+        handler.removeCallbacks(updateRunnable)
+        seconds = 0
+        radioTime.text = "00:00:00"
+        isRunning = true
+        handler.post(updateRunnable)
     }
 
     private fun togglePlayPause(viewPlayer: ImageView) {
@@ -262,12 +304,23 @@ class MainActivity : ComponentActivity() {
         } else {
             if (playerStatus.isPlaying) {
                 stopRadio()
+                toggleTimer()
                 viewPlayer.setImageResource(R.drawable.play_button)
             } else {
                 playRadio(playerStatus.url)
+                toggleTimer()
                 viewPlayer.setImageResource(R.drawable.pause_button)
             }
             playerStatus.isPlaying = !playerStatus.isPlaying
+        }
+    }
+
+    private fun toggleTimer() {
+        isRunning = !isRunning
+        if (isRunning) {
+            handler.post(updateRunnable)
+        } else {
+            handler.removeCallbacks(updateRunnable)
         }
     }
 

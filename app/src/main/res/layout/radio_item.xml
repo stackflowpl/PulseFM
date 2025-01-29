@@ -34,26 +34,36 @@
                 android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/radio_name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
             android:layout_gravity="center"
-            android:textColor="#E9E9E9"
-            android:textFontWeight="600"
-            android:textSize="14sp" />
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/radio_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:textColor="#1c203c"
+                android:textFontWeight="600"
+                android:textSize="14sp" />
+
+            <TextView
+                android:id="@+id/radio_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#1c203c"
+                android:textAlignment="textStart"
+                android:textFontWeight="300"
+                android:textSize="12sp" />
+        </LinearLayout>
 
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
-
-        <View
-            android:layout_width="30sp"
-            android:layout_height="30sp"
-            android:layout_gravity="center"
-            android:layout_marginEnd="10dp"
-            android:background="@drawable/star_2"
-            android:backgroundTint="#787b82" />
     </LinearLayout>
 </LinearLayout>

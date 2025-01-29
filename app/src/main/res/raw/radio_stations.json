@@ -120,7 +120,7 @@
     "icon": "@drawable/rmf_ziom"
   },
   {
-    "name": "RMF święta",
+    "name": "RMF Święta",
     "url": "http://195.150.20.242:8000/rmf_swieta",
     "icon": "@drawable/rmf_swieta"
   },
@@ -352,6 +352,6 @@
   {
     "name": "Radio z Pasją",
     "url": "https://stream10.hosterion.pl/8056/stream",
-    "icon": "@drawable/radio_park"
+    "icon": "@drawable/radio_z_pasja"
   }
 ]

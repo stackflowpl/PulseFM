@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="#313338">
+    android:background="#F1F2F4">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:background="#18191B">
+            android:background="#C4C5C7">
 
             <com.google.android.gms.ads.AdView
                 xmlns:ads="http://schemas.android.com/apk/res-auto"
@@ -34,20 +34,30 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="#1e1f22"
+            android:background="#DDDEE0"
             android:padding="8dp">
+
+            <View
+                android:id="@+id/car_mode"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/car_alt"
+                android:backgroundTint="#1c203c"
+                android:padding="10sp" />
 
             <EditText
                 android:id="@+id/stacja_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Wyszukaj stacje"
+                android:hint="Wyszukaj radio stacje"
                 android:inputType="text"
                 android:padding="10dp"
                 android:background="@drawable/corner_stacja"
-                android:textColor="#959595"
-                android:textColorHint="#959595"
+                android:textColor="#1c203c"
+                android:textColorHint="#1c203c"
                 android:textSize="13dp"
                 android:textFontWeight="700"
                 tools:ignore="SpeakableTextPresentCheck"/>
@@ -59,7 +69,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/settings"
-                android:backgroundTint="#959595"
+                android:backgroundTint="#1c203c"
                 android:padding="10sp" />
         </LinearLayout>
 
@@ -67,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="#27282d"
+            android:background="@drawable/corner_box_3"
             android:padding="10dp">
 
             <TextView
@@ -80,7 +90,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="Polskie Radio Stacje"
-                android:textColor="#C3C3C3"
+                android:textColor="#1c203c"
                 android:textFontWeight="600"
                 android:textSize="13sp" />
 
@@ -99,7 +109,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text=""
-                android:textColor="#C3C3C3"
+                android:textColor="#1c203c"
                 android:textFontWeight="600"
                 android:textSize="13sp" />
 
@@ -126,7 +136,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="#18191B"
+            android:background="@drawable/corner_box_2"
             android:padding="6dp">
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -153,21 +163,50 @@
                         android:src="@drawable/place" />
                 </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/radio_name_player"
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:orientation="vertical"
                     android:layout_gravity="center"
-                    android:text="Nie odtwarzasz żadnej radio stacji."
-                    android:layout_marginStart="10dp"
-                    android:textColor="#FFFFFF"
-                    android:textFontWeight="600"
-                    android:textSize="12sp" />
+                    android:padding="10dp">
+
+                    <TextView
+                        android:id="@+id/radio_name_player"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Nie odtwarzasz żadnej radio stacji."
+                        android:textColor="#1c203c"
+                        android:textFontWeight="600"
+                        android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/radio_container_city"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="#1c203c"
+                            android:text="Wybierz swoją ulubioną radio stację!"
+                            android:textAlignment="textStart"
+                            android:textFontWeight="300"
+                            android:textSize="12sp" />
+                </LinearLayout>
 
                 <View
                     android:layout_width="0dp"
                     android:layout_height="0dp"
                     android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/radio_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:textColor="#1c203c"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="10dp"
+                    android:text="00:00:00"
+                    android:textFontWeight="300"
+                    android:textSize="14sp" />
 
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="wrap_content"
@@ -194,7 +233,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="#1e1f22"
+            android:background="@drawable/corner_box"
             android:paddingTop="5dp"
             android:paddingBottom="5dp">
 
@@ -218,15 +257,14 @@
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:layout_marginBottom="2dp"
-                    android:background="@drawable/corner_menu"
                     android:orientation="vertical">
 
                     <View
-                        android:layout_width="16sp"
-                        android:layout_height="16sp"
+                        android:layout_width="18sp"
+                        android:layout_height="18sp"
                         android:layout_gravity="center"
                         android:background="@drawable/home"
-                        android:backgroundTint="#f3f3f3"
+                        android:backgroundTint="#000"
                         android:padding="10sp"/>
 
                 </LinearLayout>
@@ -235,10 +273,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Krajowe"
-                    android:textSize="12sp"
+                    android:text="KRAJOWE"
+                    android:textSize="10sp"
                     android:textFontWeight="500"
-                    android:textColor="#f3f3f3"/>
+                    android:textColor="#000"/>
             </LinearLayout>
 
             <View
@@ -261,12 +299,11 @@
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:layout_marginBottom="2dp"
-                    android:background="@drawable/corner_menu"
                     android:orientation="vertical">
 
                     <View
-                        android:layout_width="16sp"
-                        android:layout_height="16sp"
+                        android:layout_width="18sp"
+                        android:layout_height="18sp"
                         android:layout_gravity="center"
                         android:background="@drawable/radio_alt"
                         android:backgroundTint="#787b82"
@@ -278,8 +315,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="W okolicy"
-                    android:textSize="12sp"
+                    android:text="W OKOLICY"
+                    android:textSize="10sp"
                     android:textFontWeight="500"
                     android:textColor="#787b82"/>
             </LinearLayout>
@@ -304,12 +341,11 @@
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:layout_marginBottom="2dp"
-                    android:background="@drawable/corner_menu"
                     android:orientation="vertical">
 
                     <View
-                        android:layout_width="16sp"
-                        android:layout_height="16sp"
+                        android:layout_width="18sp"
+                        android:layout_height="18sp"
                         android:layout_gravity="center"
                         android:background="@drawable/globe"
                         android:backgroundTint="#787b82"
@@ -321,8 +357,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Świat"
-                    android:textSize="12sp"
+                    android:text="ŚWIAT"
+                    android:textSize="10sp"
                     android:textFontWeight="500"
                     android:textColor="#787b82"/>
             </LinearLayout>
@@ -346,12 +382,11 @@
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:layout_marginBottom="2dp"
-                    android:background="@drawable/corner_menu"
                     android:orientation="vertical">
 
                     <View
-                        android:layout_width="16sp"
-                        android:layout_height="16sp"
+                        android:layout_width="18sp"
+                        android:layout_height="18sp"
                         android:layout_gravity="center"
                         android:background="@drawable/star"
                         android:backgroundTint="#787b82"
@@ -363,8 +398,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="Ulubione"
-                    android:textSize="12sp"
+                    android:text="ULUBIONE"
+                    android:textSize="10sp"
                     android:textFontWeight="500"
                     android:textColor="#787b82"/>
             </LinearLayout>
