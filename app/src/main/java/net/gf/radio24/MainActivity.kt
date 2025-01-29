@@ -24,7 +24,13 @@ import kotlinx.coroutines.launch
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
+import com.google.android.ump.ConsentInformation
+import com.google.android.ump.ConsentRequestParameters
+import com.google.android.ump.UserMessagingPlatform
+
 class MainActivity : ComponentActivity() {
+
+    private lateinit var consentInformation: ConsentInformation
 
     private var exoPlayer: ExoPlayer? = null
     private val playerStatus = PlayerStatus()
@@ -44,7 +50,7 @@ class MainActivity : ComponentActivity() {
                 val timeFormatted = String.format("%02d:%02d:%02d", hours, minutes, secs)
                 radioTime.text = timeFormatted
 
-                handler.postDelayed(this, 1000) // Aktualizacja co sekundę
+                handler.postDelayed(this, 1000)
             }
         }
     }
@@ -58,8 +64,31 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        FirebaseFirestore.setLoggingEnabled(true)
+        val params = ConsentRequestParameters.Builder().build()
+        consentInformation = UserMessagingPlatform.getConsentInformation(this)
+
+        consentInformation.requestConsentInfoUpdate(
+            this, params,
+            {
+                UserMessagingPlatform.loadAndShowConsentFormIfRequired(this) { formError ->
+                    if (formError != null) {
+                        println("Błąd formularza zgody: ${formError.message}")
+                    }
+
+                    if (consentInformation.canRequestAds()) {
+                        initializeAds()
+                    }
+                }
+            },
+            { requestError ->
+                println("Błąd uzyskiwania zgody: ${requestError.message}")
+            }
+        )
+
         initializeAds()
+
+        FirebaseFirestore.setLoggingEnabled(true)
+
         exoPlayer = ExoPlayer.Builder(this).build()
 
         val container: LinearLayout = findViewById(R.id.container)
