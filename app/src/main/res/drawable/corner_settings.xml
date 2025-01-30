@@ -8,7 +8,7 @@
 
     <gradient
         android:angle="-180"
-        android:startColor="@color/corner_player"
-        android:endColor="@color/corner_player"
+        android:startColor="@color/background"
+        android:endColor="@color/background"
         android:type="linear" />
 </shape>

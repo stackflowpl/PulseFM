@@ -196,97 +196,97 @@
     "stations": [
       {
         "name": "Eska Warszawa",
-        "city": "Waraszawa・105.6 FM",
+        "city": "Warszawa・105.6 FM",
         "url": "http://pldm.ml/radio?url=https://www.eskago.pl/radio/eska-warszawa",
         "icon": "@drawable/eska"
       },
       {
         "name": "ESKA Goraca 20",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "http://pldm.ml/radio?url=https://www.eskago.pl/radio/eska-goraca-20",
         "icon": "@drawable/eska_goraca_20"
       },
       {
         "name": "ESKA Rock",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "http://pldm.ml/radio?url=https://www.eskago.pl/radio/eska-rock",
         "icon": "@drawable/eska_rock"
       },
       {
         "name": "Eska Polski Hip Hop",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "http://pldm.ml/radio?url=https://www.eskago.pl/radio/special-polski-hip-hop-bez-cenzury",
         "icon": "@drawable/eska_hip_hop"
       },
       {
         "name": "Radio Baobab",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "http://stream.radiobaobab.pl:8000/radiobaobab.mp3",
         "icon": "@drawable/radio_baobab"
       },
       {
         "name": "Vox FM",
-        "city": "Waraszawa・101.5 FM",
+        "city": "Warszawa・101.5 FM",
         "url": "http://pldm.ml/radio?url=https://www.eskago.pl/radio/vox-fm",
         "icon": "@drawable/radio_vox"
       },
       {
         "name": "Tok FM",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "https://radiostream.pl/tuba10-1.mp3",
         "icon": "@drawable/tokfm"
       },
       {
         "name": "SuperNova",
-        "city": "Waraszawa・89.8 FM",
+        "city": "Warszawa・89.8 FM",
         "url": "http://ic2.smcdn.pl/1380-1.mp3",
         "icon": "@drawable/radio_supernova"
       },
       {
         "name": "RadioParty House",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "https://s2.radioparty.pl:8045/house",
         "icon": "@drawable/radio_party_house"
       },
       {
         "name": "RadioParty Trance",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "https://s2.radioparty.pl:8020/trance",
         "icon": "@drawable/radio_party_trance"
       },
       {
         "name": "RadioParty Główny",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "http://s1.radioparty.pl:8888",
         "icon": "@drawable/radio_party"
       },
       {
         "name": "MUZO.FM",
-        "city": "Waraszawa・102.0 FM",
+        "city": "Warszawa・102.0 FM",
         "url": "https://n02a-eu.rcs.revma.com/1nnezw8qz7zuv",
         "icon": "@drawable/muzofm"
       },
       {
         "name": "Radio 357",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "https://n17a-eu.rcs.revma.com/an1ugyygzk8uv?rj-ttl=5&rj-tok=AAABge-UX2EAc-wTFy6TpzF0SQ",
         "icon": "@drawable/radio357"
       },
       {
         "name": "Radio Forever 80s",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "http://sirius.shoutca.st:8761/1",
         "icon": "@drawable/radio_forever"
       },
       {
         "name": "Radio Kampus",
-        "city": "Waraszawa・97.1 FM",
+        "city": "Warszawa・97.1 FM",
         "url": "http://193.0.98.66:8005/;",
         "icon": "@drawable/radio_kampus"
       },
       {
         "name": "Radio Nowy Świat",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "https://n37a-eu.rcs.revma.com/ypqt40u0x1zuv",
         "icon": "@drawable/radio_nowy_swiat"
       },
@@ -298,25 +298,25 @@
       },
       {
         "name": "Radio Pogoda",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "https://radiostream.pl/tuba38-1.mp3",
         "icon": "@drawable/radio_pogoda"
       },
       {
         "name": "Radio Zet Dance",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "https://zt05.cdn.eurozet.pl/ZETDAN.mp3?redirected=05/",
         "icon": "@drawable/radio_zet_dance"
       },
       {
         "name": "Radio Zet Party",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "http://zt04.cdn.eurozet.pl/ZETPAR.mp3",
         "icon": "@drawable/radio_zet_party"
       },
       {
         "name": "Radio Złote Przeboje",
-        "city": "Waraszawa・Online",
+        "city": "Warszawa・Online",
         "url": "http://poznan5-6.radio.pionier.net.pl:8000/tuba9-1.mp3",
         "icon": "@drawable/radio_zlote_przeboje"
       }

@@ -16,8 +16,116 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="Zmiana motywu aplikacji"
+            android:textColor="@color/text_color"
+            android:textFontWeight="600"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/theme_light"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/corner_settings"
+                android:padding="20dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="5dp">
+
+                <View
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/brightness"
+                    android:backgroundTint="@color/settings_icon"
+                    android:padding="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:text="Jasny motyw"
+                    android:textColor="@color/settings_text"
+                    android:textFontWeight="600"
+                    android:textSize="12sp" />
+
+                <View
+                    android:id="@+id/check_box_light_theme"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle"
+                    android:backgroundTint="@color/settings_icon"
+                    android:padding="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/theme_dark"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:background="@drawable/corner_settings"
+                android:padding="20dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp">
+
+                <View
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/moon"
+                    android:backgroundTint="@color/settings_icon"
+                    android:padding="10sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="5dp"
+                    android:text="Ciemny motyw"
+                    android:textColor="@color/settings_text"
+                    android:textFontWeight="600"
+                    android:textSize="12sp" />
+
+                <View
+                    android:id="@+id/check_box_dark_theme"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/circle"
+                    android:backgroundTint="@color/settings_icon"
+                    android:padding="10sp" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/corner_radio"
+        android:padding="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="Wsparcie"
-            android:textColor="#1c203c"
+            android:textColor="@color/text_color"
             android:textFontWeight="600"
             android:textSize="12sp" />
 
@@ -26,7 +134,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/corner_radio"
+            android:background="@drawable/corner_settings"
             android:padding="10dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp">
@@ -35,7 +143,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="@drawable/discord"
-                android:backgroundTint="#981C203C"
+                android:backgroundTint="@color/settings_icon"
                 android:padding="10sp" />
 
             <TextView
@@ -44,7 +152,7 @@
                 android:layout_gravity="center"
                 android:text="Serwer wsparcia Discord"
                 android:layout_marginStart="10dp"
-                android:textColor="#E11C203C"
+                android:textColor="@color/settings_text"
                 android:textFontWeight="600"
                 android:textSize="12sp" />
 
@@ -55,7 +163,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/corner_radio"
+            android:background="@drawable/corner_settings"
             android:padding="10dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp">
@@ -64,7 +172,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="@drawable/github"
-                android:backgroundTint="#981C203C"
+                android:backgroundTint="@color/settings_icon"
                 android:padding="10sp" />
 
             <TextView
@@ -73,7 +181,7 @@
                 android:layout_gravity="center"
                 android:text="Kod Open Source"
                 android:layout_marginStart="10dp"
-                android:textColor="#E11C203C"
+                android:textColor="@color/settings_text"
                 android:textFontWeight="600"
                 android:textSize="12sp" />
 
@@ -93,16 +201,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Developerskie"
-            android:textColor="#1c203c"
+            android:textColor="@color/text_color"
             android:textFontWeight="600"
             android:textSize="12sp" />
+
 
         <LinearLayout
             android:id="@+id/tworcy"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/corner_radio"
+            android:background="@drawable/corner_settings"
             android:padding="10dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp">
@@ -111,7 +220,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="@drawable/dev"
-                android:backgroundTint="#981C203C"
+                android:backgroundTint="@color/settings_icon"
                 android:padding="10sp" />
 
             <TextView
@@ -120,7 +229,7 @@
                 android:layout_gravity="center"
                 android:text="Twórcy aplikacji Radio24"
                 android:layout_marginStart="10dp"
-                android:textColor="#E11C203C"
+                android:textColor="@color/settings_text"
                 android:textFontWeight="600"
                 android:textSize="12sp" />
 
@@ -130,7 +239,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/corner_radio"
+            android:background="@drawable/corner_settings"
             android:padding="10dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp">
@@ -139,7 +248,7 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:background="@drawable/document"
-                android:backgroundTint="#981C203C"
+                android:backgroundTint="@color/settings_icon"
                 android:padding="10sp" />
 
             <TextView
@@ -148,7 +257,7 @@
                 android:layout_gravity="center"
                 android:text="Wersja aplikacji"
                 android:layout_marginStart="10dp"
-                android:textColor="#E11C203C"
+                android:textColor="@color/settings_text"
                 android:textFontWeight="600"
                 android:textSize="12sp" />
 
@@ -163,7 +272,7 @@
                 android:layout_gravity="center"
                 android:text="@string/version_app"
                 android:layout_marginStart="10dp"
-                android:textColor="#E11C203C"
+                android:textColor="@color/settings_text"
                 android:textFontWeight="600"
                 android:textSize="12sp" />
 

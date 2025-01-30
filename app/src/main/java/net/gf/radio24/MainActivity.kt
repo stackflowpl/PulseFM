@@ -1,10 +1,12 @@
 package net.gf.radio24
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
@@ -27,6 +29,8 @@ import com.google.gson.reflect.TypeToken
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
+
+import androidx.appcompat.app.AppCompatDelegate
 
 class MainActivity : ComponentActivity() {
 
@@ -57,11 +61,25 @@ class MainActivity : ComponentActivity() {
 
     data class Wojewodztwo(val woj: String, val stations: List<RadioStationOkolica>)
     data class RadioStationOkolica(val name: String, val city: String, val url: String, val icon: String)
-    data class RadioStation(val name: String, val url: String, val icon: String)
+    data class RadioStation(val name: String, val city: String, val url: String, val icon: String)
     data class PlayerStatus(var isPlaying: Boolean = false, var url: String = "", var stationName: String = "", var city: String = "", var icon: String = "")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE)
+        val currentTheme = sharedPreferences.getString("theme", "light")
+
+        Log.d("ThemeCheck", "Setting theme to: ${if (currentTheme == "dark") "Dark" else "Light"}")
+
+        if (currentTheme == "dark") {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            Log.d("ThemeCheck", "Night mode set to Dark")
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            Log.d("ThemeCheck", "Night mode set to Light")
+        }
+
         setContentView(R.layout.activity_main)
 
         val params = ConsentRequestParameters.Builder().build()
@@ -138,6 +156,20 @@ class MainActivity : ComponentActivity() {
             switchLayout(container, R.layout.settings) { setupSettingsInteractions() }
             findViewById<TextView>(R.id.textView).text = "Ustawienia"
             findViewById<TextView>(R.id.station_count_view).text = ":)"
+
+            val checkBoxLight = findViewById<View>(R.id.check_box_light_theme)
+            val checkBoxDark = findViewById<View>(R.id.check_box_dark_theme)
+
+            val sharedPreferences: SharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE)
+            val currentTheme = sharedPreferences.getString("theme", "light")
+
+            if (currentTheme == "light") {
+                checkBoxLight.setBackgroundResource(R.drawable.dot_circle)
+                checkBoxDark.setBackgroundResource(R.drawable.circle)
+            } else if (currentTheme == "dark") {
+                checkBoxDark.setBackgroundResource(R.drawable.dot_circle)
+                checkBoxLight.setBackgroundResource(R.drawable.circle)
+            }
         }
     }
 
@@ -152,12 +184,42 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun setupSettingsInteractions() {
-        findViewById<LinearLayout>(R.id.discord)?.setOnClickListener { openWebsite("https://discord.gg/hernrd9VWc") }
-        findViewById<LinearLayout>(R.id.github)?.setOnClickListener { openWebsite("https://github.com/gofluxpl/Radio24") }
+        findViewById<LinearLayout>(R.id.discord)?.setOnClickListener {
+            openWebsite("https://discord.gg/hernrd9VWc")
+        }
+
+        findViewById<LinearLayout>(R.id.github)?.setOnClickListener {
+            openWebsite("https://github.com/gofluxpl/Radio24")
+        }
+
+        findViewById<LinearLayout>(R.id.theme_light)?.setOnClickListener {
+            switchTheme("light")
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
+        findViewById<LinearLayout>(R.id.theme_dark)?.setOnClickListener {
+            switchTheme("dark")
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
     }
 
     private fun openWebsite(url: String) {
         Intent(Intent.ACTION_VIEW, Uri.parse(url)).also { startActivity(it) }
+    }
+
+    private fun switchTheme(theme: String) {
+        val sharedPreferences: SharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        editor.putString("theme", theme)
+        editor.apply()
+
+        if (theme == "dark") {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
+
+        recreate()
     }
 
     private fun initializeAds() {
@@ -282,10 +344,12 @@ class MainActivity : ComponentActivity() {
 
         val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
         val nameViewPlayer: TextView = findViewById(R.id.radio_name_player)
+        val cityViewPlayer: TextView = findViewById(R.id.radio_container_city)
 
         playerStatus.apply {
             isPlaying = true
             url = station.url
+            city = station.city
             stationName = station.name
             icon = station.icon
         }
@@ -294,6 +358,7 @@ class MainActivity : ComponentActivity() {
 
         iconViewPlayer.setImageResource(resources.getIdentifier(station.icon.replace("@drawable/", ""), "drawable", packageName))
         nameViewPlayer.text = station.name
+        cityViewPlayer.text = station.city
     }
 
     private fun onRadioStationSelected(station: RadioStationOkolica, viewPlayer: ImageView) {

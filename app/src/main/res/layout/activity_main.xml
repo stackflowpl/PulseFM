@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="#F1F2F4">
+    android:background="@color/background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:background="#C4C5C7">
+            android:background="@color/background_ads">
 
             <com.google.android.gms.ads.AdView
                 xmlns:ads="http://schemas.android.com/apk/res-auto"
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="#DDDEE0"
+            android:background="@color/background_search"
             android:padding="8dp">
 
             <View
@@ -44,7 +44,7 @@
                 android:layout_gravity="center"
                 android:layout_marginEnd="10dp"
                 android:background="@drawable/car_alt"
-                android:backgroundTint="#1c203c"
+                android:backgroundTint="@color/text_color"
                 android:padding="10sp" />
 
             <EditText
@@ -56,8 +56,8 @@
                 android:inputType="text"
                 android:padding="10dp"
                 android:background="@drawable/corner_stacja"
-                android:textColor="#1c203c"
-                android:textColorHint="#1c203c"
+                android:textColor="@color/text_color"
+                android:textColorHint="@color/text_color"
                 android:textSize="13dp"
                 android:textFontWeight="700"
                 tools:ignore="SpeakableTextPresentCheck"/>
@@ -69,7 +69,7 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/settings"
-                android:backgroundTint="#1c203c"
+                android:backgroundTint="@color/text_color"
                 android:padding="10sp" />
         </LinearLayout>
 
@@ -90,7 +90,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text="Polskie Radio Stacje"
-                android:textColor="#1c203c"
+                android:textColor="@color/text_color"
                 android:textFontWeight="600"
                 android:textSize="13sp" />
 
@@ -109,7 +109,7 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:text=""
-                android:textColor="#1c203c"
+                android:textColor="@color/text_color"
                 android:textFontWeight="600"
                 android:textSize="13sp" />
 
@@ -176,19 +176,19 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Nie odtwarzasz żadnej radio stacji."
-                        android:textColor="#1c203c"
+                        android:textColor="@color/text_color"
                         android:textFontWeight="600"
                         android:textSize="12sp" />
 
-                        <TextView
-                            android:id="@+id/radio_container_city"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#1c203c"
-                            android:text="Wybierz swoją ulubioną radio stację!"
-                            android:textAlignment="textStart"
-                            android:textFontWeight="300"
-                            android:textSize="12sp" />
+                    <TextView
+                        android:id="@+id/radio_container_city"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_color"
+                        android:text="Wybierz swoją ulubioną radio stację!"
+                        android:textAlignment="textStart"
+                        android:textFontWeight="300"
+                        android:textSize="10sp" />
                 </LinearLayout>
 
                 <View
@@ -264,7 +264,7 @@
                         android:layout_height="18sp"
                         android:layout_gravity="center"
                         android:background="@drawable/home"
-                        android:backgroundTint="#000"
+                        android:backgroundTint="@color/icon_color"
                         android:padding="10sp"/>
 
                 </LinearLayout>
@@ -276,7 +276,7 @@
                     android:text="KRAJOWE"
                     android:textSize="10sp"
                     android:textFontWeight="500"
-                    android:textColor="#000"/>
+                    android:textColor="@color/icon_color"/>
             </LinearLayout>
 
             <View

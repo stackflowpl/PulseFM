@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background">#1a272f</color>
+    <color name="background_ads">#131E24</color>
+    <color name="background_search">#162128</color>
+    <color name="text_color">#C4C5C7</color>
+    <color name="corner_player">#0E171B</color>
+    <color name="corner_player_button">#070C0F</color>
+    <color name="icon_color">#5f686f</color>
+    <color name="corner_radio">#0D151A</color>
+    <color name="settings_icon">#9AC4C5C7</color>
+    <color name="settings_text">#A69FA0A2</color>
+</resources>
