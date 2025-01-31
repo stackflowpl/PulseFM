@@ -1,19 +1,20 @@
 package net.gf.radio24
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.gms.ads.AdRequest
@@ -30,11 +31,13 @@ import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
 
-import androidx.appcompat.app.AppCompatDelegate
-
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private lateinit var consentInformation: ConsentInformation
+
+    private var nightMode: Boolean = false
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var editor: SharedPreferences.Editor
 
     private var exoPlayer: ExoPlayer? = null
     private val playerStatus = PlayerStatus()
@@ -67,17 +70,11 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val sharedPreferences: SharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE)
-        val currentTheme = sharedPreferences.getString("theme", "light")
+        sharedPreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE)
+        nightMode = sharedPreferences.getBoolean("nightMode", false)
 
-        Log.d("ThemeCheck", "Setting theme to: ${if (currentTheme == "dark") "Dark" else "Light"}")
-
-        if (currentTheme == "dark") {
+        if (nightMode) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-            Log.d("ThemeCheck", "Night mode set to Dark")
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            Log.d("ThemeCheck", "Night mode set to Light")
         }
 
         setContentView(R.layout.activity_main)
@@ -160,15 +157,15 @@ class MainActivity : ComponentActivity() {
             val checkBoxLight = findViewById<View>(R.id.check_box_light_theme)
             val checkBoxDark = findViewById<View>(R.id.check_box_dark_theme)
 
-            val sharedPreferences: SharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE)
-            val currentTheme = sharedPreferences.getString("theme", "light")
+            sharedPreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE)
+            nightMode = sharedPreferences.getBoolean("nightMode", false)
 
-            if (currentTheme == "light") {
-                checkBoxLight.setBackgroundResource(R.drawable.dot_circle)
-                checkBoxDark.setBackgroundResource(R.drawable.circle)
-            } else if (currentTheme == "dark") {
+            if (nightMode) {
                 checkBoxDark.setBackgroundResource(R.drawable.dot_circle)
                 checkBoxLight.setBackgroundResource(R.drawable.circle)
+            } else {
+                checkBoxLight.setBackgroundResource(R.drawable.dot_circle)
+                checkBoxDark.setBackgroundResource(R.drawable.circle)
             }
         }
     }
@@ -193,33 +190,34 @@ class MainActivity : ComponentActivity() {
         }
 
         findViewById<LinearLayout>(R.id.theme_light)?.setOnClickListener {
-            switchTheme("light")
+            val checkBoxLight = findViewById<View>(R.id.check_box_light_theme)
+            val checkBoxDark = findViewById<View>(R.id.check_box_dark_theme)
+
+            editor = sharedPreferences.edit()
+            editor.putBoolean("nightMode", false)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            editor.apply()
+
+            checkBoxLight.setBackgroundResource(R.drawable.dot_circle)
+            checkBoxDark.setBackgroundResource(R.drawable.circle)
         }
 
         findViewById<LinearLayout>(R.id.theme_dark)?.setOnClickListener {
-            switchTheme("dark")
+            val checkBoxLight = findViewById<View>(R.id.check_box_light_theme)
+            val checkBoxDark = findViewById<View>(R.id.check_box_dark_theme)
+
+            editor = sharedPreferences.edit()
+            editor.putBoolean("nightMode", true)
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            editor.apply()
+
+            checkBoxDark.setBackgroundResource(R.drawable.dot_circle)
+            checkBoxLight.setBackgroundResource(R.drawable.circle)
         }
     }
 
     private fun openWebsite(url: String) {
         Intent(Intent.ACTION_VIEW, Uri.parse(url)).also { startActivity(it) }
-    }
-
-    private fun switchTheme(theme: String) {
-        val sharedPreferences: SharedPreferences = getSharedPreferences("Settings", MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString("theme", theme)
-        editor.apply()
-
-        if (theme == "dark") {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        }
-
-        recreate()
     }
 
     private fun initializeAds() {
