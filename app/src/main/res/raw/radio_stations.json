@@ -1,2 +1,104 @@
 [
+  {
+    "name": "RMF FM",
+    "city": "Kraków・92.9 FM",
+    "url": "http://217.74.72.11:8000/rmf_fm",
+    "icon": "@drawable/rmf_fm"
+  },
+  {
+    "name": "Radio Złote Przeboje",
+    "city": "Warszawa・Online",
+    "url": "http://poznan5-6.radio.pionier.net.pl:8000/tuba9-1.mp3",
+    "icon": "@drawable/radio_zlote_przeboje"
+  },
+  {
+    "name": "RMF MAXXX",
+    "city": "Kraków・96.7 FM",
+    "url": "http://217.74.72.10:8000/rmf_maxxx",
+    "icon": "@drawable/rmf_maxxx"
+  },
+  {
+    "name": "Eska Warszawa",
+    "city": "Warszawa・105.6 FM",
+    "url": "http://pldm.ml/radio?url=https://www.eskago.pl/radio/eska-warszawa",
+    "icon": "@drawable/eska"
+  },
+  {
+    "name": "Antyradio",
+    "city": "Katowice・106.4 FM",
+    "url": "https://an.cdn.eurozet.pl/ant-web.mp3?t=1704834802040",
+    "icon": "@drawable/antyradio"
+  },
+  {
+    "name": "Vox FM",
+    "city": "Warszawa・101.5 FM",
+    "url": "http://pldm.ml/radio?url=https://www.eskago.pl/radio/vox-fm",
+    "icon": "@drawable/radio_vox"
+  },
+  {
+    "name": "Radio Olsztyn",
+    "city": "Olsztyn・103,2 FM",
+    "url": "https://rostr1.radioolsztyn.pl:8443/RO",
+    "icon": "@drawable/radio_olsztyn"
+  },
+  {
+    "name": "Tok FM",
+    "city": "Warszawa・Online",
+    "url": "https://radiostream.pl/tuba10-1.mp3",
+    "icon": "@drawable/tokfm"
+  },
+  {
+    "name": "ESKA Opole",
+    "city": "Opole・90.8 FM",
+    "url": "https://ic1.smcdn.pl/2980-1.mp3",
+    "icon": "@drawable/eska"
+  },
+  {
+    "name": "ESKA2 Opole",
+    "city": "Opole・105.7 FM",
+    "url": "https://ic1.smcdn.pl/1120-1.aac",
+    "icon": "@drawable/eska2"
+  },
+  {
+    "name": "Meloradio",
+    "city": "Wrocław・97.8 FM",
+    "url": "https://ml01.cdn.eurozet.pl/mel-wro.mp3?redirected=01",
+    "icon": "@drawable/meloradio"
+  },
+  {
+    "name": "Radio Park FM",
+    "city": "Kędzierzyn-Koźle・93.9 FM",
+    "url": "https://sluchaj2.radiopark.biz.pl:8443/stream",
+    "icon": "@drawable/radio_park"
+  },
+  {
+    "name": "Eska Polski Hip Hop",
+    "city": "Warszawa・Online",
+    "url": "http://pldm.ml/radio?url=https://www.eskago.pl/radio/special-polski-hip-hop-bez-cenzury",
+    "icon": "@drawable/eska_hip_hop"
+  },
+  {
+    "name": "Muzyczne Radio",
+    "city": "Wałbrzych・106.7 FM",
+    "url": "https://stream.rcs.revma.com/gzwc1xcq042vv",
+    "icon": "@drawable/muzyczne_radio"
+  },
+  {
+    "name": "MUZO.FM",
+    "city": "Warszawa・102.0 FM",
+    "url": "https://n02a-eu.rcs.revma.com/1nnezw8qz7zuv",
+    "icon": "@drawable/muzofm"
+  },
+  {
+    "name": "Radio Vanessa FM",
+    "city": "Krapkowice・95.8 FM",
+    "url": "https://s1.slotex.pl:7358/stream/1/?1738096046789",
+    "icon": "@drawable/radio_vanessa"
+  },
+  {
+    "name": "Radio Szczecin",
+    "city": "Szczecin・94.4 FM",
+    "url": "http://stream4.nadaje.com:11986/prs",
+    "icon": "@drawable/radio_szczecin"
+  }
 ]
