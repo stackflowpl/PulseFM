@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
     data class Wojewodztwo(val woj: String, val stations: List<RadioStationOkolica>)
     data class RadioStationOkolica(val name: String, val city: String, val url: String, val icon: String)
     data class RadioStation(val name: String, val city: String, val url: String, val icon: String)
-    data class RadioStationPopular(val name: String, val city: String, val url: String, val icon: String)
 
     var isPlaying: Boolean? = false
     var url = ""
@@ -73,6 +72,12 @@ class MainActivity : AppCompatActivity() {
 
         val radioStations = loadStationsFromRaw<RadioStation>(R.raw.radio_stations)
         val radioOkolicaStations = loadStationsFromRaw<Wojewodztwo>(R.raw.radio_okolice)
+
+        findViewById<View>(R.id.car_mode).setOnClickListener {
+            val intent = Intent(this, CarActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         findViewById<ImageView>(R.id.radio_player).setOnClickListener {
             togglePlayPause(it as ImageView)
