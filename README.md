@@ -28,6 +28,12 @@ Najświeższą wersję możesz pobrać ze sklepu Google Play.
     alt="Pobierz z Google Play"
     height="80">](...)
 
+## Współpraca
+
+Dołóż swoją cegiełkę do projektu, tworząc społeczność lub zgłaszając issue na GitHub.
+
+Znasz radio którego nie dodaliśmy? Napisz do nas na discordzie [Serwer Discord](https://discord.gg/hernrd9VWc) lub w wiadomości e-mail [support@goflux.pl](mailto:support@goflux.pl)
+
 ----
 
 **Radio24** – Twoje ulubione stacje radiowe w jednym kliknięciu!
