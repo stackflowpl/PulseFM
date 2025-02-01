@@ -58,23 +58,9 @@ class CarActivity : AppCompatActivity() {
                     if (isPlaying as Boolean) {
                         playRadio(url)
                         val viewPlayer = findViewById<ImageView>(R.id.radio_player)
+
                         viewPlayer.setImageResource(R.drawable.pause_button)
-
-                        val jsonObject = JSONObject().apply {
-                            put("change_theme", false)
-                            put("isPlaying", true)
-                            put("url",  url)
-                            put("city", city)
-                            put("stationName", stationName)
-                            put("icon", icon)
-                        }
-
-                        val file = File(filesDir, "player.json")
-                        val fileWriter = FileWriter(file)
-
-                        fileWriter.use {
-                            it.write(jsonObject.toString())
-                        }
+                        findViewById<TextView>(R.id.text_car_play).text = "Play"
                     }
                 }
             }
@@ -84,6 +70,7 @@ class CarActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
+            stopRadio()
         }
 
         findViewById<ImageView>(R.id.radio_player).setOnClickListener {
@@ -143,6 +130,8 @@ class CarActivity : AppCompatActivity() {
                             put("icon", icon)
                         }
 
+                        findViewById<TextView>(R.id.text_car_play).text = "Pause"
+
                         val file = File(filesDir, "player.json")
                         val fileWriter = FileWriter(file)
 
@@ -161,6 +150,8 @@ class CarActivity : AppCompatActivity() {
                             put("stationName", stationName)
                             put("icon", icon)
                         }
+
+                        findViewById<TextView>(R.id.text_car_play).text = "Play"
 
                         val file = File(filesDir, "player.json")
                         val fileWriter = FileWriter(file)
@@ -186,42 +177,5 @@ class CarActivity : AppCompatActivity() {
 
     private fun stopRadio() {
         exoPlayer?.stop()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        exoPlayer?.release()
-        exoPlayer = null
-
-        val file = File(filesDir, "player.json")
-        if (!file.exists()) return
-
-        val jsonString = file.readText()
-        if (jsonString.isEmpty()) return
-
-        val jsonObject = JSONObject(jsonString)
-        val changeTheme = jsonObject.optBoolean("change_theme", false)
-        val url = jsonObject.optString("url", "")
-        val city = jsonObject.optString("city", "")
-        val stationName = jsonObject.optString("stationName", "")
-        val icon = jsonObject.optString("icon", "")
-
-        if (url.isEmpty()) {
-            Toast.makeText(this, "Brak danych o stacji radiowej!", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        if (!changeTheme) {
-            val jsonObjectToSave = JSONObject().apply {
-                put("change_theme", false)
-                put("isPlaying", false)
-                put("url", url)
-                put("city", city)
-                put("stationName", stationName)
-                put("icon", icon)
-            }
-            file.writeText(jsonObjectToSave.toString())
-            return
-        }
     }
 }
