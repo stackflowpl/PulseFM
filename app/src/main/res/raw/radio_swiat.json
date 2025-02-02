@@ -1,0 +1,1568 @@
+[
+  {
+    "country": "Azerbaijan",
+    "stations": [
+      {
+        "name": "AutoLife Azerbaijan",
+        "city": "Azerbaijan・Online",
+        "url": "http://radio.autoliferadio.com:8000/radio",
+        "icon": "@drawable/autolife_azerbaijan"
+      }
+    ]
+  },
+  {
+    "country": "Austria",
+    "stations": [
+      {
+        "name": "Austrian Rock Radio",
+        "city": "Austria・Online",
+        "url": "http://live.antenne.at/arr",
+        "icon": "@drawable/austrian_rock_radio"
+      },
+      {
+        "name": "Radio Proton",
+        "city": "Austria・Online",
+        "url": "http://www.radioproton.at:8000/proton",
+        "icon": "@drawable/radio_proton"
+      },
+      {
+        "name": "Stahlradio",
+        "city": "Austria・Online",
+        "url": "http://streamplus18.leonex.de:22810/;41812521032989stream.nsv",
+        "icon": "@drawable/stahlradio"
+      }
+    ]
+  },
+  {
+    "country": "Belgium",
+    "stations": [
+      {
+        "name": "MNM",
+        "city": "Belgium・Online",
+        "url": "http://icecast.vrtcdn.be/mnm-high.mp3",
+        "icon": "@drawable/mnm"
+      },
+      {
+        "name": "Radio 2",
+        "city": "Belgium・Online",
+        "url": "http://icecast.vrtcdn.be/ra2wvl-high.mp3",
+        "icon": "@drawable/radio_2"
+      },
+      {
+        "name": "Q-Music",
+        "city": "Belgium・Online",
+        "url": "http://icecast-qmusic.cdp.triple-it.nl/Qmusic_be_live_96.mp3",
+        "icon": "@drawable/q_music"
+      },
+      {
+        "name": "AraBel",
+        "city": "Belgium・Online",
+        "url": "http://arabelfm.ice.infomaniak.ch/arabelprodcastfm.mp3",
+        "icon": "@drawable/arabel"
+      },
+      {
+        "name": "Nostalgie BE",
+        "city": "Belgium・Online",
+        "url": "http://nostalgiepremium.ice.infomaniak.ch/nostalgiepremium-128.mp3",
+        "icon": "@drawable/nostalgie_be"
+      },
+      {
+        "name": "Radio Contact",
+        "city": "Belgium・Online",
+        "url": "http://audiostream.rtl.be/contactfr",
+        "icon": "@drawable/radio_contact"
+      },
+      {
+        "name": "Instrumentals Forever",
+        "city": "Belgium・Online",
+        "url": "http://agnes.torontocast.com:8151/stream",
+        "icon": "@drawable/instrumentals_forever"
+      },
+      {
+        "name": "Zen FM",
+        "city": "Belgium・Online",
+        "url": "http://lb.zenfm.be/zenfm.mp3",
+        "icon": "@drawable/zen_fm"
+      }
+    ]
+  },
+  {
+    "country": "Bulgaria",
+    "stations": [
+      {
+        "name": "Vidin",
+        "city": "Bulgaria・Online",
+        "url": "http://89.106.110.85:8000/",
+        "icon": "@drawable/vidin"
+      },
+      {
+        "name": "Fresh",
+        "city": "Bulgaria・Online",
+        "url": "http://193.108.24.21:8000/fresh",
+        "icon": "@drawable/fresh"
+      },
+      {
+        "name": "FM+",
+        "city": "Bulgaria・Online",
+        "url": "http://193.108.24.21:8000/fmplus",
+        "icon": "@drawable/fm_plus"
+      },
+      {
+        "name": "City",
+        "city": "Bulgaria・Online",
+        "url": "http://stream.radioreklama.bg/city64",
+        "icon": "@drawable/city"
+      }
+    ]
+  },
+  {
+    "country": "Czech Republic",
+    "stations": [
+      {
+        "name": "Evropa 2",
+        "city": "Czech Republic・Online",
+        "url": "http://icecast3.play.cz/evropa2-128.mp3",
+        "icon": "@drawable/evropa_2"
+      },
+      {
+        "name": "Frekvence 1",
+        "city": "Czech Republic・Online",
+        "url": "http://icecast3.play.cz/frekvence1-128.mp3",
+        "icon": "@drawable/frekvence_1"
+      },
+      {
+        "name": "Rádio Beat",
+        "city": "Czech Republic・Online",
+        "url": "http://icecast5.play.cz/radiobeat128.mp3",
+        "icon": "@drawable/radio_beat"
+      },
+      {
+        "name": "Country Radio",
+        "city": "Czech Republic・Online",
+        "url": "http://icecast2.play.cz:8000/country64.mp3",
+        "icon": "@drawable/country_radio"
+      },
+      {
+        "name": "Radio Gothic",
+        "city": "Czech Republic・Online",
+        "url": "http://radio-streamhosting.com:8006/192mp3",
+        "icon": "@drawable/radio_gothic"
+      },
+      {
+        "name": "Rádio Impuls",
+        "city": "Czech Republic・Online",
+        "url": "http://icecast5.play.cz:8000/impuls128.mp3",
+        "icon": "@drawable/radio_impuls"
+      },
+      {
+        "name": "Kiss Jižní Čechy",
+        "city": "Czech Republic・Online",
+        "url": "http://icecast8.play.cz/kisspublikum128.mp3",
+        "icon": "@drawable/kiss_jizni_cechy"
+      },
+      {
+        "name": "Hitradio Faktor",
+        "city": "Czech Republic・Online",
+        "url": "http://ice.abradio.cz/faktor128.mp3",
+        "icon": "@drawable/hitradio_faktor"
+      },
+      {
+        "name": "Fajn Radio",
+        "city": "Czech Republic・Online",
+        "url": "http://ice.abradio.cz/fajn128.mp3",
+        "icon": "@drawable/fajn_radio"
+      },
+      {
+        "name": "ČR Radiožurnál",
+        "city": "Czech Republic・Online",
+        "url": "http://icecast8.play.cz/cro1-128.mp3",
+        "icon": "@drawable/cr_radiozurnal"
+      },
+      {
+        "name": "Rock Zone Prague",
+        "city": "Czech Republic・Online",
+        "url": "http://icecast5.play.cz/rockzone128.mp3",
+        "icon": "@drawable/rock_zone_prague"
+      }
+    ]
+  },
+  {
+    "country": "Denmark",
+    "stations": [
+      {
+        "name": "DR P7 Mix",
+        "city": "Denmark・Online",
+        "url": "http://live-icy.gss.dr.dk:8000/A/A21H.mp3",
+        "icon": "@drawable/dr_p7_mix"
+      },
+      {
+        "name": "VLR",
+        "city": "Denmark・Online",
+        "url": "http://streaming.fynskemedier.dk/vlr",
+        "icon": "@drawable/vlr"
+      },
+      {
+        "name": "Radio 100FM",
+        "city": "Denmark・Online",
+        "url": "http://onair.100fmlive.dk/100fm_live.mp3",
+        "icon": "@drawable/radio_100fm"
+      },
+      {
+        "name": "Radio SLR",
+        "city": "Denmark・Online",
+        "url": "http://stream.wlmm.dk/stream/54/",
+        "icon": "@drawable/radio_slr"
+      },
+      {
+        "name": "myROCK",
+        "city": "Denmark・Online",
+        "url": "http://stream.myrock.fm/myrock128",
+        "icon": "@drawable/myrock"
+      },
+      {
+        "name": "Pop FM",
+        "city": "Denmark・Online",
+        "url": "http://stream.popfm.dk/pop128",
+        "icon": "@drawable/pop_fm"
+      },
+      {
+        "name": "Retro Radio",
+        "city": "Denmark・Online",
+        "url": "http://streammp3.retro-radio.dk/retro-mp3",
+        "icon": "@drawable/retro_radio"
+      },
+      {
+        "name": "DR P8 JAZZ",
+        "city": "Denmark・Online",
+        "url": "http://live-icy.gss.dr.dk/A/A22H.mp3",
+        "icon": "@drawable/dr_p8_jazz"
+      },
+      {
+        "name": "DR 1",
+        "city": "Denmark・Online",
+        "url": "http://live-icy.gss.dr.dk:8000/A/A03H.mp3",
+        "icon": "@drawable/dr_1"
+      },
+      {
+        "name": "DR 2 Classic",
+        "city": "Denmark・Online",
+        "url": "http://live-icy.gss.dr.dk:8000/A/A04H.mp3",
+        "icon": "@drawable/dr_2_classic"
+      },
+      {
+        "name": "DR 3",
+        "city": "Denmark・Online",
+        "url": "http://live-icy.gss.dr.dk:8000/A/A05H.mp3",
+        "icon": "@drawable/dr_3"
+      },
+      {
+        "name": "DR 4 Fyn",
+        "city": "Denmark・Online",
+        "url": "http://live-icy.gss.dr.dk:8000/A/A07H.mp3",
+        "icon": "@drawable/dr_4_fyn"
+      },
+      {
+        "name": "DR 5",
+        "city": "Denmark・Online",
+        "url": "http://live-icy.gss.dr.dk:8000/A/A25H.mp3",
+        "icon": "@drawable/dr_5"
+      },
+      {
+        "name": "DR 6 Beat",
+        "city": "Denmark・Online",
+        "url": "http://live-icy.gss.dr.dk:8000/A/A29H.mp3",
+        "icon": "@drawable/dr_6_beat"
+      }
+    ]
+  },
+  {
+    "country": "England",
+    "stations": [
+      {
+        "name": "BigRig FM",
+        "city": "England・Online",
+        "url": "https://radio.bigrig.fm/",
+        "icon": "@drawable/bigrig_fm"
+      },
+      {
+        "name": "House Heads UK",
+        "city": "England・Online",
+        "url": "http://s36.myradiostream.com:13028/;listen.mp3",
+        "icon": "@drawable/house_heads_uk"
+      },
+      {
+        "name": "Rock FM",
+        "city": "England・Online",
+        "url": "http://5.20.223.18/crf128.mp3",
+        "icon": "@drawable/rock_fm"
+      },
+      {
+        "name": "Radio Bloodstream",
+        "city": "England・Online",
+        "url": "http://uk1.internet-radio.com:8294/stream",
+        "icon": "@drawable/radio_bloodstream"
+      },
+      {
+        "name": "Classic Hits UK",
+        "city": "England・Online",
+        "url": "http://soho.wavestreamer.com:4845/stream/1/",
+        "icon": "@drawable/classic_hits_uk"
+      },
+      {
+        "name": "Felixstowe Radio",
+        "city": "England・Online",
+        "url": "http://feed.felixstoweradio.co.uk:8000/FXR",
+        "icon": "@drawable/felixstowe_radio"
+      },
+      {
+        "name": "The Arrow",
+        "city": "England・Online",
+        "url": "http://ice-sov.musicradio.com/ArrowMP3",
+        "icon": "@drawable/the_arrow"
+      },
+      {
+        "name": "Radio Caroline",
+        "city": "England・Online",
+        "url": "http://78.129.202.200:8000/;",
+        "icon": "@drawable/radio_caroline"
+      },
+      {
+        "name": "Smooth Radio",
+        "city": "England・Online",
+        "url": "http://media-ice.musicradio.com/SmoothLondonMP3",
+        "icon": "@drawable/smooth_radio"
+      },
+      {
+        "name": "Kingdom FM",
+        "city": "England・Online",
+        "url": "http://stream8.considerit.co.uk/kingdomfm128.mp3",
+        "icon": "@drawable/kingdom_fm"
+      },
+      {
+        "name": "BBC Radio 1",
+        "city": "England・Online",
+        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p",
+        "icon": "@drawable/bbc_radio1"
+      },
+      {
+        "name": "BBC Radio 2",
+        "city": "England・Online",
+        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio2_mf_p",
+        "icon": "@drawable/bbc_radio2"
+      },
+      {
+        "name": "BBC Radio 3",
+        "city": "England・Online",
+        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio3_mf_p",
+        "icon": "@drawable/bbc_radio3"
+      },
+      {
+        "name": "BBC Radio 4",
+        "city": "England・Online",
+        "url": "http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_p",
+        "icon": "@drawable/bbc_radio4"
+      },
+      {
+        "name": "Jack FM Oxford",
+        "city": "England・Online",
+        "url": "https://19993.live.streamtheworld.com/JACK_FM.mp3",
+        "icon": "@drawable/jack_fm_oxford"
+      }
+    ]
+  },
+  {
+    "country": "Estonia",
+    "stations": [
+      {
+        "name": "Raadio Elmar",
+        "city": "Estonia・Online",
+        "url": "http://striiming.trio.ee/elmar.mp3",
+        "icon": "@drawable/raadio_elmar"
+      },
+      {
+        "name": "Raadio Uuno",
+        "city": "Estonia・Online",
+        "url": "http://striiming.trio.ee:8008/myhits.mp3",
+        "icon": "@drawable/raadio_uuno"
+      },
+      {
+        "name": "Netiraadio - Teistsugne",
+        "city": "Estonia・Online",
+        "url": "http://www.netiraadio.ee:8000/teistsugune",
+        "icon": "@drawable/netiraadio_teistsugune"
+      },
+      {
+        "name": "Spin FM",
+        "city": "Estonia・Online",
+        "url": "http://87.110.219.34:8000/spinmp3",
+        "icon": "@drawable/spin_fm"
+      },
+      {
+        "name": "SkyPlus",
+        "city": "Estonia・Online",
+        "url": "http://skyplus.babahhcdn.com/SKYPLUS",
+        "icon": "@drawable/skyplus"
+      },
+      {
+        "name": "Raadio 2",
+        "city": "Estonia・Online",
+        "url": "http://icecast.err.ee:80/raadio2.mp3",
+        "icon": "@drawable/raadio_2"
+      },
+      {
+        "name": "NRJ Estonia",
+        "city": "Estonia・Online",
+        "url": "http://nrj.babahhcdn.com/NRJ",
+        "icon": "@drawable/nrj_estonia"
+      },
+      {
+        "name": "Retro FM",
+        "city": "Estonia・Online",
+        "url": "http://retro.babahhcdn.com/RETRO",
+        "icon": "@drawable/retro_fm"
+      },
+      {
+        "name": "ERR Raadio 2",
+        "city": "Estonia・Online",
+        "url": "http://icecast.err.ee/raadio2.mp3",
+        "icon": "@drawable/err_raadio_2"
+      },
+      {
+        "name": "Raadio 4",
+        "city": "Estonia・Online",
+        "url": "http://icecast.err.ee/raadio4madal.mp3",
+        "icon": "@drawable/raadio_4"
+      }
+    ]
+  },
+  {
+    "country": "Finland",
+    "stations": [
+      {
+        "name": "RQL",
+        "city": "Finland・Online",
+        "url": "http://149.202.196.92:8238/;stream.nsv",
+        "icon": "@drawable/rql"
+      },
+      {
+        "name": "Radio Nostalgia",
+        "city": "Finland・Online",
+        "url": "http://185.52.127.131/fi/35059/mp3_128.mp",
+        "icon": "@drawable/radio_nostalgia"
+      },
+      {
+        "name": "Radio Hear",
+        "city": "Finland・Online",
+        "url": "http://hear.fi:8000/hear.mp3",
+        "icon": "@drawable/radio_hear"
+      },
+      {
+        "name": "NRJ Suomihitit",
+        "city": "Finland・Online",
+        "url": "http://185.52.127.131/fi/35061/mp3_128.mp3",
+        "icon": "@drawable/nrj_suomihitit"
+      },
+      {
+        "name": "Radio Helsinki",
+        "city": "Finland・Online",
+        "url": "http://77.86.233.1:8000/;",
+        "icon": "@drawable/radio_helsinki"
+      },
+      {
+        "name": "Rondo Classic - Klasu",
+        "city": "Finland・Online",
+        "url": "http://stream.iradio.fi:8000/klasu-hi.mp3",
+        "icon": "@drawable/rondo_classic_klasu"
+      },
+      {
+        "name": "Bassoradio",
+        "city": "Finland・Online",
+        "url": "http://stream.basso.fi:8000/stream",
+        "icon": "@drawable/bassoradio"
+      }
+    ]
+  },
+  {
+    "country": "France",
+    "stations": [
+      {
+        "name": "France Inter",
+        "city": "France",
+        "url": "http://chai5she.cdn.dvmr.fr/franceinter-midfi.mp3",
+        "icon": "@drawable/france_inter"
+      },
+      {
+        "name": "France Bleu",
+        "city": "France",
+        "url": "http://chai5she.cdn.dvmr.fr/fb1071-midfi.mp3",
+        "icon": "@drawable/france_bleu"
+      },
+      {
+        "name": "RMC",
+        "city": "France",
+        "url": "http://chai5she.cdn.dvmr.fr/rmcinfo",
+        "icon": "@drawable/rmc"
+      },
+      {
+        "name": "RTL 2 Calais",
+        "city": "Calais, France",
+        "url": "http://streaming.radio.rtl2.fr/rtl2-1-44-96",
+        "icon": "@drawable/rtl2_calais"
+      },
+      {
+        "name": "Virgin Radio",
+        "city": "France",
+        "url": "http://mp3lg4.tdf-cdn.com/9243/lag_164753.mp3",
+        "icon": "@drawable/virgin_radio"
+      },
+      {
+        "name": "RFM",
+        "city": "France",
+        "url": "http://rfm-live-mp3-128.scdn.arkena.com/rfm.mp3",
+        "icon": "@drawable/rfm"
+      },
+      {
+        "name": "80s Music HotMixRadio",
+        "city": "France",
+        "url": "http://streaming.hotmix-radio.net/hotmixradio-80-128.mp3",
+        "icon": "@drawable/hotmixradio_80s"
+      },
+      {
+        "name": "NRJ France",
+        "city": "France",
+        "url": "http://185.52.127.155/fr/30001/mp3_128.mp3?origine=fluxradios",
+        "icon": "@drawable/nrj_france"
+      },
+      {
+        "name": "Skyrock",
+        "city": "France",
+        "url": "http://icecast.skyrock.net/s/natio_mp3_128k",
+        "icon": "@drawable/skyrock"
+      },
+      {
+        "name": "France Info",
+        "city": "France",
+        "url": "http://95.81.146.2/franceinfo/all/franceinfo.mp3",
+        "icon": "@drawable/france_info"
+      },
+      {
+        "name": "Radio METAL",
+        "city": "France",
+        "url": "http://94.23.40.70:8010/",
+        "icon": "@drawable/radio_metal"
+      },
+      {
+        "name": "France Musique",
+        "city": "France",
+        "url": "http://chai5she.cdn.dvmr.fr/francemusique-midfi.mp3",
+        "icon": "@drawable/france_musique"
+      },
+      {
+        "name": "Virage Lyon",
+        "city": "Lyon, France",
+        "url": "http://broadcast.infomaniak.net/virageradio-high.mp3",
+        "icon": "@drawable/virage_lyon"
+      },
+      {
+        "name": "Direct FM Metz",
+        "city": "Metz, France",
+        "url": "http://directfm.ice.infomaniak.ch/directfm-128.mp3",
+        "icon": "@drawable/direct_fm_metz"
+      },
+      {
+        "name": "Oui FM Paris",
+        "city": "Paris, France",
+        "url": "http://broadcast.infomaniak.ch/ouifm-high.mp3",
+        "icon": "@drawable/oui_fm_paris"
+      },
+      {
+        "name": "Top Music Strasbourg",
+        "city": "Strasbourg, France",
+        "url": "http://str0.creacast.com/topmusic1",
+        "icon": "@drawable/top_music_strasbourg"
+      },
+      {
+        "name": "Nostalgie Rock",
+        "city": "France",
+        "url": "http://185.52.127.159/fr/30621/mp3_128.mp3?origine=fluxradios",
+        "icon": "@drawable/nostalgie_rock"
+      },
+      {
+        "name": "Mint FM",
+        "city": "Belgium",
+        "url": "http://audiostream.rtl.be/mint",
+        "icon": "@drawable/mint_fm"
+      }
+    ]
+  },
+  {
+    "country": "Germany",
+    "stations": [
+      {
+        "name": "TechLiveRadio",
+        "city": "Germany",
+        "url": "http://stream.laut.fm/techliveradio",
+        "icon": "@drawable/techliveradio"
+      },
+      {
+        "name": "Antenne Niedersachsen",
+        "city": "Germany",
+        "url": "http://antenne-nds.hoerradar.de/mp3-128_antenne-nds?sABC=539977o2%230%239ro337348or8q5s4p35216po832392p1%23yvfgrayvir-rh",
+        "icon": "@drawable/antenne_niedersachsen"
+      },
+      {
+        "name": "Radio Südtirol",
+        "city": "Germany",
+        "url": "http://str2.creacast.com/sudtirol1a",
+        "icon": "@drawable/radio_sudtirol"
+      },
+      {
+        "name": "Oldie Party Radio",
+        "city": "Germany",
+        "url": "http://rs2.myradio24.de:8410/stream",
+        "icon": "@drawable/oldie_party_radio"
+      },
+      {
+        "name": "Hitradio Ö3",
+        "city": "Germany",
+        "url": "http://mp3stream7.apasf.apa.at:8000/;stream.nsv",
+        "icon": "@drawable/hitradio_o3"
+      },
+      {
+        "name": "Volksmusik Pur",
+        "city": "Germany",
+        "url": "http://164.132.13.80:5070/stream",
+        "icon": "@drawable/volksmusik_pur"
+      },
+      {
+        "name": "KroneHit 105.8",
+        "city": "Germany",
+        "url": "http://onair-ha1.krone.at/kronehit-hp.mp3",
+        "icon": "@drawable/kronehit_1058"
+      },
+      {
+        "name": "Rock n Pop Hamburg",
+        "city": "Hamburg, Germany",
+        "url": "http://live96.106acht.de:80",
+        "icon": "@drawable/rock_n_pop_hamburg"
+      },
+      {
+        "name": "LeineHertz Hannover",
+        "city": "Hannover, Germany",
+        "url": "http://leinehertz01.htp.net:8000",
+        "icon": "@drawable/leinehertz_hannover"
+      },
+      {
+        "name": "Radio Bob Kassel",
+        "city": "Kassel, Germany",
+        "url": "http://bob.hoerradar.de/radiobob-live-mp3-hq?sABC=5onpr06o%230%23o9939067432n8rn899o33645r84sr202%23&amsparams=playerid:;skey:1538056299",
+        "icon": "@drawable/radio_bob_kassel"
+      },
+      {
+        "name": "Delta Radio Kiel",
+        "city": "Kiel, Germany",
+        "url": "http://delta.hoerradar.de/deltaradio128?sABC=5onpr3p9%230%23o9939067432n8rn899o33645r84sr202%23enqvbfher&amsparams=playerid:radiosure;skey:1538057161",
+        "icon": "@drawable/delta_radio_kiel"
+      },
+      {
+        "name": "Radio Dresden",
+        "city": "Dresden, Germany",
+        "url": "http://streaming.radiodresden.de/radio-dresden_simulcast_192k_mp3",
+        "icon": "@drawable/radio_dresden"
+      },
+      {
+        "name": "Radio Duisburg",
+        "city": "Duisburg, Germany",
+        "url": "http://edge.live.mp3.mdn.newmedia.nacamar.net/ps-radioduisburg/livestream.mp3",
+        "icon": "@drawable/radio_duisburg"
+      },
+      {
+        "name": "Antenne Dusseldorf",
+        "city": "Dusseldorf, Germany",
+        "url": "http://edge.live.mp3.mdn.newmedia.nacamar.net/ps-antennedus/livestream.mp3",
+        "icon": "@drawable/antenne_dusseldorf"
+      },
+      {
+        "name": "FFH Rock Frankfurt",
+        "city": "Frankfurt, Germany",
+        "url": "http://mp3.ffh.de/ffhchannels/hqrock.mp3",
+        "icon": "@drawable/ffh_rock_frankfurt"
+      },
+      {
+        "name": "Star FM Berlin",
+        "city": "Berlin, Germany",
+        "url": "http://85.25.209.152/berlin.mp3",
+        "icon": "@drawable/star_fm_berlin"
+      },
+      {
+        "name": "Bremen Vier",
+        "city": "Bremen, Germany",
+        "url": "http://dg-rb-http-fra-dtag-cdn.cast.addradio.de/rb/bremenvier/live/mp3/128/stream.mp3",
+        "icon": "@drawable/bremen_vier"
+      },
+      {
+        "name": "Die Neue 107.7 Stuttgart",
+        "city": "Stuttgart, Germany",
+        "url": "http://dieneue1077.cast.addradio.de/dieneue1077/rock/high/stream.mp3",
+        "icon": "@drawable/die_neue_1077_stuttgart"
+      },
+      {
+        "name": "MDR1 Magdeburg",
+        "city": "Magdeburg, Germany",
+        "url": "http://dg-mdr-http-fra-dtag-cdn.cast.addradio.de/mdr/284290/0/mp3/high/stream.mp3",
+        "icon": "@drawable/mdr1_magdeburg"
+      },
+      {
+        "name": "RauteMusik.FM Rock Mannheim",
+        "city": "Mannheim, Germany",
+        "url": "http://rock-high.rautemusik.fm/Musik.Rock",
+        "icon": "@drawable/raute_musik_fm_rock_mannheim"
+      }
+    ]
+  },
+  {
+    "country": "Italy",
+    "stations": [
+      {
+        "name": "Radio Italia Anni 60",
+        "city": "Italy",
+        "url": "http://wma01.fluidstream.net:7140/;",
+        "icon": "@drawable/radio_italia_anni_60"
+      },
+      {
+        "name": "Radio Margherita Giovane",
+        "city": "Italy",
+        "url": "http://onair20.xdevel.com:8018/;stream.mp3",
+        "icon": "@drawable/radio_margherita_giovane"
+      },
+      {
+        "name": "Radio Sorrriso",
+        "city": "Italy",
+        "url": "http://wma02.fluidstream.net:2250/;",
+        "icon": "@drawable/radio_sorrriso"
+      },
+      {
+        "name": "Love FM",
+        "city": "Italy",
+        "url": "http://ice07.fluidstream.net/lovefm.mp3",
+        "icon": "@drawable/love_fm"
+      },
+      {
+        "name": "Lolli Radio Italia",
+        "city": "Italy",
+        "url": "http://nr6.newradio.it:8010/stream.mp3",
+        "icon": "@drawable/lolli_radio_italia"
+      },
+      {
+        "name": "RAI R4 Light",
+        "city": "Italy",
+        "url": "http://icestreaming.rai.it/4.mp3",
+        "icon": "@drawable/rai_r4_light"
+      },
+      {
+        "name": "Dimensione Suono Due",
+        "city": "Italy",
+        "url": "http://46.37.20.205:8000/ds2|Dimensione Suono Due",
+        "icon": "@drawable/dimensione_suono_due"
+      }
+    ]
+  },
+  {
+    "country": "Latvia",
+    "stations": [
+      {
+        "name": "Mix FM 102.7",
+        "city": "Latvia",
+        "url": "http://91.90.255.111/MixFM_96",
+        "icon": "@drawable/mix_fm_102_7"
+      },
+      {
+        "name": "Radio Pik 100 FM",
+        "city": "Latvia",
+        "url": "http://195.69.88.58:8000/;stream/1",
+        "icon": "@drawable/radio_pik_100_fm"
+      },
+      {
+        "name": "XO FM",
+        "city": "Latvia",
+        "url": "https://live.xo.fm/xofm128",
+        "icon": "@drawable/xo_fm"
+      },
+      {
+        "name": "Radijo stotis Pukas",
+        "city": "Latvia",
+        "url": "http://82.135.234.195:8000/pukas.mp3",
+        "icon": "@drawable/radijo_stotis_pukas"
+      },
+      {
+        "name": "Retro FM Latvija",
+        "city": "Latvia",
+        "url": "https://live.retrofm.lv/retrofmlatvia",
+        "icon": "@drawable/retro_fm_latvija"
+      },
+      {
+        "name": "Latgolys Radeja",
+        "city": "Latvia",
+        "url": "http://195.13.253.51:8000/128_mp3",
+        "icon": "@drawable/latgolys_radeja"
+      },
+      {
+        "name": "FRED FILM RADIO",
+        "city": "Latvia",
+        "url": "http://stream.fred.fm:8062/stream/;",
+        "icon": "@drawable/fred_film_radio"
+      }
+    ]
+  },
+  {
+    "country": "Lithuania",
+    "stations": [
+      {
+        "name": "RUSRADIO LT",
+        "city": "Lithuania",
+        "url": "http://5.20.223.18/rrb128.mp3",
+        "icon": "@drawable/rusradio_lt"
+      },
+      {
+        "name": "Relax FM",
+        "city": "Lithuania",
+        "url": "http://5.20.223.18/relaxfm128.mp3",
+        "icon": "@drawable/relax_fm"
+      },
+      {
+        "name": "Ziniu Radijas",
+        "city": "Lithuania",
+        "url": "http://netradio.ziniur.lt/ziniur_64.mp3",
+        "icon": "@drawable/ziniu_radijas"
+      },
+      {
+        "name": "Start FM",
+        "city": "Lithuania",
+        "url": "http://radijas2.vu.lt:8000/startfm.mp3",
+        "icon": "@drawable/start_fm"
+      },
+      {
+        "name": "DrChill",
+        "city": "Lithuania",
+        "url": "http://media-sov.musicradio.com/ChillMP3",
+        "icon": "@drawable/drchill"
+      },
+      {
+        "name": "Easy FM",
+        "city": "Lithuania",
+        "url": "http://netradio.ziniur.lt/easyfm.mp3",
+        "icon": "@drawable/easy_fm"
+      },
+      {
+        "name": "Mano FM",
+        "city": "Lithuania",
+        "url": "http://stream.manofm.lt/listen?",
+        "icon": "@drawable/mano_fm"
+      },
+      {
+        "name": "Beveik Radijas",
+        "city": "Lithuania",
+        "url": "http://78.157.82.110:8000//;",
+        "icon": "@drawable/beveik_radijas"
+      }
+    ]
+  },
+  {
+    "country": "Luxembourg",
+    "stations": [
+      {
+        "name": "RadioPuls",
+        "city": "Luxembourg",
+        "url": "http://82.145.43.92:8312/stream",
+        "icon": "@drawable/radiopuls"
+      },
+      {
+        "name": "RTL Luxembourg",
+        "city": "Luxembourg",
+        "url": "http://81.92.238.32/;",
+        "icon": "@drawable/rtl_luxembourg"
+      },
+      {
+        "name": "Radio Diddeleng",
+        "city": "Luxembourg",
+        "url": "http://radiodudelange.ice.infomaniak.ch/radiodudelange-128.mp3",
+        "icon": "@drawable/radio_diddeleng"
+      },
+      {
+        "name": "Radio LRB",
+        "city": "Luxembourg",
+        "url": "http://zeus.lrb.lu:8000/lrb.live",
+        "icon": "@drawable/radio_lrb"
+      }
+    ]
+  },
+  {
+    "country": "Netherlands",
+    "stations": [
+      {
+        "name": "Studio Brussel",
+        "city": "Netherlands",
+        "url": "http://icecast.vrtcdn.be/stubru-high.mp3",
+        "icon": "@drawable/studio_brussel"
+      },
+      {
+        "name": "Radio 1",
+        "city": "Netherlands",
+        "url": "http://icecast.omroep.nl/radio1-bb-mp3",
+        "icon": "@drawable/radio_1"
+      },
+      {
+        "name": "Radio 538",
+        "city": "Netherlands",
+        "url": "http://20073.live.streamtheworld.com/RADIO538.mp3",
+        "icon": "@drawable/radio_538"
+      },
+      {
+        "name": "Slam! Boom Room",
+        "city": "Netherlands",
+        "url": "https://20423.live.streamtheworld.com/WEB12_MP3_SC?",
+        "icon": "@drawable/slam_boom_room"
+      },
+      {
+        "name": "100%",
+        "city": "Netherlands",
+        "url": "http://stream.100p.nl/100pctnl.mp3",
+        "icon": "@drawable/100_percent"
+      },
+      {
+        "name": "RadioNL",
+        "city": "Netherlands",
+        "url": "http://stream.radionl.fm/radionl",
+        "icon": "@drawable/radionl"
+      },
+      {
+        "name": "Radio Veronica",
+        "city": "Netherlands",
+        "url": "http://playerservices.streamtheworld.com/api/livestream-redirect/SRGSTR13.mp3",
+        "icon": "@drawable/radio_veronica"
+      },
+      {
+        "name": "Sky Radio",
+        "city": "Netherlands",
+        "url": "http://sky.babahhcdn.com/SKY?/skyradio_hi.mp3",
+        "icon": "@drawable/sky_radio"
+      },
+      {
+        "name": "Veronica Rock",
+        "city": "Netherlands",
+        "url": "http://17873.live.streamtheworld.com/SRGSTR11.mp3",
+        "icon": "@drawable/veronica_rock"
+      },
+      {
+        "name": "Veronica Top 1000",
+        "city": "Netherlands",
+        "url": "http://20073.live.streamtheworld.com/SRGSTR10.mp3",
+        "icon": "@drawable/veronica_top_1000"
+      },
+      {
+        "name": "Veronica Hit Radio",
+        "city": "Netherlands",
+        "url": "http://20853.live.streamtheworld.com/VERONICA.mp3",
+        "icon": "@drawable/veronica_hit_radio"
+      },
+      {
+        "name": "Radio 538 Hitzone Pop",
+        "city": "Netherlands",
+        "url": "http://82.201.100.10:8000/WEB11|Radio 538 Hitzone",
+        "icon": "@drawable/radio_538_hitzone"
+      },
+      {
+        "name": "Radio 538 Top 40",
+        "city": "Netherlands",
+        "url": "http://19983.live.streamtheworld.com/TLPSTR02.mp3",
+        "icon": "@drawable/radio_538_top_40"
+      },
+      {
+        "name": "Q Music Amsterdam",
+        "city": "Netherlands",
+        "url": "http://icecast-qmusic.cdp.triple-it.nl/Qmusic_nl_live_96.mp3",
+        "icon": "@drawable/q_music_amsterdam"
+      },
+      {
+        "name": "3FM Serious Radio",
+        "city": "Netherlands",
+        "url": "http://icecast.omroep.nl:80/3fm-bb-mp3",
+        "icon": "@drawable/3fm_serious_radio"
+      }
+    ]
+  },
+  {
+    "country": "Norway",
+    "stations": [
+      {
+        "name": "NRK P1 Hordaland",
+        "city": "Norway",
+        "url": "http://lyd.nrk.no/nrk_radio_p1_hordaland_mp3_h",
+        "icon": "@drawable/nrk_p1_hordaland"
+      },
+      {
+        "name": "NRJ Norway",
+        "city": "Norway",
+        "url": "http://stream.p4.no/nrj_mp3_hq",
+        "icon": "@drawable/nrj_norway"
+      },
+      {
+        "name": "NRK Alltid Nyheter",
+        "city": "Norway",
+        "url": "http://lyd.nrk.no/nrk_radio_alltid_nyheter_mp3_h",
+        "icon": "@drawable/nrk_alltid_nyheter"
+      },
+      {
+        "name": "NRK Klassisk",
+        "city": "Norway",
+        "url": "http://lyd.nrk.no/nrk_radio_klassisk_mp3_h",
+        "icon": "@drawable/nrk_klassisk"
+      },
+      {
+        "name": "NRK Jazz",
+        "city": "Norway",
+        "url": "http://lyd.nrk.no/nrk_radio_jazz_mp3_h",
+        "icon": "@drawable/nrk_jazz"
+      },
+      {
+        "name": "NRK P1 Ostlandssendingen",
+        "city": "Norway",
+        "url": "http://lyd.nrk.no/nrk_radio_p1_ostlandssendingen_mp3_h",
+        "icon": "@drawable/nrk_p1_ostlandssendingen"
+      },
+      {
+        "name": "NRK P2",
+        "city": "Norway",
+        "url": "http://lyd.nrk.no/nrk_radio_p2_mp3_h",
+        "icon": "@drawable/nrk_p2"
+      },
+      {
+        "name": "NRK MP3",
+        "city": "Norway",
+        "url": "http://lyd.nrk.no/nrk_radio_mp3_mp3_h",
+        "icon": "@drawable/nrk_mp3"
+      },
+      {
+        "name": "P4 Lyden av Norge",
+        "city": "Norway",
+        "url": "http://stream.p4.no/p4_mp3_hq",
+        "icon": "@drawable/p4_lyden_av_norge"
+      },
+      {
+        "name": "P5 Hits",
+        "city": "Norway",
+        "url": "http://stream.p4.no/p5oslo_mp3_hq",
+        "icon": "@drawable/p5_hits"
+      },
+      {
+        "name": "P6 Rock",
+        "city": "Norway",
+        "url": "http://stream.p4.no/p6_mp3_hq",
+        "icon": "@drawable/p6_rock"
+      },
+      {
+        "name": "P7 Klem",
+        "city": "Norway",
+        "url": "http://stream.p4.no/p7_mp3_hq",
+        "icon": "@drawable/p7_klem"
+      },
+      {
+        "name": "P8 Pop",
+        "city": "Norway",
+        "url": "http://stream.p4.no/p8_mp3_hq",
+        "icon": "@drawable/p8_pop"
+      },
+      {
+        "name": "P9 Retro",
+        "city": "Norway",
+        "url": "http://stream.p4.no/p9_mp3_hq",
+        "icon": "@drawable/p9_retro"
+      },
+      {
+        "name": "Radio Country",
+        "city": "Norway",
+        "url": "http://stream.p4.no/p10_mp3_hq",
+        "icon": "@drawable/radio_country"
+      },
+      {
+        "name": "Radio-1",
+        "city": "Norway",
+        "url": "http://edge-bauerno-02-gos1.sharp-stream.com/radio1_no_mp3?",
+        "icon": "@drawable/radio1"
+      },
+      {
+        "name": "Radio Norge",
+        "city": "Norway",
+        "url": "http://edge-bauerno-01-cr.sharp-stream.com/radionorge_no_mp3?",
+        "icon": "@drawable/radio_norge"
+      },
+      {
+        "name": "Radio Rock",
+        "city": "Norway",
+        "url": "http://edge-bauerno-03-gos2.sharp-stream.com/radiorock_no_mp3?",
+        "icon": "@drawable/radio_rock"
+      },
+      {
+        "name": "The Voice NO",
+        "city": "Norway",
+        "url": "https://live-bauerdk.sharp-stream.com/thevoice_dk_mp3",
+        "icon": "@drawable/the_voice_no"
+      }
+    ]
+  },
+  {
+    "country": "Poland",
+    "stations": [
+      {
+        "name": "Radio Kaszebe",
+        "city": "Poland",
+        "url": "http://stream3.nadaje.com:8048/;0872561763972044stream.nsv",
+        "icon": "@drawable/radio_kaszebe"
+      },
+      {
+        "name": "PR Radio Katowice",
+        "city": "Poland",
+        "url": "http://stream4.nadaje.com:9212/radiokatowice",
+        "icon": "@drawable/pr_radio_katowice"
+      },
+      {
+        "name": "Planeta FM Warszawa",
+        "city": "Poland",
+        "url": "http://pla-net-01.cdn.eurozet.pl:8700/",
+        "icon": "@drawable/planeta_fm_warszawa"
+      },
+      {
+        "name": "Szczecinie Radio",
+        "city": "Poland",
+        "url": "http://stream.radio98i9.pl:8000/szczecin",
+        "icon": "@drawable/szczecinie_radio"
+      },
+      {
+        "name": "Roxy FM",
+        "city": "Poland",
+        "url": "http://mainstream.radioagora.pl:80/tuba8-1.mp3",
+        "icon": "@drawable/roxy_fm"
+      },
+      {
+        "name": "Złote Przeboje",
+        "city": "Poland",
+        "url": "http://mainstream.radioagora.pl:80/tuba9-1.mp3",
+        "icon": "@drawable/zlote_przeboje"
+      },
+      {
+        "name": "RMF FM",
+        "city": "Poland",
+        "url": "http://217.74.72.11:8000/rmf_fm",
+        "icon": "@drawable/rmf_fm"
+      },
+      {
+        "name": "Radio RMF MAXXX",
+        "city": "Poland",
+        "url": "http://217.74.72.10:8000/rmf_maxxx",
+        "icon": "@drawable/radio_rmf_maxxx"
+      },
+      {
+        "name": "RMF Classic",
+        "city": "Poland",
+        "url": "http://217.74.72.10:8000/rmf_classic",
+        "icon": "@drawable/rmf_classic"
+      },
+      {
+        "name": "Radio Kolor",
+        "city": "Poland",
+        "url": "http://stream4.nadaje.com:15358/radiokolor",
+        "icon": "@drawable/radio_kolor"
+      },
+      {
+        "name": "Radio Fest",
+        "city": "Poland",
+        "url": "http://50.22.253.43/radiofest",
+        "icon": "@drawable/radio_fest"
+      },
+      {
+        "name": "Radio RMF - Alternatywa",
+        "city": "Poland",
+        "url": "http://217.74.72.11:8000/rmf_alternatywa",
+        "icon": "@drawable/radio_rmf_alternatywa"
+      },
+      {
+        "name": "Radio Niepokalanów",
+        "city": "Poland",
+        "url": "http://88.199.169.10:8000/",
+        "icon": "@drawable/radio_niepokalanow"
+      },
+      {
+        "name": "Radio PLUS",
+        "city": "Poland",
+        "url": "http://plu02.cdn.eurozet.pl:8318/plu-waw.mp3",
+        "icon": "@drawable/radio_plus"
+      },
+      {
+        "name": "Dental Radio",
+        "city": "Poland",
+        "url": "http://stream4.nadaje.com:8086/dentalradio",
+        "icon": "@drawable/dental_radio"
+      },
+      {
+        "name": "Radio Wakai",
+        "city": "Poland",
+        "url": "http://s1.slotex.pl:7076/stream/1/;",
+        "icon": "@drawable/radio_wakai"
+      },
+      {
+        "name": "Radio Minimal mix",
+        "city": "Poland",
+        "url": "http://5.39.71.159:8750/;stream.nsv",
+        "icon": "@drawable/radio_minimal_mix"
+      },
+      {
+        "name": "Radio Szczecin",
+        "city": "Poland",
+        "url": "http://stream4.nadaje.com:11986/prs",
+        "icon": "@drawable/radio_szczecin"
+      },
+      {
+        "name": "Tok FM",
+        "city": "Poland",
+        "url": "http://wroclaw.radio.pionier.net.pl:8000/pl/tuba10-1.mp3",
+        "icon": "@drawable/tok_fm"
+      },
+      {
+        "name": "RadioJAZZ FM",
+        "city": "Poland",
+        "url": "http://radiojazzfm.radiokitstream.org/radiojazzfm.mp3?type=.mp3/;stream.mp3",
+        "icon": "@drawable/radiojazz_fm"
+      },
+      {
+        "name": "Radio Parada",
+        "city": "Poland",
+        "url": "http://stream4.nadaje.com:15274/live",
+        "icon": "@drawable/radio_parada"
+      },
+      {
+        "name": "Muzyczne Radio Polska",
+        "city": "Poland",
+        "url": "http://stream3.nadaje.com:9000/;stream.mp3",
+        "icon": "@drawable/muzyczne_radio_polska"
+      },
+      {
+        "name": "Antyradio",
+        "city": "Poland",
+        "url": "http://dcs-188-64-85-35.atmcdn.pl/sc/o2/Eurozet/live/antyradio.livx?audio=5/;stream.nsv?seed=119.60711795836687",
+        "icon": "@drawable/antyradio"
+      },
+      {
+        "name": "Radio Noname",
+        "city": "Poland",
+        "url": "http://188.165.195.176:8058/stream/;",
+        "icon": "@drawable/radio_noname"
+      },
+      {
+        "name": "Radio Orbit",
+        "city": "Poland",
+        "url": "http://s1.slotex.pl:7390/stream/1/",
+        "icon": "@drawable/radio_orbit"
+      },
+      {
+        "name": "Radio Szczecin Extra",
+        "city": "Poland",
+        "url": "http://stream3.nadaje.com:8200/szczecinfm?hash=1487522603361.mp3",
+        "icon": "@drawable/radio_szczecin_extra"
+      },
+      {
+        "name": "Radio Forever 80s",
+        "city": "Poland",
+        "url": "http://sirius.shoutca.st:8761/1",
+        "icon": "@drawable/radio_forever_80s"
+      },
+      {
+        "name": "Radio MRS",
+        "city": "Poland",
+        "url": "http://play.radiomrs.com:7494/;stream.nsv",
+        "icon": "@drawable/radio_mrs"
+      },
+      {
+        "name": "Radio Baobab",
+        "city": "Poland",
+        "url": "http://stream.radiobaobab.pl:8000/radiobaobab.mp3",
+        "icon": "@drawable/radio_baobab"
+      },
+      {
+        "name": "Metal Live Radio",
+        "city": "Poland",
+        "url": "http://51.255.8.139:8738/stream",
+        "icon": "@drawable/metal_live_radio"
+      },
+      {
+        "name": "Radio PIK",
+        "city": "Poland",
+        "url": "http://stream.radiopik.pl:9004/",
+        "icon": "@drawable/radio_pik"
+      },
+      {
+        "name": "Polskie Radio 1",
+        "city": "Poland",
+        "url": "http://stream.polskieradio.pl/program1",
+        "icon": "@drawable/polskie_radio_1"
+      },
+      {
+        "name": "Polskie Radio 2",
+        "city": "Poland",
+        "url": "http://stream.polskieradio.pl/program2",
+        "icon": "@drawable/polskie_radio_2"
+      },
+      {
+        "name": "Polskie Radio 3",
+        "city": "Poland",
+        "url": "http://stream.polskieradio.pl/program3",
+        "icon": "@drawable/polskie_radio_3"
+      },
+      {
+        "name": "Polskie Radio 4",
+        "city": "Poland",
+        "url": "http://stream.polskieradio.pl/program4",
+        "icon": "@drawable/polskie_radio_4"
+      },
+      {
+        "name": "Blue FM Poznan",
+        "city": "Poland",
+        "url": "http://stream10.radioagora.pl:80/bluefm.mp3",
+        "icon": "@drawable/blue_fm_poznan"
+      }
+    ]
+  },
+  {
+    "country": "Russia",
+    "stations": [
+      {
+        "name": "Наше Радио",
+        "city": "RU",
+        "url": "http://94.25.53.133:80/nashe-128.mp3",
+        "icon": "@drawable/nashe_radio"
+      },
+      {
+        "name": "Ультра",
+        "city": "RU",
+        "url": "http://nashe1.hostingradio.ru/ultra-128.mp3",
+        "icon": "@drawable/ultra_radio"
+      },
+      {
+        "name": "Ретро ФМ",
+        "city": "RU",
+        "url": "http://retroserver.streamr.ru:8043/retro256.mp3",
+        "icon": "@drawable/retro_fm"
+      },
+      {
+        "name": "Радио Рекорд",
+        "city": "RU",
+        "url": "http://air.radiorecord.ru:8101/rr_320",
+        "icon": "@drawable/radio_record"
+      },
+      {
+        "name": "Радио Русские Песни",
+        "city": "RU",
+        "url": "http://listen.rusongs.ru:8005/ru-mp3-128",
+        "icon": "@drawable/radio_russkie_pesni"
+      },
+      {
+        "name": "Радио Ultra",
+        "city": "RU",
+        "url": "http://nashe2.hostingradio.ru/ultra-128.mp3",
+        "icon": "@drawable/radio_ultra"
+      },
+      {
+        "name": "Вести ФМ",
+        "city": "RU",
+        "url": "http://icecast.vgtrk.cdnvideo.ru/vestifm_mp3_192kbps",
+        "icon": "@drawable/vesti_fm"
+      }
+    ]
+  },
+  {
+    "country": "Serbia",
+    "stations": [
+      {
+        "name": "Studio B",
+        "city": "SRB",
+        "url": "http://radio.studiob.rs:8004/",
+        "icon": "@drawable/studio_b"
+      },
+      {
+        "name": "Beograd 202",
+        "city": "SRB",
+        "url": "http://www.radiobeograd.rs/download/radio202/dnevnik/dnevnik202.mp3",
+        "icon": "@drawable/beograd_202"
+      },
+      {
+        "name": "Radio TDI",
+        "city": "SRB",
+        "url": "http://streaming.tdiradio.com/tdiradio.mp3",
+        "icon": "@drawable/radio_tdi"
+      },
+      {
+        "name": "Radio TOP FM Beograd",
+        "city": "SRB",
+        "url": "http://109.206.96.12:8000/",
+        "icon": "@drawable/radio_top_fm"
+      },
+      {
+        "name": "Radio AS FM Novi Sad",
+        "city": "SRB",
+        "url": "http://radioas.kbcnet.rs:8020/",
+        "icon": "@drawable/radio_as_fm"
+      }
+    ]
+  },
+  {
+    "country": "Slovakia",
+    "stations": [
+      {
+        "name": "Fun Rádio",
+        "city": "SK",
+        "url": "http://stream.funradio.sk:8000/fun128.mp3",
+        "icon": "@drawable/fun_radio"
+      },
+      {
+        "name": "Rádio Expres",
+        "city": "SK",
+        "url": "http://85.248.7.162:8000/96.mp3",
+        "icon": "@drawable/radio_expres"
+      },
+      {
+        "name": "Rádio Viva",
+        "city": "SK",
+        "url": "http://stream.sepia.sk:8000/viva128.mp3",
+        "icon": "@drawable/radio_viva"
+      },
+      {
+        "name": "SRO Regina BB",
+        "city": "SK",
+        "url": "http://live.slovakradio.sk:8000/Regina_BB_128.mp3",
+        "icon": "@drawable/sro_regina_bb"
+      },
+      {
+        "name": "Rádio Šport",
+        "city": "SK",
+        "url": "http://stream.radiosport.sk:8000/Sport192.mp3",
+        "icon": "@drawable/radio_sport"
+      },
+      {
+        "name": "Európa 2",
+        "city": "SK",
+        "url": "http://pool.cdn.lagardere.cz/fm-europa2sk-128",
+        "icon": "@drawable/europa_2"
+      },
+      {
+        "name": "Rádio KISS",
+        "city": "SK",
+        "url": "https://radio.treecom.net/kissmp3_128.mp3",
+        "icon": "@drawable/radio_kiss"
+      },
+      {
+        "name": "Rádio ONE",
+        "city": "SK",
+        "url": "http://217.75.92.14:8000/nr160kb",
+        "icon": "@drawable/radio_one"
+      },
+      {
+        "name": "Jemné melódie",
+        "city": "SK",
+        "url": "http://stream.jemne.sk/jemne-hi.mp3",
+        "icon": "@drawable/jemne_melodie"
+      },
+      {
+        "name": "Anténa Hit Rádio",
+        "city": "SK",
+        "url": "http://stream.antenarock.sk/antena-hi.mp3",
+        "icon": "@drawable/antena_hit_radio"
+      },
+      {
+        "name": "Radio Aligator Bratislava",
+        "city": "SK",
+        "url": "http://stream.aligator.sk:8000/aligator_192.mp3",
+        "icon": "@drawable/radio_aligator"
+      }
+    ]
+  },
+  {
+    "country": "Sweden",
+    "stations": [
+      {
+        "name": "Vinyl 107",
+        "city": "SE",
+        "url": "http://edge-bauersefm-04-cr.sharp-stream.com/vinylfm_instream_se_mp3?",
+        "icon": "@drawable/vinyl_107"
+      },
+      {
+        "name": "Lugna Favoriter",
+        "city": "SE",
+        "url": "http://fm03-icecast.mtg-r.net/fm03_mp3?platform=web",
+        "icon": "@drawable/lugna_favoriter"
+      },
+      {
+        "name": "Bandit Rock",
+        "city": "SE",
+        "url": "http://fm02-icecast.mtg-r.net/fm02_mp3?platform=web",
+        "icon": "@drawable/bandit_rock"
+      },
+      {
+        "name": "NRJ Sverige",
+        "city": "SE",
+        "url": "http://edge-bauersefm-04-cr.sharp-stream.com/nrj_instreamtest_se_mp3?",
+        "icon": "@drawable/nrj_sverige"
+      },
+      {
+        "name": "RIX FM",
+        "city": "SE",
+        "url": "http://fm01-icecast.mtg-r.net/fm01_mp3?platform=web/fm01_mp3",
+        "icon": "@drawable/rix_fm"
+      },
+      {
+        "name": "BitJam Radio",
+        "city": "SE",
+        "url": "http://marmalade.scenesat.com:8086/bitjam.mp3",
+        "icon": "@drawable/bitjam_radio"
+      },
+      {
+        "name": "Country Rocks Radio",
+        "city": "SE",
+        "url": "http://stream.dbmedia.se/crrMP3",
+        "icon": "@drawable/country_rocks_radio"
+      },
+      {
+        "name": "Radiohits Sweden",
+        "city": "SE",
+        "url": "http://john631.serverroom.net:6484/;stream.mp3",
+        "icon": "@drawable/radiohits_sweden"
+      },
+      {
+        "name": "Pirate Rock",
+        "city": "SE",
+        "url": "http://185.86.150.69:8100/webradio",
+        "icon": "@drawable/pirate_rock"
+      }
+    ]
+  },
+  {
+    "country": "Ukraine",
+    "stations": [
+      {
+        "name": "RadioRoks",
+        "city": "UA",
+        "url": "http://online-radioroks.tavrmedia.ua:7000/RadioROKS",
+        "icon": "@drawable/radioroks"
+      }
+    ]
+  },
+  {
+    "country": "United Kingdom",
+    "stations": [
+      {
+        "name": "EKR Rock Radio",
+        "city": "UK",
+        "url": "http://78.129.163.140:8070/",
+        "icon": "@drawable/ekr_rock_radio"
+      }
+    ]
+  }
+]

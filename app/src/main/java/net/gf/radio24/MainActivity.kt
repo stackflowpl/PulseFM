@@ -43,6 +43,9 @@ class MainActivity : AppCompatActivity() {
 
     private var exoPlayer: ExoPlayer? = null
 
+    data class Swiatowe(val country: String, val stations: List<RadioSwiatowe>)
+    data class RadioSwiatowe(val name: String, val city: String, val url: String, val icon: String)
+
     data class Wojewodztwo(val woj: String, val stations: List<RadioStationOkolica>)
     data class RadioStationOkolica(val name: String, val city: String, val url: String, val icon: String)
     data class RadioStation(val name: String, val city: String, val url: String, val icon: String)
@@ -72,6 +75,7 @@ class MainActivity : AppCompatActivity() {
 
         val radioStations = loadStationsFromRaw<RadioStation>(R.raw.radio_stations)
         val radioOkolicaStations = loadStationsFromRaw<Wojewodztwo>(R.raw.radio_okolice)
+        val radioSwiatowe = loadStationsFromRaw<Swiatowe>(R.raw.radio_swiat)
 
         findViewById<View>(R.id.car_mode).setOnClickListener {
             val intent = Intent(this, CarActivity::class.java)
@@ -84,7 +88,7 @@ class MainActivity : AppCompatActivity() {
             togglePlayPause(it as ImageView)
         }
 
-        setupNavigation(container, radioStations, radioOkolicaStations)
+        setupNavigation(container, radioStations, radioOkolicaStations, radioSwiatowe)
         displayRadioStations(radioStations)
         updateStationCount(radioStations.size)
     }
@@ -141,7 +145,8 @@ class MainActivity : AppCompatActivity() {
     private fun setupNavigation(
         container: LinearLayout,
         radioStations: List<RadioStation>,
-        radioOkolicaStations: List<Wojewodztwo>
+        radioOkolicaStations: List<Wojewodztwo>,
+        radioSwiatowe: List<Swiatowe>
     ) {
         findViewById<LinearLayout>(R.id.krajowe).setOnClickListener {
             switchLayout(container, R.layout.radio_krajowe) {
@@ -160,7 +165,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<LinearLayout>(R.id.swiatowe).setOnClickListener {
-            switchLayout(container, R.layout.radio_odkrywaj)
+            switchLayout(container, R.layout.radio_odkrywaj) {
+                displayRadioSwiatoweStations(radioSwiatowe)
+                updateStationCount(radioSwiatowe.flatMap { it.stations }.size)
+                findViewById<TextView>(R.id.textView).text = "Wybierz Kraj"
+            }
+
         }
 
         findViewById<View>(R.id.settings).setOnClickListener {
@@ -431,6 +441,69 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun displayRadioSwiatoweStations(radioSwiatowe: List<Swiatowe>) {
+        val radioContainer = findViewById<LinearLayout>(R.id.radio_swiat) ?: return
+
+        val viewPlayer = findViewById<ImageView>(R.id.radio_player)
+
+        radioSwiatowe.forEach { swiatowe ->
+            val wojView = LayoutInflater.from(this).inflate(R.layout.world_item, null)
+            val nameView: TextView = wojView.findViewById(R.id.radio_name)
+            val countView: TextView = wojView.findViewById(R.id.radio_count_okolice)
+
+            val container: LinearLayout = findViewById(R.id.container)
+
+            val liczbaStacji = swiatowe.stations.size
+
+            nameView.text = swiatowe.country.capitalize()
+            countView.text = "Liczba stacji: " + liczbaStacji
+
+            wojView.setOnClickListener {
+                switchLayout(container, R.layout.world_container) {
+                    displayRadioStationsSwiatowe(swiatowe.stations)
+                    findViewById<TextView>(R.id.textView).text = "${swiatowe.country}"
+                    findViewById<TextView>(R.id.station_count_view).text =
+                        "${swiatowe.stations.size}"
+                }
+            }
+
+            radioContainer.addView(wojView)
+        }
+
+        viewPlayer.setOnClickListener {
+            togglePlayPause(viewPlayer)
+        }
+    }
+
+    private fun displayRadioStationsSwiatowe(radioSwiatowe: List<RadioSwiatowe>) {
+        val radioContainer = findViewById<LinearLayout>(R.id.radio_swiat_container) ?: return
+
+        if (radioSwiatowe.isNotEmpty()) {
+            val viewPlayer = findViewById<ImageView>(R.id.radio_player)
+
+            radioSwiatowe.forEach { station ->
+                val radioView = LayoutInflater.from(this).inflate(R.layout.okolice_item, null)
+                val iconView: ImageView = radioView.findViewById(R.id.radio_icon)
+                val nameView: TextView = radioView.findViewById(R.id.radio_name)
+                val cityView: TextView = radioView.findViewById(R.id.radio_city)
+
+                iconView.setImageResource(resources.getIdentifier(station.icon.replace("@drawable/", ""), "drawable", packageName))
+                nameView.text = station.name
+                cityView.text = station.city
+
+                radioContainer.addView(radioView)
+
+                radioView.setOnClickListener {
+                    onRadioStationSelected(station, viewPlayer)
+                }
+            }
+
+            viewPlayer.setOnClickListener {
+                togglePlayPause(viewPlayer)
+            }
+        }
+    }
+
     private fun String.trimPrefix(prefix: String) = this.removePrefix(prefix)
 
     private fun onRadioStationSelected(station: RadioStation, viewPlayer: ImageView) {
@@ -463,6 +536,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onRadioStationSelected(station: RadioStationOkolica, viewPlayer: ImageView) {
+        playRadio(station.url)
+
+        val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
+        val nameViewPlayer: TextView = findViewById(R.id.radio_name_player)
+        val cityViewPlayer: TextView = findViewById(R.id.radio_container_city)
+
+        val jsonObject = JSONObject().apply {
+            put("change_theme", false)
+            put("isPlaying", true)
+            put("url", station.url)
+            put("city", station.city)
+            put("stationName", station.name)
+            put("icon", station.icon)
+        }
+
+        val file = File(filesDir, "player.json")
+        val fileWriter = FileWriter(file)
+        fileWriter.use {
+            it.write(jsonObject.toString())
+        }
+
+        viewPlayer.setImageResource(R.drawable.pause_button)
+
+        iconViewPlayer.setImageResource(resources.getIdentifier(station.icon.replace("@drawable/", ""), "drawable", packageName))
+        nameViewPlayer.text = station.name
+        cityViewPlayer.text = station.city
+    }
+
+    private fun onRadioStationSelected(station: RadioSwiatowe, viewPlayer: ImageView) {
         playRadio(station.url)
 
         val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
