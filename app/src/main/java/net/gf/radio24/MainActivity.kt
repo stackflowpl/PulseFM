@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     private var exoPlayer: ExoPlayer? = null
 
-    data class Swiatowe(val country: String, val stations: List<RadioSwiatowe>)
+    data class Swiatowe(val country: String, val icon: String, val stations: List<RadioSwiatowe>)
     data class RadioSwiatowe(val name: String, val city: String, val url: String, val icon: String)
 
     data class Wojewodztwo(val woj: String, val stations: List<RadioStationOkolica>)
@@ -447,18 +447,20 @@ class MainActivity : AppCompatActivity() {
         val viewPlayer = findViewById<ImageView>(R.id.radio_player)
 
         radioSwiatowe.forEach { swiatowe ->
-            val wojView = LayoutInflater.from(this).inflate(R.layout.world_item, null)
-            val nameView: TextView = wojView.findViewById(R.id.radio_name)
-            val countView: TextView = wojView.findViewById(R.id.radio_count_okolice)
+            val worldView = LayoutInflater.from(this).inflate(R.layout.world_item, null)
+            val iconView: ImageView = worldView.findViewById(R.id.world_icon)
+            val nameView: TextView = worldView.findViewById(R.id.radio_name)
+            val countView: TextView = worldView.findViewById(R.id.radio_count_okolice)
 
             val container: LinearLayout = findViewById(R.id.container)
 
             val liczbaStacji = swiatowe.stations.size
 
+            iconView.setImageResource(resources.getIdentifier(swiatowe.icon.replace("@drawable/", ""), "drawable", packageName))
             nameView.text = swiatowe.country.capitalize()
             countView.text = "Liczba stacji: " + liczbaStacji
 
-            wojView.setOnClickListener {
+            worldView.setOnClickListener {
                 switchLayout(container, R.layout.world_container) {
                     displayRadioStationsSwiatowe(swiatowe.stations)
                     findViewById<TextView>(R.id.textView).text = "${swiatowe.country}"
@@ -467,7 +469,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            radioContainer.addView(wojView)
+            radioContainer.addView(worldView)
         }
 
         viewPlayer.setOnClickListener {
