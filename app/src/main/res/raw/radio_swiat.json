@@ -43,49 +43,49 @@
         "name": "MNM",
         "city": "Belgium・-",
         "url": "http://icecast.vrtcdn.be/mnm-high.mp3",
-        "icon": "@drawable/mnm"
+        "icon": "@drawable/belgium_mnm"
       },
       {
         "name": "Radio 2",
         "city": "Belgium・-",
         "url": "http://icecast.vrtcdn.be/ra2wvl-high.mp3",
-        "icon": "@drawable/radio_2"
+        "icon": "@drawable/belgium_radio2"
       },
       {
         "name": "Q-Music",
         "city": "Belgium・-",
         "url": "http://icecast-qmusic.cdp.triple-it.nl/Qmusic_be_live_96.mp3",
-        "icon": "@drawable/q_music"
+        "icon": "@drawable/belgium_q_music"
       },
       {
         "name": "AraBel",
         "city": "Belgium・-",
         "url": "http://arabelfm.ice.infomaniak.ch/arabelprodcastfm.mp3",
-        "icon": "@drawable/arabel"
+        "icon": "@drawable/belgium_arabel"
       },
       {
         "name": "Nostalgie BE",
         "city": "Belgium・-",
         "url": "http://nostalgiepremium.ice.infomaniak.ch/nostalgiepremium-128.mp3",
-        "icon": "@drawable/nostalgie_be"
+        "icon": "@drawable/belgium_nostalgie_be"
       },
       {
         "name": "Radio Contact",
         "city": "Belgium・-",
         "url": "http://audiostream.rtl.be/contactfr",
-        "icon": "@drawable/radio_contact"
+        "icon": "@drawable/belgium_radio_contact"
       },
       {
         "name": "Instrumentals Forever",
         "city": "Belgium・-",
         "url": "http://agnes.torontocast.com:8151/stream",
-        "icon": "@drawable/instrumentals_forever"
+        "icon": "@drawable/belgium_instrumentals_forever"
       },
       {
         "name": "Zen FM",
         "city": "Belgium・-",
         "url": "http://lb.zenfm.be/zenfm.mp3",
-        "icon": "@drawable/zen_fm"
+        "icon": "@drawable/belgium_zen_fm"
       }
     ]
   },
@@ -97,25 +97,25 @@
         "name": "Vidin",
         "city": "Bulgaria・-",
         "url": "http://89.106.110.85:8000/",
-        "icon": "@drawable/vidin"
+        "icon": "@drawable/bulgaria_vidin"
       },
       {
         "name": "Fresh",
         "city": "Bulgaria・-",
         "url": "http://193.108.24.21:8000/fresh",
-        "icon": "@drawable/fresh"
+        "icon": "@drawable/bulgaria_fresh"
       },
       {
         "name": "FM+",
         "city": "Bulgaria・-",
         "url": "http://193.108.24.21:8000/fmplus",
-        "icon": "@drawable/fm_plus"
+        "icon": "@drawable/bulgaria_fm_plus"
       },
       {
         "name": "City",
         "city": "Bulgaria・-",
         "url": "http://stream.radioreklama.bg/city64",
-        "icon": "@drawable/city"
+        "icon": "@drawable/bulgaria_city"
       }
     ]
   },
@@ -127,67 +127,67 @@
         "name": "Evropa 2",
         "city": "Czech Republic・-",
         "url": "http://icecast3.play.cz/evropa2-128.mp3",
-        "icon": "@drawable/evropa_2"
+        "icon": "@drawable/czech_republic_evropa_2"
       },
       {
         "name": "Frekvence 1",
         "city": "Czech Republic・-",
         "url": "http://icecast3.play.cz/frekvence1-128.mp3",
-        "icon": "@drawable/frekvence_1"
+        "icon": "@drawable/czech_republic_frekvence_1"
       },
       {
         "name": "Rádio Beat",
         "city": "Czech Republic・-",
         "url": "http://icecast5.play.cz/radiobeat128.mp3",
-        "icon": "@drawable/radio_beat"
+        "icon": "@drawable/czech_republic_radio_beat"
       },
       {
         "name": "Country Radio",
         "city": "Czech Republic・-",
         "url": "http://icecast2.play.cz:8000/country64.mp3",
-        "icon": "@drawable/country_radio"
+        "icon": "@drawable/czech_republic_country_radio"
       },
       {
         "name": "Radio Gothic",
         "city": "Czech Republic・-",
         "url": "http://radio-streamhosting.com:8006/192mp3",
-        "icon": "@drawable/radio_gothic"
+        "icon": "@drawable/czech_republic_radio_gothic"
       },
       {
         "name": "Rádio Impuls",
         "city": "Czech Republic・-",
         "url": "http://icecast5.play.cz:8000/impuls128.mp3",
-        "icon": "@drawable/radio_impuls"
+        "icon": "@drawable/czech_republic_radio_impuls"
       },
       {
         "name": "Kiss Jižní Čechy",
         "city": "Czech Republic・-",
         "url": "http://icecast8.play.cz/kisspublikum128.mp3",
-        "icon": "@drawable/kiss_jizni_cechy"
+        "icon": "@drawable/czech_republic_kiss_jizni_cechy"
       },
       {
         "name": "Hitradio Faktor",
         "city": "Czech Republic・-",
         "url": "http://ice.abradio.cz/faktor128.mp3",
-        "icon": "@drawable/hitradio_faktor"
+        "icon": "@drawable/czech_republic_hitradio_faktor"
       },
       {
         "name": "Fajn Radio",
         "city": "Czech Republic・-",
         "url": "http://ice.abradio.cz/fajn128.mp3",
-        "icon": "@drawable/fajn_radio"
+        "icon": "@drawable/czech_republic_fajn_radio"
       },
       {
         "name": "ČR Radiožurnál",
         "city": "Czech Republic・-",
         "url": "http://icecast8.play.cz/cro1-128.mp3",
-        "icon": "@drawable/cr_radiozurnal"
+        "icon": "@drawable/czech_republic_cr_radiozurnal"
       },
       {
         "name": "Rock Zone Prague",
         "city": "Czech Republic・-",
         "url": "http://icecast5.play.cz/rockzone128.mp3",
-        "icon": "@drawable/rock_zone_prague"
+        "icon": "@drawable/czech_republic_rock_zone_prague"
       }
     ]
   },
