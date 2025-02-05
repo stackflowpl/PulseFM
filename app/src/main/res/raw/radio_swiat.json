@@ -1405,31 +1405,31 @@
         "name": "Studio B",
         "city": "Serbia・-",
         "url": "http://radio.studiob.rs:8004/",
-        "icon": "@drawable/studio_b"
+        "icon": "@drawable/serbia_studio_b"
       },
       {
         "name": "Beograd 202",
         "city": "Serbia・-",
         "url": "http://www.radiobeograd.rs/download/radio202/dnevnik/dnevnik202.mp3",
-        "icon": "@drawable/beograd_202"
+        "icon": "@drawable/serbia_beograd_202"
       },
       {
         "name": "Radio TDI",
         "city": "Serbia・-",
         "url": "http://streaming.tdiradio.com/tdiradio.mp3",
-        "icon": "@drawable/radio_tdi"
+        "icon": "@drawable/serbia_radio_tdi"
       },
       {
         "name": "Radio TOP FM Beograd",
         "city": "Serbia・-",
         "url": "http://109.206.96.12:8000/",
-        "icon": "@drawable/radio_top_fm"
+        "icon": "@drawable/serbia_radio_top_fm"
       },
       {
         "name": "Radio AS FM Novi Sad",
         "city": "Serbia・-",
         "url": "http://radioas.kbcnet.rs:8020/",
-        "icon": "@drawable/radio_as_fm"
+        "icon": "@drawable/serbia_radio_as_fm"
       }
     ]
   },
@@ -1441,67 +1441,67 @@
         "name": "Fun Rádio",
         "city": "Slovaki・-",
         "url": "http://stream.funradio.sk:8000/fun128.mp3",
-        "icon": "@drawable/fun_radio"
+        "icon": "@drawable/slovakia_fun_radio"
       },
       {
         "name": "Rádio Expres",
         "city": "Slovaki・-",
         "url": "http://85.248.7.162:8000/96.mp3",
-        "icon": "@drawable/radio_expres"
+        "icon": "@drawable/slovakia_radio_expres"
       },
       {
         "name": "Rádio Viva",
         "city": "Slovaki・-",
         "url": "http://stream.sepia.sk:8000/viva128.mp3",
-        "icon": "@drawable/radio_viva"
+        "icon": "@drawable/slovakia_radio_viva"
       },
       {
         "name": "SRO Regina BB",
         "city": "Slovaki・-",
         "url": "http://live.slovakradio.sk:8000/Regina_BB_128.mp3",
-        "icon": "@drawable/sro_regina_bb"
+        "icon": "@drawable/slovakia_sro_regina_bb"
       },
       {
         "name": "Rádio Šport",
         "city": "Slovaki・-",
         "url": "http://stream.radiosport.sk:8000/Sport192.mp3",
-        "icon": "@drawable/radio_sport"
+        "icon": "@drawable/slovakia_radio_sport"
       },
       {
         "name": "Európa 2",
         "city": "Slovaki・-",
         "url": "http://pool.cdn.lagardere.cz/fm-europa2sk-128",
-        "icon": "@drawable/europa_2"
+        "icon": "@drawable/slovakia_europa_2"
       },
       {
         "name": "Rádio KISS",
         "city": "Slovaki・-",
         "url": "https://radio.treecom.net/kissmp3_128.mp3",
-        "icon": "@drawable/radio_kiss"
+        "icon": "@drawable/slovakia_radio_kiss"
       },
       {
         "name": "Rádio ONE",
         "city": "Slovaki・-",
         "url": "http://217.75.92.14:8000/nr160kb",
-        "icon": "@drawable/radio_one"
+        "icon": "@drawable/slovakia_radio_one"
       },
       {
         "name": "Jemné melódie",
         "city": "Slovaki・-",
         "url": "http://stream.jemne.sk/jemne-hi.mp3",
-        "icon": "@drawable/jemne_melodie"
+        "icon": "@drawable/slovakia_jemne_melodie"
       },
       {
         "name": "Anténa Hit Rádio",
         "city": "Slovaki・-",
         "url": "http://stream.antenarock.sk/antena-hi.mp3",
-        "icon": "@drawable/antena_hit_radio"
+        "icon": "@drawable/slovakia_antena_hit_radio"
       },
       {
         "name": "Radio Aligator Bratislava",
         "city": "Slovaki・-",
         "url": "http://stream.aligator.sk:8000/aligator_192.mp3",
-        "icon": "@drawable/radio_aligator"
+        "icon": "@drawable/slovakia_radio_aligator"
       }
     ]
   },
@@ -1513,55 +1513,55 @@
         "name": "Vinyl 107",
         "city": "Sweden・-",
         "url": "http://edge-bauersefm-04-cr.sharp-stream.com/vinylfm_instream_se_mp3?",
-        "icon": "@drawable/vinyl_107"
+        "icon": "@drawable/sweden_vinyl_107"
       },
       {
         "name": "Lugna Favoriter",
         "city": "Sweden・-",
         "url": "http://fm03-icecast.mtg-r.net/fm03_mp3?platform=web",
-        "icon": "@drawable/lugna_favoriter"
+        "icon": "@drawable/sweden_lugna_favoriter"
       },
       {
         "name": "Bandit Rock",
         "city": "Sweden・-",
         "url": "http://fm02-icecast.mtg-r.net/fm02_mp3?platform=web",
-        "icon": "@drawable/bandit_rock"
+        "icon": "@drawable/sweden_bandit_rock"
       },
       {
         "name": "NRJ Sverige",
         "city": "Sweden・-",
         "url": "http://edge-bauersefm-04-cr.sharp-stream.com/nrj_instreamtest_se_mp3?",
-        "icon": "@drawable/nrj_sverige"
+        "icon": "@drawable/sweden_nrj_sverige"
       },
       {
         "name": "RIX FM",
         "city": "Sweden・-",
         "url": "http://fm01-icecast.mtg-r.net/fm01_mp3?platform=web/fm01_mp3",
-        "icon": "@drawable/rix_fm"
+        "icon": "@drawable/sweden_rix_fm"
       },
       {
         "name": "BitJam Radio",
         "city": "Sweden・-",
         "url": "http://marmalade.scenesat.com:8086/bitjam.mp3",
-        "icon": "@drawable/bitjam_radio"
+        "icon": "@drawable/sweden_bitjam_radio"
       },
       {
         "name": "Country Rocks Radio",
         "city": "Sweden・-",
         "url": "http://stream.dbmedia.se/crrMP3",
-        "icon": "@drawable/country_rocks_radio"
+        "icon": "@drawable/sweden_country_rocks_radio"
       },
       {
-        "name": "Radiohits Sweden",
+        "name": "Radiohits",
         "city": "Sweden・-",
         "url": "http://john631.serverroom.net:6484/;stream.mp3",
-        "icon": "@drawable/radiohits_sweden"
+        "icon": "@drawable/sweden_radiohits_sweden"
       },
       {
         "name": "Pirate Rock",
         "city": "Sweden・-",
         "url": "http://185.86.150.69:8100/webradio",
-        "icon": "@drawable/pirate_rock"
+        "icon": "@drawable/sweden_pirate_rock"
       }
     ]
   },
@@ -1573,7 +1573,7 @@
         "name": "RadioRoks",
         "city": "Ukraine・-",
         "url": "http://online-radioroks.tavrmedia.ua:7000/RadioROKS",
-        "icon": "@drawable/radioroks"
+        "icon": "@drawable/ukraine_radioroks"
       }
     ]
   },
@@ -1585,7 +1585,7 @@
         "name": "EKR Rock Radio",
         "city": "United Kingdom・-",
         "url": "http://78.129.163.140:8070/",
-        "icon": "@drawable/ekr_rock_radio"
+        "icon": "@drawable/united_kingdom_ekr_rock_radio"
       }
     ]
   }

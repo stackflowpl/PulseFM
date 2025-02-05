@@ -47,20 +47,10 @@
                 android:backgroundTint="@color/text_color"
                 android:padding="10sp" />
 
-            <EditText
-                android:id="@+id/stacja_input"
+            <View
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Wyszukaj radio stacje"
-                android:inputType="text"
-                android:padding="10dp"
-                android:background="@drawable/corner_stacja"
-                android:textColor="@color/text_color"
-                android:textColorHint="@color/text_color"
-                android:textSize="13dp"
-                android:textFontWeight="700"
-                tools:ignore="SpeakableTextPresentCheck"/>
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
             <View
                 android:id="@+id/settings"
@@ -224,7 +214,6 @@
                         android:src="@drawable/play_button" />
 
                 </LinearLayout>
-
             </LinearLayout>
         </LinearLayout>
 
@@ -276,6 +265,48 @@
                     android:textSize="10sp"
                     android:textFontWeight="500"
                     android:textColor="@color/icon_color"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/biblioteka"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:paddingEnd="15dp"
+                    android:paddingStart="15dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:layout_marginBottom="2dp"
+                    android:orientation="vertical">
+
+                    <View
+                        android:layout_width="18sp"
+                        android:layout_height="18sp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/books"
+                        android:backgroundTint="#787b82"
+                        android:padding="10sp"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="BIBLIOTEKA"
+                    android:textSize="10sp"
+                    android:textFontWeight="500"
+                    android:textColor="#787b82"/>
             </LinearLayout>
 
             <View
@@ -387,7 +418,7 @@
                         android:layout_width="18sp"
                         android:layout_height="18sp"
                         android:layout_gravity="center"
-                        android:background="@drawable/star"
+                        android:background="@drawable/search"
                         android:backgroundTint="#787b82"
                         android:padding="10sp"/>
 
@@ -397,7 +428,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="ULUBIONE"
+                    android:text="WYSZUKAJ"
                     android:textSize="10sp"
                     android:textFontWeight="500"
                     android:textColor="#787b82"/>

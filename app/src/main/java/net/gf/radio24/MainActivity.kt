@@ -671,4 +671,37 @@ class MainActivity : AppCompatActivity() {
     private fun stopRadio() {
         exoPlayer?.stop()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        exoPlayer?.release()
+        exoPlayer = null
+
+        val file = File(filesDir, "player.json")
+        if (!file.exists()) return
+
+        val jsonString = file.readText()
+        if (jsonString.isEmpty()) return
+
+        val jsonObject = JSONObject(jsonString)
+
+        val changeTheme = jsonObject.optBoolean("change_theme", false)
+        val url = jsonObject.optString("url", "")
+        val city = jsonObject.optString("city", "")
+        val stationName = jsonObject.optString("stationName", "")
+        val icon = jsonObject.optString("icon", "")
+
+        if (!changeTheme) {
+            val jsonObjectToSave = JSONObject().apply {
+                put("change_theme", false)
+                put("isPlaying", false)
+                put("url", url)
+                put("city", city)
+                put("stationName", stationName)
+                put("icon", icon)
+            }
+            file.writeText(jsonObjectToSave.toString())
+            return
+        }
+    }
 }
