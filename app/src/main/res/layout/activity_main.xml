@@ -125,7 +125,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/corner_box_2"
             android:padding="6dp">
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -185,18 +184,6 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <TextView
-                    android:id="@+id/radio_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:textColor="@color/text_color"
-                    android:layout_gravity="center"
-                    android:layout_marginEnd="10dp"
-                    android:text="00:00:00"
-                    android:textFontWeight="300"
-                    android:textSize="14sp" />
-
                 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -221,7 +208,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/corner_box"
+            android:background="@drawable/corner_box_2"
+            android:layout_margin="5dp"
             android:paddingTop="5dp"
             android:paddingBottom="5dp">
 
