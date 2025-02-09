@@ -12,7 +12,15 @@
         android:layout_marginBottom="5dp"
         android:background="@drawable/corner_radio"
         android:orientation="horizontal"
+        android:gravity="center"
         android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/woj_icon"
+            android:layout_width="40dp"
+            android:layout_height="50dp"
+            android:background="@drawable/rounded_corners"
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"

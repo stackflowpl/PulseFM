@@ -1,6 +1,7 @@
 [
   {
     "woj": "Dolnośląskie",
+    "icon": "@drawable/herb_dolnyslaskie",
     "stations": [
       {
         "name": "Radio Gra Wrocław",
@@ -24,6 +25,7 @@
   },
   {
     "woj": "Kujawsko-pomorskie",
+    "icon": "@drawable/herb_kujawsko_pomorskie",
     "stations": [
       {
         "name": "Radio Gra Toruń",
@@ -35,6 +37,7 @@
   },
   {
     "woj": "Lubelskie",
+    "icon": "@drawable/herb_lubelskie",
     "stations": [
       {
         "name": "Radio Lublin",
@@ -52,6 +55,7 @@
   },
   {
     "woj": "Lubuskie",
+    "icon": "@drawable/herb_lubuskie",
     "stations": [
       {
         "name": "Radio Index",
@@ -63,6 +67,7 @@
   },
   {
     "woj": "Łódzkie",
+    "icon": "@drawable/herb_lodzkie",
     "stations": [
       {
         "name": "Radio Parada",
@@ -74,6 +79,7 @@
   },
   {
     "woj": "Małopolskie",
+    "icon": "@drawable/herb_malopolskie",
     "stations": [
       {
         "name": "RMF 2000",
@@ -193,6 +199,7 @@
   },
   {
     "woj": "Mazowieckie",
+    "icon": "@drawable/herb_mazowieckie",
     "stations": [
       {
         "name": "Eska Warszawa",
@@ -324,6 +331,7 @@
   },
   {
     "woj": "Opolskie",
+    "icon": "@drawable/herb_opolskie",
     "stations": [
       {
         "name": "Meloradio",
@@ -383,11 +391,13 @@
   },
   {
     "woj": "Podkarpackie",
+    "icon": "@drawable/herb_podkarpackie",
     "stations": [
     ]
   },
   {
     "woj": "Podlaskie",
+    "icon": "@drawable/herb_podlaskie",
     "stations": [
       {
         "name": "Radio Białystok",
@@ -405,6 +415,7 @@
   },
   {
     "woj": "Pomorskie",
+    "icon": "@drawable/herb_pomorskie",
     "stations": [
       {
         "name": "Radio Gdańsk",
@@ -434,6 +445,7 @@
   },
   {
     "woj": "Śląskie",
+    "icon": "@drawable/herb_slaskie",
     "stations": [
       {
         "name": "Radio Katowice",
@@ -451,6 +463,7 @@
   },
   {
     "woj": "Świętokrzyskie",
+    "icon": "@drawable/herb_swietokrzyskie",
     "stations": [
       {
         "name": "Radio Kielce",
@@ -462,6 +475,7 @@
   },
   {
     "woj": "Warmińsko-mazurskie",
+    "icon": "@drawable/herb_warminsko_mazurskie",
     "stations": [
       {
         "name": "Radio Olsztyn",
@@ -473,6 +487,7 @@
   },
   {
     "woj": "Wielkopolskie",
+    "icon": "@drawable/herb_wielkopolskie",
     "stations": [
       {
         "name": "Radio Gniezno",
@@ -496,6 +511,7 @@
   },
   {
     "woj": "Zachodniopomorskie",
+    "icon": "@drawable/herb_zachodniopomorskie",
     "stations": [
       {
         "name": "Radio Szczecin",

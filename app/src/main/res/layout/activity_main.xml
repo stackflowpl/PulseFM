@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_gravity="center"
-            android:background="@color/background_ads">
+            android:background="@color/background_search">
 
             <com.google.android.gms.ads.AdView
                 xmlns:ads="http://schemas.android.com/apk/res-auto"
@@ -34,8 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@color/background_search"
-            android:padding="8dp">
+            android:padding="10dp">
 
             <View
                 android:id="@+id/car_mode"
@@ -67,7 +66,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:background="@drawable/corner_box_3"
             android:padding="10dp">
 
             <TextView

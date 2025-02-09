@@ -60,5 +60,20 @@
                 android:textFontWeight="300"
                 android:textSize="12sp" />
         </LinearLayout>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/radio_favorite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/star_2"
+            android:backgroundTint="@color/text_color"
+            android:padding="10sp" />
     </LinearLayout>
 </LinearLayout>

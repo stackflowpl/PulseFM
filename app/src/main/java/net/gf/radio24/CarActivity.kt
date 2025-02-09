@@ -32,8 +32,6 @@ class CarActivity : AppCompatActivity() {
 
         exoPlayer = ExoPlayer.Builder(application).build()
 
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-
         loadPlayerState()
         FirebaseFirestore.setLoggingEnabled(true)
 
