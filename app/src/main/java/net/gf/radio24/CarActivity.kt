@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.firebase.firestore.FirebaseFirestore
@@ -29,6 +28,8 @@ class CarActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_car)
+
+        window.setDecorFitsSystemWindows(false)
 
         exoPlayer = ExoPlayer.Builder(application).build()
 

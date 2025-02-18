@@ -63,6 +63,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        window.setDecorFitsSystemWindows(true)
+
         exoPlayer = ExoPlayer.Builder(application).build()
 
         sharedPreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE)
@@ -155,7 +157,7 @@ class MainActivity : AppCompatActivity() {
             switchLayout(container, R.layout.radio_krajowe) {
                 displayRadioStations(radioStations)
                 updateStationCount(radioStations.size)
-                findViewById<TextView>(R.id.textView).text = "Najpopularniejsze Radio Stacje"
+                findViewById<TextView>(R.id.textView).text = "Wszystkie"
             }
         }
 
@@ -173,7 +175,17 @@ class MainActivity : AppCompatActivity() {
                 updateStationCount(radioSwiatowe.flatMap { it.stations }.size)
                 findViewById<TextView>(R.id.textView).text = "Wybierz Kraj"
             }
+        }
 
+        findViewById<LinearLayout>(R.id.biblioteka).setOnClickListener {
+            switchLayout(container, R.layout.library_container) {
+                displayRadioLibrarySwiatowe(
+                    radioSwiatowe.flatMap { it.stations },
+                    radioOkolicaStations.flatMap { it.stations }
+                )
+                findViewById<TextView>(R.id.station_count_view).text = "Ulubione"
+                findViewById<TextView>(R.id.textView).text = "To co misie lubią najbardziej"
+            }
         }
 
         findViewById<View>(R.id.settings).setOnClickListener {
@@ -474,6 +486,72 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun displayRadioLibrarySwiatowe(radioSwiatowe: List<RadioSwiatowe>, radioStations: List<RadioStationOkolica>) {
+        val radioContainer = findViewById<LinearLayout>(R.id.radio_library_container) ?: return
+        val favorites = getFavorites(this)
+        val addedStations = mutableSetOf<String>()
+
+        val viewPlayer = findViewById<ImageView>(R.id.radio_player)
+
+        radioStations.forEach { station ->
+            if (favorites.contains(station.name) && addedStations.add(station.name)) {
+                addRadioView(radioContainer, station.name, station.city, station.url, station.icon, viewPlayer)
+            }
+        }
+
+        radioSwiatowe.forEach { station ->
+            if (favorites.contains(station.name) && addedStations.add(station.name)) {
+                addRadioView(radioContainer, station.name, station.city, station.url, station.icon, viewPlayer)
+            }
+        }
+
+        viewPlayer.setOnClickListener {
+            togglePlayPause(viewPlayer)
+        }
+    }
+
+    private fun addRadioView(
+        container: LinearLayout,
+        name: String,
+        city: String,
+        url: String,
+        icon: String,
+        viewPlayer: ImageView
+    ) {
+        val radioView = LayoutInflater.from(container.context).inflate(R.layout.library_item, null)
+        val iconView: ImageView = radioView.findViewById(R.id.radio_icon)
+        val nameView: TextView = radioView.findViewById(R.id.radio_name)
+        val cityView: TextView = radioView.findViewById(R.id.radio_city)
+        val starView: ImageView = radioView.findViewById(R.id.radio_favorite)
+
+        val context = container.context
+
+        iconView.setImageResource(
+            context.resources.getIdentifier(
+                icon.replace("@drawable/", ""), "drawable", context.packageName
+            )
+        )
+        nameView.text = name
+        cityView.text = city
+
+        container.addView(radioView)
+
+        val favorites = getFavorites(context)
+        if (favorites.contains(name)) {
+            starView.setBackgroundResource(R.drawable.star)
+        } else {
+            starView.setBackgroundResource(R.drawable.star_2)
+        }
+
+        radioView.setOnClickListener {
+            onRadioStationSelected(RadioSwiatowe(name, city, url, icon), viewPlayer)
+        }
+
+        starView.setOnClickListener {
+            toggleFavorite(context, name, starView)
+        }
+    }
+
     private fun displayRadioSwiatoweStations(radioSwiatowe: List<Swiatowe>) {
         val radioContainer = findViewById<LinearLayout>(R.id.radio_swiat) ?: return
 
@@ -552,8 +630,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun String.trimPrefix(prefix: String) = this.removePrefix(prefix)
 
     private fun onRadioStationSelected(station: RadioStation, viewPlayer: ImageView) {
         playRadio(station.url)
@@ -672,16 +748,6 @@ class MainActivity : AppCompatActivity() {
         saveFavorites(context, favorites)
 
         Log.d("toggleFavorite", "Stacja: $stationName | Ulubiona: ${!wasFavorite}")
-    }
-
-    private fun updateFavoriteIcon(starView: ImageView, stationName: String, favorites: Set<String>) {
-        starView.setImageResource(if (favorites.contains(stationName)) R.drawable.star else R.drawable.star_2)
-        starView.invalidate()
-    }
-
-    private fun displayFavoriteStations(context: Context, allStations: List<RadioStation>) {
-        val favorites = getFavorites(context)
-        val favoriteStations = allStations.filter { it.name in favorites }
     }
 
     private fun togglePlayPause(viewPlayer: ImageView) {
