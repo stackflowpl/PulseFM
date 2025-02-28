@@ -22,3 +22,6 @@
 
 -keepattributes SourceFile,LineNumberTable
 -keep class com.google.firebase.** { *; }
+
+-keepattributes Signature
+-keep class com.google.gson.reflect.TypeToken { *; }

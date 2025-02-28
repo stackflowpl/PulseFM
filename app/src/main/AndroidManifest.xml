@@ -38,6 +38,12 @@
             android:name=".SessionLifecycleService"
             android:exported="false" />
 
+        <service
+            android:name=".RadioService"
+            android:foregroundServiceType="mediaPlayback"
+            android:exported="true"
+            android:permission="TODO" />
+
         <activity
             android:name=".SplashActivity"
             android:exported="true">

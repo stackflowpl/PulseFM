@@ -1,9 +1,14 @@
 package net.gf.radio24
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +34,7 @@ import com.google.gson.reflect.TypeToken
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
+import com.google.gson.JsonParser
 import org.json.JSONObject
 import java.io.File
 import java.io.FileReader
@@ -41,6 +47,8 @@ class MainActivity : AppCompatActivity() {
     private var nightMode: Boolean = false
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
+
+    private lateinit var radioStopReceiver: BroadcastReceiver
 
     private var exoPlayer: ExoPlayer? = null
 
@@ -75,12 +83,30 @@ class MainActivity : AppCompatActivity() {
         initializeAds()
         FirebaseFirestore.setLoggingEnabled(true)
 
+        createNotificationChannel()
+
+        radioStopReceiver = object : BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (intent?.action == "RADIO_STOPPED") {
+                    val playerIcon: ImageView = findViewById(R.id.radio_player)
+                    playerIcon.setImageResource(R.drawable.play_button)
+                }
+            }
+        }
+
+        val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            Context.RECEIVER_NOT_EXPORTED
+        } else {
+            0
+        }
+        registerReceiver(radioStopReceiver, IntentFilter("RADIO_STOPPED"), flag)
+
         val container: LinearLayout = findViewById(R.id.container)
         loadLayout(R.layout.radio_krajowe, container)
 
-        val radioStations = loadStationsFromRaw<RadioStation>(R.raw.radio_stations)
-        val radioOkolicaStations = loadStationsFromRaw<Wojewodztwo>(R.raw.radio_okolice)
-        val radioSwiatowe = loadStationsFromRaw<Swiatowe>(R.raw.radio_swiat)
+        val radioStations = loadStationsFromRaw(R.raw.radio_stations, RadioStation::class.java)
+        val radioOkolicaStations = loadStationsFromRaw(R.raw.radio_okolice, Wojewodztwo::class.java)
+        val radioSwiatowe = loadStationsFromRaw(R.raw.radio_swiat, Swiatowe::class.java)
 
         findViewById<View>(R.id.car_mode).setOnClickListener {
             val intent = Intent(this, CarActivity::class.java)
@@ -358,10 +384,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private inline fun <reified T> loadStationsFromRaw(resourceId: Int): List<T> {
+    private fun <T> loadStationsFromRaw(resourceId: Int, clazz: Class<T>): List<T> {
         val json = resources.openRawResource(resourceId).bufferedReader().use { it.readText() }
-        val type = object : TypeToken<List<T>>() {}.type
-        return Gson().fromJson(json, type)
+        val jsonArray = JsonParser.parseString(json).asJsonArray
+        return jsonArray.map { Gson().fromJson(it, clazz) }
     }
 
     private fun displayRadioStations(radioStations: List<RadioStation>) {
@@ -632,8 +658,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onRadioStationSelected(station: RadioStation, viewPlayer: ImageView) {
-        playRadio(station.url)
-
         val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
         val nameViewPlayer: TextView = findViewById(R.id.radio_name_player)
         val cityViewPlayer: TextView = findViewById(R.id.radio_container_city)
@@ -648,21 +672,33 @@ class MainActivity : AppCompatActivity() {
         }
 
         val file = File(filesDir, "player.json")
-        val fileWriter = FileWriter(file)
-        fileWriter.use {
-            it.write(jsonObject.toString())
-        }
+        file.writer().use { it.write(jsonObject.toString()) }
 
         viewPlayer.setImageResource(R.drawable.pause_button)
 
-        iconViewPlayer.setImageResource(resources.getIdentifier(station.icon.replace("@drawable/", ""), "drawable", packageName))
+        val iconResId = resources.getIdentifier(
+            station.icon.replace("@drawable/", ""), "drawable", packageName
+        )
+
+        if (iconResId != 0) {
+            iconViewPlayer.setImageResource(iconResId)
+        }
+
         nameViewPlayer.text = station.name
         cityViewPlayer.text = station.city
+
+        val intent = Intent(this, RadioService::class.java).apply {
+            action = "PLAY"
+            putExtra("STATION_URL", station.url)
+            putExtra("STATION_NAME", station.name)
+            putExtra("ICON_RES", iconResId)
+        }
+
+        startForegroundService(intent)
     }
 
-    private fun onRadioStationSelected(station: RadioStationOkolica, viewPlayer: ImageView) {
-        playRadio(station.url)
 
+    private fun onRadioStationSelected(station: RadioStationOkolica, viewPlayer: ImageView) {
         val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
         val nameViewPlayer: TextView = findViewById(R.id.radio_name_player)
         val cityViewPlayer: TextView = findViewById(R.id.radio_container_city)
@@ -687,11 +723,26 @@ class MainActivity : AppCompatActivity() {
         iconViewPlayer.setImageResource(resources.getIdentifier(station.icon.replace("@drawable/", ""), "drawable", packageName))
         nameViewPlayer.text = station.name
         cityViewPlayer.text = station.city
+
+        val iconResId = resources.getIdentifier(
+            station.icon.replace("@drawable/", ""), "drawable", packageName
+        )
+
+        if (iconResId != 0) {
+            iconViewPlayer.setImageResource(iconResId)
+        }
+
+        val intent = Intent(this, RadioService::class.java).apply {
+            action = "PLAY"
+            putExtra("STATION_URL", station.url)
+            putExtra("STATION_NAME", station.name)
+            putExtra("ICON_RES", iconResId)
+        }
+
+        startForegroundService(intent)
     }
 
     private fun onRadioStationSelected(station: RadioSwiatowe, viewPlayer: ImageView) {
-        playRadio(station.url)
-
         val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
         val nameViewPlayer: TextView = findViewById(R.id.radio_name_player)
         val cityViewPlayer: TextView = findViewById(R.id.radio_container_city)
@@ -716,6 +767,23 @@ class MainActivity : AppCompatActivity() {
         iconViewPlayer.setImageResource(resources.getIdentifier(station.icon.replace("@drawable/", ""), "drawable", packageName))
         nameViewPlayer.text = station.name
         cityViewPlayer.text = station.city
+
+        val iconResId = resources.getIdentifier(
+            station.icon.replace("@drawable/", ""), "drawable", packageName
+        )
+
+        if (iconResId != 0) {
+            iconViewPlayer.setImageResource(iconResId)
+        }
+
+        val intent = Intent(this, RadioService::class.java).apply {
+            action = "PLAY"
+            putExtra("STATION_URL", station.url)
+            putExtra("STATION_NAME", station.name)
+            putExtra("ICON_RES", iconResId)
+        }
+
+        startForegroundService(intent)
     }
 
     private fun getFavorites(context: Context): MutableSet<String> {
@@ -746,8 +814,18 @@ class MainActivity : AppCompatActivity() {
         }
 
         saveFavorites(context, favorites)
+    }
 
-        Log.d("toggleFavorite", "Stacja: $stationName | Ulubiona: ${!wasFavorite}")
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "radio_channel",
+                "Radio Player",
+                NotificationManager.IMPORTANCE_LOW
+            )
+            val manager = getSystemService(NotificationManager::class.java)
+            manager.createNotificationChannel(channel)
+        }
     }
 
     private fun togglePlayPause(viewPlayer: ImageView) {
@@ -770,7 +848,19 @@ class MainActivity : AppCompatActivity() {
                     Toast.makeText(this, "Brak danych o stacji radiowej!", Toast.LENGTH_SHORT).show()
                 } else {
                     if (isPlaying as Boolean) {
-                        stopRadio()
+                        val iconResId = resources.getIdentifier(
+                            icon.replace("@drawable/", ""), "drawable", packageName
+                        )
+
+                        val intent = Intent(this, RadioService::class.java).apply {
+                            action = "STOP"
+                            putExtra("STATION_URL", url)
+                            putExtra("STATION_NAME", stationName)
+                            putExtra("ICON_RES", iconResId)
+                        }
+
+                        startForegroundService(intent)
+
                         viewPlayer.setImageResource(R.drawable.play_button)
 
                         val jsonObject = JSONObject().apply {
@@ -789,7 +879,19 @@ class MainActivity : AppCompatActivity() {
                             it.write(jsonObject.toString())
                         }
                     } else {
-                        playRadio(url)
+                        val iconResId = resources.getIdentifier(
+                            icon.replace("@drawable/", ""), "drawable", packageName
+                        )
+
+                        val intent = Intent(this, RadioService::class.java).apply {
+                            action = "PLAY"
+                            putExtra("STATION_URL", url)
+                            putExtra("STATION_NAME", stationName)
+                            putExtra("ICON_RES", iconResId)
+                        }
+
+                        startForegroundService(intent)
+
                         viewPlayer.setImageResource(R.drawable.pause_button)
 
                         val jsonObject = JSONObject().apply {
@@ -813,16 +915,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun playRadio(url: String) {
-        exoPlayer?.apply {
-            stop()
-            clearMediaItems()
-            setMediaItem(MediaItem.fromUri(Uri.parse(url)))
-            prepare()
-            play()
-        }
-    }
-
     private fun stopRadio() {
         exoPlayer?.stop()
     }
@@ -831,6 +923,8 @@ class MainActivity : AppCompatActivity() {
         super.onDestroy()
         exoPlayer?.release()
         exoPlayer = null
+
+        unregisterReceiver(radioStopReceiver)
 
         val file = File(filesDir, "player.json")
         if (!file.exists()) return
