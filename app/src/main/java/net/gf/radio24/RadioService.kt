@@ -7,6 +7,8 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import com.google.android.exoplayer2.*
 import com.google.android.exoplayer2.audio.AudioAttributes
+import android.os.Build
+import android.util.Log
 
 class RadioService : Service() {
 
@@ -31,6 +33,16 @@ class RadioService : Service() {
                 }
             })
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                "radio_channel",
+                "Radio Service Channel",
+                NotificationManager.IMPORTANCE_LOW
+            )
+            val notificationManager = getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -41,12 +53,14 @@ class RadioService : Service() {
                 val iconRes = intent.getIntExtra("ICON_RES", 0)
 
                 if (stationUrl != null) {
+                    val notification = createNotification(stationName, iconRes)
+                    startForeground(1, notification)
+
                     if (currentStationUrl == stationUrl && isPlaying) {
                         stopRadio()
                     } else {
                         playRadio(stationUrl)
                         currentStationUrl = stationUrl
-                        createNotification(stationName, iconRes)
                     }
                 }
             }
@@ -75,31 +89,34 @@ class RadioService : Service() {
         stopSelf()
     }
 
-    private fun createNotification(stationName: String?, iconRes: Int) {
-        val playIntent = PendingIntent.getService(
-            this, 0, Intent(this, RadioService::class.java).apply { action = "PLAY" },
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    private fun createNotification(stationName: String?, iconRes: Int): Notification {
+        Log.d("RadioService", "Creating notification for $stationName with icon $iconRes")
+
+        val stopIntent = Intent(this, RadioService::class.java).apply {
+            action = "STOP"
+        }
+
+        val pendingIntent = PendingIntent.getService(
+            this, 1, stopIntent, PendingIntent.FLAG_CANCEL_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        val stopIntent = PendingIntent.getService(
-            this, 1, Intent(this, RadioService::class.java).apply { action = "STOP" },
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        val largeIcon = try {
+            BitmapFactory.decodeResource(resources, iconRes)
+        } catch (e: Exception) {
+            Log.e("RadioService", "Error loading large icon: ${e.message}")
+            null
+        }
 
-        val largeIcon = BitmapFactory.decodeResource(resources, iconRes)
-
-        val notification = NotificationCompat.Builder(this, "radio_channel")
+        return NotificationCompat.Builder(this, "radio_channel")
             .setSmallIcon(iconRes)
             .setContentTitle(stationName ?: "Radio24")
             .setContentText("Odtwarzanie na żywo")
             .setLargeIcon(largeIcon)
-            .addAction(R.drawable.pause_button, "Stop", stopIntent)
+            .addAction(R.drawable.pause_button, "Stop", pendingIntent)
             .setOngoing(true)
             .setPriority(NotificationCompat.PRIORITY_LOW)
             .setOnlyAlertOnce(true)
             .build()
-
-        startForeground(1, notification)
     }
 
     override fun onDestroy() {
@@ -109,5 +126,3 @@ class RadioService : Service() {
 
     override fun onBind(intent: Intent?): IBinder? = null
 }
-
-
