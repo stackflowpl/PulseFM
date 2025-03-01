@@ -22,11 +22,9 @@ Wszystkie polskie stacje radiowe w jednym miejscu – szybko, wygodnie i bezpoś
 
 ## Pobierz aplikację
 
-Najświeższą wersję możesz pobrać ze sklepu Google Play.  
+Najświeższą wersję możesz pobrać z naszej strony.  
 
-[<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
-    alt="Pobierz z Google Play"
-    height="80">](...)
+https://goflux.pl/download/radio24.apk
 
 ## Współpraca
 
