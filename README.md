@@ -1,8 +1,3 @@
-# Wdrożenie aplikacji
-
-Planowane udostępnienie aplikacji mobilnej na androida szacowane jest na dzień **`14 luty 2025`** roku.   
-Dołącz do naszej społeczności discord aby być na bieżąco!
-
 # Radio24
 
 Oficjalna aplikacja od **Flux Software**, dostępna na licencji [MIT License](LICENSE).  
