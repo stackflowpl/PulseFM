@@ -242,14 +242,10 @@ class CarActivity : AppCompatActivity() {
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         finish()
-        stopRadio()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        exoPlayer?.release()
-        exoPlayer = null
-
         savePlayerState()
     }
 }
