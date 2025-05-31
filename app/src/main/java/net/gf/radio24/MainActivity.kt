@@ -75,12 +75,6 @@ class MainActivity : AppCompatActivity() {
 
         window.setDecorFitsSystemWindows(true)
 
-        val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
-
-        if (isPlaying == true) {
-            iconViewPlayer.setImageResource(R.drawable.pause_button)
-        }
-
         exoPlayer = ExoPlayer.Builder(application).build()
 
         sharedPreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE)
@@ -96,11 +90,6 @@ class MainActivity : AppCompatActivity() {
         radioStopReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (intent?.action == "RADIO_STOPPED") {
-                    val playerIcon: ImageView = findViewById(R.id.radio_player)
-                    playerIcon.setImageResource(R.drawable.play_button)
-
-                    isPlaying = false
-
                     val file = File(filesDir, "player.json")
 
                     if (file.exists()) {
@@ -108,6 +97,8 @@ class MainActivity : AppCompatActivity() {
                             val jsonString = FileReader(file).readText()
                             if (jsonString.isNotEmpty()) {
                                 val jsonObject = JSONObject(jsonString)
+
+                                isPlaying = jsonObject.getBoolean("isPlaying")
 
                                 jsonObject.put("isPlaying", isPlaying)
 
@@ -142,7 +133,33 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, CarActivity::class.java)
             startActivity(intent)
             finish()
-            stopRadio()
+            overridePendingTransition(0, 0)
+
+            val file = File(filesDir, "player.json")
+            if (!file.exists());
+
+            val jsonString = file.readText()
+            if (jsonString.isEmpty());
+
+            val jsonObject = JSONObject(jsonString)
+
+            val isPlaying = jsonObject.getBoolean("isPlaying")
+            val url = jsonObject.optString("url", "")
+            val city = jsonObject.optString("city", "")
+            val stationName = jsonObject.optString("stationName", "")
+            val icon = jsonObject.optString("icon", "")
+
+            if (isPlaying) {
+                val jsonObjectToSave = JSONObject().apply {
+                    put("change_theme", true)
+                    put("isPlaying", true)
+                    put("url", url)
+                    put("city", city)
+                    put("stationName", stationName)
+                    put("icon", icon)
+                }
+                file.writeText(jsonObjectToSave.toString())
+            }
         }
 
         findViewById<ImageView>(R.id.radio_player).setOnClickListener {
@@ -174,6 +191,15 @@ class MainActivity : AppCompatActivity() {
         iconViewPlayer.setImageResource(resources.getIdentifier(icon.replace("@drawable/", ""), "drawable", packageName))
         nameViewPlayer.text = stationName
         cityViewPlayer.text = city
+
+        val ViewPlayer: ImageView = findViewById(R.id.radio_player)
+        if (isPlaying as Boolean) {
+            ViewPlayer.setImageResource(R.drawable.pause_button)
+            isPlaying = true
+        } else {
+            ViewPlayer.setImageResource(R.drawable.play_button)
+            isPlaying = false
+        }
     }
 
     private fun initializeConsent() {
