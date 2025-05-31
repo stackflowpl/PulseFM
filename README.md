@@ -17,16 +17,16 @@ Wszystkie polskie stacje radiowe w jednym miejscu – szybko, wygodnie i bezpoś
 
 ## Pobierz aplikację
 
-Najświeższą wersję możesz pobrać z naszej strony.  
+Najświeższą wersję możesz pobrać z naszej strony.
 
-https://goflux.pl/download/radio24.apk
+https://goflux.pl/__api/download/radio24
 
 ## Współpraca
 
 Dołóż swoją cegiełkę do projektu, tworząc społeczność lub zgłaszając issue na GitHub.
 
-Znasz radio którego nie dodaliśmy? Napisz do nas na discordzie [Serwer Discord](https://discord.gg/hernrd9VWc) lub w wiadomości e-mail [support@goflux.pl](mailto:support@goflux.pl)
+Znasz radio którego nie dodaliśmy? Napisz do nas na discordzie [Serwer Discord](https://discord.gg/MtPs7WXyJu) lub w wiadomości e-mail [support@goflux.pl](mailto:support@goflux.pl)
 
-----
+---
 
 **Radio24** – Twoje ulubione stacje radiowe w jednym kliknięciu!
