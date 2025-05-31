@@ -75,6 +75,12 @@ class MainActivity : AppCompatActivity() {
 
         window.setDecorFitsSystemWindows(true)
 
+        val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
+
+        if (isPlaying == true) {
+            iconViewPlayer.setImageResource(R.drawable.pause_button)
+        }
+
         exoPlayer = ExoPlayer.Builder(application).build()
 
         sharedPreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE)
