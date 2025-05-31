@@ -17,6 +17,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.exoplayer2.ExoPlayer
@@ -67,6 +68,7 @@ class MainActivity : AppCompatActivity() {
     var stationName = ""
     var icon = ""
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -126,9 +128,10 @@ class MainActivity : AppCompatActivity() {
         val container: LinearLayout = findViewById(R.id.container)
         loadLayout(R.layout.radio_krajowe, container)
 
-        val radioStations = loadStationsFromRaw(R.raw.radio_stations, RadioStation::class.java)
-        val radioOkolicaStations = loadStationsFromRaw(R.raw.radio_okolice, Wojewodztwo::class.java)
         val radioSwiatowe = loadStationsFromRaw(R.raw.radio_swiat, Swiatowe::class.java)
+        val radioOkolica = loadStationsFromRaw(R.raw.radio_okolice, Wojewodztwo::class.java)
+        val radioStations = loadStationsFromRaw(R.raw.radio_stations, RadioStation::class.java)
+
 
         findViewById<View>(R.id.car_mode).setOnClickListener {
             val intent = Intent(this, CarActivity::class.java)
@@ -141,7 +144,7 @@ class MainActivity : AppCompatActivity() {
             togglePlayPause(it as ImageView)
         }
 
-        setupNavigation(container, radioStations, radioOkolicaStations, radioSwiatowe)
+        setupNavigation(container, radioStations, radioOkolica, radioSwiatowe)
         displayRadioStations(radioStations)
         updateStationCount(radioStations.size)
     }
@@ -195,6 +198,7 @@ class MainActivity : AppCompatActivity() {
         inflater.inflate(layoutResId, container, true)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setupNavigation(
         container: LinearLayout,
         radioStations: List<RadioStation>,
@@ -412,6 +416,7 @@ class MainActivity : AppCompatActivity() {
         return jsonArray.map { Gson().fromJson(it, clazz) }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun displayRadioStations(radioStations: List<RadioStation>) {
         val radioContainer = findViewById<LinearLayout>(R.id.radio_container_krajowe) ?: return
         val favorites = getFavorites(this)
@@ -455,6 +460,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun displayRadioStationsOkolica(radioStations: List<RadioStationOkolica>) {
         val radioContainer = findViewById<LinearLayout>(R.id.radio_okolice_container) ?: return
         val favorites = getFavorites(this)
@@ -498,6 +504,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun displayRadioOkolicaStations(radioStations: List<Wojewodztwo>) {
         val radioContainer = findViewById<LinearLayout>(R.id.radio_container_okolice) ?: return
 
@@ -534,6 +541,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun displayRadioLibrarySwiatowe(radioSwiatowe: List<RadioSwiatowe>, radioStations: List<RadioStationOkolica>) {
         val radioContainer = findViewById<LinearLayout>(R.id.radio_library_container) ?: return
         val favorites = getFavorites(this)
@@ -558,6 +566,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun addRadioView(
         container: LinearLayout,
         name: String,
@@ -600,6 +609,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun displayRadioSwiatoweStations(radioSwiatowe: List<Swiatowe>) {
         val radioContainer = findViewById<LinearLayout>(R.id.radio_swiat) ?: return
 
@@ -636,6 +646,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun displayRadioStationsSwiatowe(radioSwiatowe: List<RadioSwiatowe>) {
         val radioContainer = findViewById<LinearLayout>(R.id.radio_swiat_container) ?: return
         val favorites = getFavorites(this)
@@ -679,6 +690,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun onRadioStationSelected(station: RadioStation, viewPlayer: ImageView) {
         val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
         val nameViewPlayer: TextView = findViewById(R.id.radio_name_player)
@@ -720,6 +732,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun onRadioStationSelected(station: RadioStationOkolica, viewPlayer: ImageView) {
         val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
         val nameViewPlayer: TextView = findViewById(R.id.radio_name_player)
@@ -764,6 +777,7 @@ class MainActivity : AppCompatActivity() {
         startForegroundService(intent)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun onRadioStationSelected(station: RadioSwiatowe, viewPlayer: ImageView) {
         val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
         val nameViewPlayer: TextView = findViewById(R.id.radio_name_player)

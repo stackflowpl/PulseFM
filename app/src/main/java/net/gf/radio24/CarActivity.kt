@@ -2,10 +2,13 @@ package net.gf.radio24
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -19,12 +22,13 @@ class CarActivity : AppCompatActivity() {
 
     private var exoPlayer: ExoPlayer? = null
 
-    var isPlaying: Boolean? = false
-    var url = ""
-    var city = ""
-    var stationName = ""
-    var icon = ""
+    private var isPlaying: Boolean = false
+    private var url: String = ""
+    private var city: String = ""
+    private var stationName: String = ""
+    private var icon: String = ""
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_car)
@@ -36,40 +40,8 @@ class CarActivity : AppCompatActivity() {
         loadPlayerState()
         FirebaseFirestore.setLoggingEnabled(true)
 
-        val file = File(filesDir, "player.json")
-
-        if (file.exists()) {
-            val fileReader = FileReader(file)
-            val jsonString = fileReader.readText()
-
-            if (jsonString.isNotEmpty()) {
-                val jsonObject = JSONObject(jsonString)
-
-                isPlaying = jsonObject.getBoolean("isPlaying")
-                url = jsonObject.getString("url")
-                city = jsonObject.getString("city")
-                stationName = jsonObject.getString("stationName")
-                icon = jsonObject.getString("icon")
-
-                if (url.isEmpty()) {
-                    Toast.makeText(this, "Brak danych o stacji radiowej!", Toast.LENGTH_SHORT).show()
-                } else {
-                    if (isPlaying as Boolean) {
-                        playRadio(url)
-                        val viewPlayer = findViewById<ImageView>(R.id.radio_player)
-
-                        viewPlayer.setImageResource(R.drawable.pause_button)
-                        findViewById<TextView>(R.id.text_car_play).text = "Play"
-                    }
-                }
-            }
-        }
-
         findViewById<ImageView>(R.id.radio_exit).setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
-            stopRadio()
+            navigateToMainActivity()
         }
 
         findViewById<ImageView>(R.id.radio_player).setOnClickListener {
@@ -90,87 +62,113 @@ class CarActivity : AppCompatActivity() {
         stationName = jsonObject.getString("stationName")
         icon = jsonObject.getString("icon")
 
+        updateUI()
+    }
+
+    private fun updateUI() {
         val iconViewPlayer: ImageView = findViewById(R.id.radio_icon_player)
         val nameViewPlayer: TextView = findViewById(R.id.radio_name_player)
 
-        iconViewPlayer.setImageResource(resources.getIdentifier(icon.replace("@drawable/", ""), "drawable", packageName))
+        if (icon.isNotEmpty()) {
+            iconViewPlayer.setImageResource(resources.getIdentifier(icon.replace("@drawable/", ""), "drawable", packageName))
+        }
         nameViewPlayer.text = stationName
-    }
 
-    private fun togglePlayPause(viewPlayer: ImageView) {
-        val file = File(filesDir, "player.json")
+        val viewPlayer: ImageView = findViewById(R.id.radio_player)
+        val textPlayStatus: TextView = findViewById(R.id.text_car_play)
 
-        if (file.exists()) {
-            val fileReader = FileReader(file)
-            val jsonString = fileReader.readText()
-
-            if (jsonString.isNotEmpty()) {
-                val jsonObject = JSONObject(jsonString)
-
-                isPlaying = jsonObject.getBoolean("isPlaying")
-                url = jsonObject.getString("url")
-                city = jsonObject.getString("city")
-                stationName = jsonObject.getString("stationName")
-                icon = jsonObject.getString("icon")
-
-                if (url.isEmpty()) {
-                    Toast.makeText(this, "Brak danych o stacji radiowej!", Toast.LENGTH_SHORT).show()
-                } else {
-                    if (isPlaying as Boolean) {
-                        stopRadio()
-                        viewPlayer.setImageResource(R.drawable.play_button)
-
-                        val jsonObject = JSONObject().apply {
-                            put("change_theme", false)
-                            put("isPlaying", false)
-                            put("url",  url)
-                            put("city", city)
-                            put("stationName", stationName)
-                            put("icon", icon)
-                        }
-
-                        findViewById<TextView>(R.id.text_car_play).text = "Pause"
-
-                        val file = File(filesDir, "player.json")
-                        val fileWriter = FileWriter(file)
-
-                        fileWriter.use {
-                            it.write(jsonObject.toString())
-                        }
-                    } else {
-                        playRadio(url)
-                        viewPlayer.setImageResource(R.drawable.pause_button)
-
-                        val jsonObject = JSONObject().apply {
-                            put("change_theme", false)
-                            put("isPlaying", true)
-                            put("url",  url)
-                            put("city", city)
-                            put("stationName", stationName)
-                            put("icon", icon)
-                        }
-
-                        findViewById<TextView>(R.id.text_car_play).text = "Play"
-
-                        val file = File(filesDir, "player.json")
-                        val fileWriter = FileWriter(file)
-
-                        fileWriter.use {
-                            it.write(jsonObject.toString())
-                        }
-                    }
-                }
+        if (url.isEmpty()) {
+            Toast.makeText(this, "Brak danych o stacji radiowej!", Toast.LENGTH_SHORT).show()
+        } else {
+            if (isPlaying) {
+                viewPlayer.setImageResource(R.drawable.pause_button)
+                textPlayStatus.text = "Play"
+            } else {
+                viewPlayer.setImageResource(R.drawable.play_button)
+                textPlayStatus.text = "Pause"
             }
         }
     }
 
+    private fun togglePlayPause(viewPlayer: ImageView) {
+        if (url.isEmpty()) {
+            Toast.makeText(this, "Brak danych o stacji radiowej!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        isPlaying = !isPlaying
+        if (isPlaying) {
+            playRadio(url)
+            viewPlayer.setImageResource(R.drawable.pause_button)
+            findViewById<TextView>(R.id.text_car_play).text = "Play"
+        } else {
+            stopRadio()
+            viewPlayer.setImageResource(R.drawable.play_button)
+            findViewById<TextView>(R.id.text_car_play).text = "Pause"
+        }
+
+        savePlayerState()
+    }
+
     private fun playRadio(url: String) {
-        exoPlayer?.apply {
-            stop()
-            clearMediaItems()
-            setMediaItem(MediaItem.fromUri(Uri.parse(url)))
-            prepare()
-            play()
+        val file = File(filesDir, "player.json")
+
+        if (file.exists()) {
+            try {
+                val jsonString = FileReader(file).readText()
+
+                if (jsonString.isNotEmpty()) {
+                    val jsonObject = JSONObject(jsonString)
+
+                    isPlaying = jsonObject.getBoolean("isPlaying")
+                    city = jsonObject.getString("city")
+                    stationName = jsonObject.getString("stationName")
+                    icon = jsonObject.getString("icon")
+
+                    if (url.isEmpty()) {
+                        Toast.makeText(this, "Brak danych o stacji radiowej!", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+
+                    val iconResId = resources.getIdentifier(
+                        icon.replace("@drawable/", ""), "drawable", packageName
+                    )
+
+                    Log.d("togglePlayPause", "iconResId: $iconResId, isPlaying: $isPlaying, stationName: $stationName, url: $url")
+
+                    val intent = Intent(this, RadioService::class.java).apply {
+                        putExtra("STATION_URL", url)
+                        putExtra("STATION_NAME", stationName)
+                        putExtra("ICON_RES", iconResId)
+                    }
+
+                    if (isPlaying as Boolean) {
+                        intent.action = "STOP"
+                        startService(intent)
+                        isPlaying = false
+                    } else {
+                        intent.action = "PLAY"
+                        startService(intent)
+                        isPlaying = true
+                    }
+
+                    val updatedJsonObject = JSONObject().apply {
+                        put("change_theme", false)
+                        put("isPlaying", isPlaying)
+                        put("url", url)
+                        put("city", city)
+                        put("stationName", stationName)
+                        put("icon", icon)
+                    }
+
+                    FileWriter(file).use { it.write(updatedJsonObject.toString()) }
+                }
+            } catch (e: Exception) {
+                Log.e("togglePlayPause", "Error reading or parsing JSON: ${e.message}")
+                Toast.makeText(this, "Wystąpił problem z plikiem danych!", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "Brak pliku player.json!", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -178,36 +176,34 @@ class CarActivity : AppCompatActivity() {
         exoPlayer?.stop()
     }
 
+    private fun savePlayerState() {
+        val jsonObject = JSONObject().apply {
+            put("isPlaying", isPlaying)
+            put("url", url)
+            put("city", city)
+            put("stationName", stationName)
+            put("icon", icon)
+            put("change_theme", false)
+        }
+
+        val file = File(filesDir, "player.json")
+        FileWriter(file).use { writer ->
+            writer.write(jsonObject.toString())
+        }
+    }
+
+    private fun navigateToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
+        stopRadio()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         exoPlayer?.release()
         exoPlayer = null
 
-        val file = File(filesDir, "player.json")
-        if (!file.exists()) return
-
-        val jsonString = file.readText()
-        if (jsonString.isEmpty()) return
-
-        val jsonObject = JSONObject(jsonString)
-
-        val changeTheme = jsonObject.optBoolean("change_theme", false)
-        val url = jsonObject.optString("url", "")
-        val city = jsonObject.optString("city", "")
-        val stationName = jsonObject.optString("stationName", "")
-        val icon = jsonObject.optString("icon", "")
-
-        if (!changeTheme) {
-            val jsonObjectToSave = JSONObject().apply {
-                put("change_theme", false)
-                put("isPlaying", false)
-                put("url", url)
-                put("city", city)
-                put("stationName", stationName)
-                put("icon", icon)
-            }
-            file.writeText(jsonObjectToSave.toString())
-            return
-        }
+        savePlayerState()
     }
 }
