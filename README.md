@@ -9,9 +9,7 @@ Wszystkie polskie stacje radiowe w jednym miejscu – szybko, wygodnie i bezpoś
 - Zmiana wyglądu aplikacji
 - Radio stacje przydzielone do województwa
 - Dodawanie radio stacji do ulubionych
-- Przeglądanie mapy świata z wyznaczonymi radio stacjami
 - Motyw dla kierowców
-- Słuchanie podcastów
 - Zarządzanie odtwarzaniem radia poza aplikacją
 - Reklamy umożliwiające wsparcie projektu
 
