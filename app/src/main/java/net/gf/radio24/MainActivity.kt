@@ -132,7 +132,6 @@ class MainActivity : AppCompatActivity() {
         val radioOkolica = loadStationsFromRaw(R.raw.radio_okolice, Wojewodztwo::class.java)
         val radioStations = loadStationsFromRaw(R.raw.radio_stations, RadioStation::class.java)
 
-
         findViewById<View>(R.id.car_mode).setOnClickListener {
             val intent = Intent(this, CarActivity::class.java)
             startActivity(intent)
