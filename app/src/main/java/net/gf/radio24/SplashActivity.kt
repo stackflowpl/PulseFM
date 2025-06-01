@@ -52,6 +52,7 @@ class SplashActivity : ComponentActivity() {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
+            overridePendingTransition(0, 0)
         }, 1000)
     }
 }

@@ -29,8 +29,11 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import java.net.HttpURLConnection
+import java.net.URL
 
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
@@ -55,12 +58,20 @@ class MainActivity : AppCompatActivity() {
 
     private val FAVORITES_FILE = "favorites.json"
 
+    private val API_STATIONS = "https://api.goflux.pl/__api/radio24/stations"
+    private val API_OKOLICE = "https://api.goflux.pl/__api/radio24/okolice"
+    private val API_SWIAT = "https://api.goflux.pl/__api/radio24/swiat"
+
     data class Swiatowe(val country: String, val icon: String, val stations: List<RadioSwiatowe>)
     data class RadioSwiatowe(val name: String, val city: String, val url: String, val icon: String)
 
     data class Wojewodztwo(val woj: String, val icon: String, val stations: List<RadioStationOkolica>)
     data class RadioStationOkolica(val name: String, val city: String, val url: String, val icon: String)
     data class RadioStation(val name: String, val city: String, val url: String, val icon: String)
+
+    private var radioStationsCache: List<RadioStation>? = null
+    private var radioOkolicaCache: List<Wojewodztwo>? = null
+    private var radioSwiatoweCache: List<Swiatowe>? = null
 
     var isPlaying: Boolean? = false
     var url = ""
@@ -125,9 +136,7 @@ class MainActivity : AppCompatActivity() {
         val container: LinearLayout = findViewById(R.id.container)
         loadLayout(R.layout.radio_krajowe, container)
 
-        val radioSwiatowe = loadStationsFromRaw(R.raw.radio_swiat, Swiatowe::class.java)
-        val radioOkolica = loadStationsFromRaw(R.raw.radio_okolice, Wojewodztwo::class.java)
-        val radioStations = loadStationsFromRaw(R.raw.radio_stations, RadioStation::class.java)
+        loadDataFromAPI()
 
         findViewById<View>(R.id.car_mode).setOnClickListener {
             val intent = Intent(this, CarActivity::class.java)
@@ -165,10 +174,95 @@ class MainActivity : AppCompatActivity() {
         findViewById<ImageView>(R.id.radio_player).setOnClickListener {
             togglePlayPause(it as ImageView)
         }
+    }
 
-        setupNavigation(container, radioStations, radioOkolica, radioSwiatowe)
-        displayRadioStations(radioStations)
-        updateStationCount(radioStations.size)
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun loadDataFromAPI() {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val stationsDeferred = launch { loadStationsFromAPI() }
+                val okolicaDeferred = launch { loadOkolicaFromAPI() }
+                val swiatoweDeferred = launch { loadSwiatoweFromAPI() }
+
+                stationsDeferred.join()
+                okolicaDeferred.join()
+                swiatoweDeferred.join()
+
+                withContext(Dispatchers.Main) {
+                    setupUIAfterDataLoad()
+                }
+            } catch (e: Exception) {
+                Log.e("API", "Error loading data from API: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@MainActivity, "Błąd podczas ładowania danych z serwera", Toast.LENGTH_LONG).show()
+                    radioStationsCache = emptyList()
+                    radioOkolicaCache = emptyList()
+                    radioSwiatoweCache = emptyList()
+                    setupUIAfterDataLoad()
+                }
+            }
+        }
+    }
+
+    private suspend fun loadStationsFromAPI() {
+        try {
+            val json = fetchFromAPI(API_STATIONS)
+            radioStationsCache = Gson().fromJson(json, object : TypeToken<List<RadioStation>>() {}.type)
+        } catch (e: Exception) {
+            Log.e("API", "Error loading stations: ${e.message}")
+            radioStationsCache = emptyList()
+        }
+    }
+
+    private suspend fun loadOkolicaFromAPI() {
+        try {
+            val json = fetchFromAPI(API_OKOLICE)
+            radioOkolicaCache = Gson().fromJson(json, object : TypeToken<List<Wojewodztwo>>() {}.type)
+        } catch (e: Exception) {
+            Log.e("API", "Error loading okolica: ${e.message}")
+            radioOkolicaCache = emptyList()
+        }
+    }
+
+    private suspend fun loadSwiatoweFromAPI() {
+        try {
+            val json = fetchFromAPI(API_SWIAT)
+            radioSwiatoweCache = Gson().fromJson(json, object : TypeToken<List<Swiatowe>>() {}.type)
+        } catch (e: Exception) {
+            Log.e("API", "Error loading swiatowe: ${e.message}")
+            radioSwiatoweCache = emptyList()
+        }
+    }
+
+    private suspend fun fetchFromAPI(urlString: String): String {
+        return withContext(Dispatchers.IO) {
+            val url = URL(urlString)
+            val connection = url.openConnection() as HttpURLConnection
+            try {
+                connection.requestMethod = "GET"
+                connection.connectTimeout = 10000
+                connection.readTimeout = 10000
+                connection.setRequestProperty("Accept", "application/json")
+
+                if (connection.responseCode == HttpURLConnection.HTTP_OK) {
+                    connection.inputStream.bufferedReader().use { it.readText() }
+                } else {
+                    throw Exception("HTTP ${connection.responseCode}: ${connection.responseMessage}")
+                }
+            } finally {
+                connection.disconnect()
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun setupUIAfterDataLoad() {
+        val container: LinearLayout = findViewById(R.id.container)
+
+        setupNavigation(container, radioStationsCache ?: emptyList(), radioOkolicaCache ?: emptyList(), radioSwiatoweCache ?: emptyList())
+
+        displayRadioStations(radioStationsCache ?: emptyList())
+        updateStationCount((radioStationsCache ?: emptyList()).size)
     }
 
     private fun loadPlayerState() {
@@ -439,12 +533,6 @@ class MainActivity : AppCompatActivity() {
                 findViewById<AdView>(R.id.adView)?.loadAd(AdRequest.Builder().build())
             }
         }
-    }
-
-    private fun <T> loadStationsFromRaw(resourceId: Int, clazz: Class<T>): List<T> {
-        val json = resources.openRawResource(resourceId).bufferedReader().use { it.readText() }
-        val jsonArray = JsonParser.parseString(json).asJsonArray
-        return jsonArray.map { Gson().fromJson(it, clazz) }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
