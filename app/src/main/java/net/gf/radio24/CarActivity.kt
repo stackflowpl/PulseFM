@@ -28,6 +28,14 @@ class CarActivity : AppCompatActivity() {
     private var stationName: String = ""
     private var icon: String = ""
 
+    private val DATABASE_DIR = "database"
+    private val PLAYER_FILE = "player.json"
+    private val FAVORITES_FILE = "favorites.json"
+
+    private fun getPlayerFile(): File {
+        return File(File(filesDir, DATABASE_DIR), PLAYER_FILE)
+    }
+
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +58,7 @@ class CarActivity : AppCompatActivity() {
     }
 
     private fun loadPlayerState() {
-        val file = File(filesDir, "player.json")
+        val file = getPlayerFile()
         if (!file.exists()) return
 
         val jsonString = file.readText().takeIf { it.isNotEmpty() } ?: return
@@ -111,7 +119,7 @@ class CarActivity : AppCompatActivity() {
     }
 
     private fun playRadio(url: String) {
-        val file = File(filesDir, "player.json")
+        val file = getPlayerFile()
 
         if (file.exists()) {
             try {
@@ -167,7 +175,7 @@ class CarActivity : AppCompatActivity() {
     }
 
     private fun stopRadio() {
-        val file = File(filesDir, "player.json")
+        val file = getPlayerFile()
 
         if (file.exists()) {
             try {
@@ -232,7 +240,7 @@ class CarActivity : AppCompatActivity() {
             put("change_theme", false)
         }
 
-        val file = File(filesDir, "player.json")
+        val file = getPlayerFile()
         FileWriter(file).use { writer ->
             writer.write(jsonObject.toString())
         }
@@ -244,7 +252,7 @@ class CarActivity : AppCompatActivity() {
         finish()
         overridePendingTransition(0, 0)
 
-        val file = File(filesDir, "player.json")
+        val file = getPlayerFile()
         if (!file.exists()) return
 
         val jsonString = file.readText()
