@@ -101,7 +101,7 @@
                         android:layout_width="60sp"
                         android:layout_height="60sp"
                         android:layout_gravity="center"
-                        android:background="@drawable/star"
+                        android:background="@drawable/heart"
                         android:backgroundTint="#fefefe" />
 
                 </LinearLayout>

@@ -15,7 +15,7 @@ android {
         applicationId = "net.gf.radio24"
         minSdk = 23
         targetSdk = 35
-        versionCode = 6
+        versionCode = 7
         versionName = "1.0.0"
     }
 
@@ -78,6 +78,8 @@ dependencies {
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.0")
     implementation("com.google.android.exoplayer:exoplayer:2.18.1")
+
+    implementation("androidx.media:media:1.6.0")
 
     implementation("com.google.android.gms:play-services-ads:23.0.0")
 

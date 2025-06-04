@@ -7,73 +7,82 @@
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+        android:layout_width="190dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/corner_radio"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="10dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/radio_card"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_gravity="center"
-            android:layout_marginEnd="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
             app:cardBackgroundColor="@android:color/transparent">
 
             <ImageView
                 android:id="@+id/radio_icon"
-                android:layout_width="55dp"
-                android:layout_height="55dp"
-                android:layout_marginEnd="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="110dp"
                 android:background="@drawable/rounded_corners"
                 android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center"
-            android:padding="10dp">
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/radio_name"
+            <LinearLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
-                android:textColor="@color/text_color"
-                android:textFontWeight="600"
-                android:textSize="14sp" />
+                android:orientation="vertical"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp">
 
-            <TextView
-                android:id="@+id/radio_city"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color"
-                android:textAlignment="textStart"
-                android:textFontWeight="300"
-                android:textSize="12sp" />
+                <TextView
+                    android:id="@+id/radio_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/text_color"
+                    android:textFontWeight="600"
+                    android:textSize="14sp"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:id="@+id/radio_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:ellipsize="end"
+                    android:textColor="@color/text_color"
+                    android:textAlignment="textStart"
+                    android:textFontWeight="300"
+                    android:textSize="12sp"
+                    android:singleLine="true" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:id="@+id/radio_favorite"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/heart"
+                android:backgroundTint="@color/text_color"
+                android:padding="10sp" />
         </LinearLayout>
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <ImageView
-            android:id="@+id/radio_favorite"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/star_2"
-            android:backgroundTint="@color/text_color"
-            android:padding="10sp" />
     </LinearLayout>
 </LinearLayout>

@@ -17,11 +17,12 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.google.android.exoplayer2.ExoPlayer
-import com.google.android.exoplayer2.MediaItem
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.google.android.gms.ads.MobileAds
@@ -38,7 +39,6 @@ import java.net.URL
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
 import com.google.android.ump.UserMessagingPlatform
-import com.google.gson.JsonParser
 import org.json.JSONObject
 import java.io.File
 import java.io.FileReader
@@ -55,10 +55,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var radioStopReceiver: BroadcastReceiver
 
     private var exoPlayer: ExoPlayer? = null
-
-    private val API_STATIONS = "https://api.goflux.pl/__api/radio24/stations"
-    private val API_OKOLICE = "https://api.goflux.pl/__api/radio24/okolice"
-    private val API_SWIAT = "https://api.goflux.pl/__api/radio24/swiat"
 
     data class Swiatowe(val country: String, val icon: String, val stations: List<RadioSwiatowe>)
     data class RadioSwiatowe(val name: String, val city: String, val url: String, val icon: String)
@@ -80,6 +76,9 @@ class MainActivity : AppCompatActivity() {
     private val DATABASE_DIR = "database"
     private val PLAYER_FILE = "player.json"
     private val FAVORITES_FILE = "favorites.json"
+    private val STATIONS_FILE = "stations.json"
+    private val OKOLICE_FILE = "okolice.json"
+    private val SWIAT_FILE = "swiat.json"
 
     private fun getPlayerFile(): File {
         return File(File(filesDir, DATABASE_DIR), PLAYER_FILE)
@@ -93,8 +92,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        window.setDecorFitsSystemWindows(true)
 
         exoPlayer = ExoPlayer.Builder(application).build()
 
@@ -224,9 +221,9 @@ class MainActivity : AppCompatActivity() {
     private fun loadDataFromAPI() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
-                val stationsDeferred = launch { loadStationsFromAPI() }
-                val okolicaDeferred = launch { loadOkolicaFromAPI() }
-                val swiatoweDeferred = launch { loadSwiatoweFromAPI() }
+                val stationsDeferred = launch { loadStationsFromFile() }
+                val okolicaDeferred = launch { loadOkolicaFromFile() }
+                val swiatoweDeferred = launch { loadSwiatoweFromFile() }
 
                 stationsDeferred.join()
                 okolicaDeferred.join()
@@ -236,9 +233,9 @@ class MainActivity : AppCompatActivity() {
                     setupUIAfterDataLoad()
                 }
             } catch (e: Exception) {
-                Log.e("API", "Error loading data from API: ${e.message}")
+                Log.e("File", "Error loading data from files: ${e.message}")
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(this@MainActivity, "Błąd podczas ładowania danych z serwera", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity, "Błąd podczas ładowania danych z pamięci", Toast.LENGTH_LONG).show()
                     radioStationsCache = emptyList()
                     radioOkolicaCache = emptyList()
                     radioSwiatoweCache = emptyList()
@@ -248,32 +245,68 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun loadStationsFromAPI() {
+    private suspend fun loadStationsFromFile() {
         try {
-            val json = fetchFromAPI(API_STATIONS)
-            radioStationsCache = Gson().fromJson(json, object : TypeToken<List<RadioStation>>() {}.type)
+            val file = File(File(filesDir, DATABASE_DIR), STATIONS_FILE)
+            if (file.exists()) {
+                val json = file.readText()
+                if (json.isNotEmpty()) {
+                    radioStationsCache = Gson().fromJson(json, object : TypeToken<List<RadioStation>>() {}.type)
+                    Log.d("File", "Loaded ${radioStationsCache?.size} stations from file")
+                } else {
+                    Log.w("File", "Stations file is empty")
+                    radioStationsCache = emptyList()
+                }
+            } else {
+                Log.w("File", "Stations file does not exist")
+                radioStationsCache = emptyList()
+            }
         } catch (e: Exception) {
-            Log.e("API", "Error loading stations: ${e.message}")
+            Log.e("File", "Error loading stations from file: ${e.message}")
             radioStationsCache = emptyList()
         }
     }
 
-    private suspend fun loadOkolicaFromAPI() {
+    private suspend fun loadOkolicaFromFile() {
         try {
-            val json = fetchFromAPI(API_OKOLICE)
-            radioOkolicaCache = Gson().fromJson(json, object : TypeToken<List<Wojewodztwo>>() {}.type)
+            val file = File(File(filesDir, DATABASE_DIR), OKOLICE_FILE)
+            if (file.exists()) {
+                val json = file.readText()
+                if (json.isNotEmpty()) {
+                    radioOkolicaCache = Gson().fromJson(json, object : TypeToken<List<Wojewodztwo>>() {}.type)
+                    Log.d("File", "Loaded ${radioOkolicaCache?.size} regions from file")
+                } else {
+                    Log.w("File", "Okolice file is empty")
+                    radioOkolicaCache = emptyList()
+                }
+            } else {
+                Log.w("File", "Okolice file does not exist")
+                radioOkolicaCache = emptyList()
+            }
         } catch (e: Exception) {
-            Log.e("API", "Error loading okolica: ${e.message}")
+            Log.e("File", "Error loading okolice from file: ${e.message}")
             radioOkolicaCache = emptyList()
         }
     }
 
-    private suspend fun loadSwiatoweFromAPI() {
+    private suspend fun loadSwiatoweFromFile() {
         try {
-            val json = fetchFromAPI(API_SWIAT)
-            radioSwiatoweCache = Gson().fromJson(json, object : TypeToken<List<Swiatowe>>() {}.type)
+            val file = File(File(filesDir, DATABASE_DIR), SWIAT_FILE)
+            if (file.exists()) {
+                val json = file.readText()
+                if (json.isNotEmpty()) {
+                    radioSwiatoweCache = Gson().fromJson(json, object : TypeToken<List<Swiatowe>>() {}.type)
+                    Log.d("File", "Loaded ${radioSwiatoweCache?.size} countries from file")
+                } else {
+                    Log.w("File", "Swiatowe file is empty")
+                    radioSwiatoweCache = emptyList()
+                }
+            } else {
+                Log.w("File", "Swiatowe file does not exist")
+                radioSwiatoweCache = emptyList()
+            }
         } catch (e: Exception) {
-            Log.e("API", "Error loading swiatowe: ${e.message}")
+            Log.e("File", "Error loading swiatowe from file: ${e.message}")
             radioSwiatoweCache = emptyList()
         }
     }
@@ -284,9 +317,10 @@ class MainActivity : AppCompatActivity() {
             val connection = url.openConnection() as HttpURLConnection
             try {
                 connection.requestMethod = "GET"
-                connection.connectTimeout = 10000
-                connection.readTimeout = 10000
+                connection.connectTimeout = 15000
+                connection.readTimeout = 15000
                 connection.setRequestProperty("Accept", "application/json")
+                connection.setRequestProperty("User-Agent", "Radio24-Android")
 
                 if (connection.responseCode == HttpURLConnection.HTTP_OK) {
                     connection.inputStream.bufferedReader().use { it.readText() }
@@ -306,7 +340,6 @@ class MainActivity : AppCompatActivity() {
         setupNavigation(container, radioStationsCache ?: emptyList(), radioOkolicaCache ?: emptyList(), radioSwiatoweCache ?: emptyList())
 
         displayRadioStations(radioStationsCache ?: emptyList())
-        updateStationCount((radioStationsCache ?: emptyList()).size)
     }
 
     private fun loadPlayerState() {
@@ -381,44 +414,44 @@ class MainActivity : AppCompatActivity() {
         radioSwiatowe: List<Swiatowe>
     ) {
         findViewById<LinearLayout>(R.id.krajowe).setOnClickListener {
+            clearAllBackgrounds()
+            it.setBackgroundResource(R.drawable.corner_box_4)
             switchLayout(container, R.layout.radio_krajowe) {
                 displayRadioStations(radioStations)
-                updateStationCount(radioStations.size)
-                findViewById<TextView>(R.id.textView).text = "Wszystkie"
             }
         }
 
         findViewById<LinearLayout>(R.id.w_okolicy).setOnClickListener {
+            clearAllBackgrounds()
+            it.setBackgroundResource(R.drawable.corner_box_4)
             switchLayout(container, R.layout.radio_okolice) {
                 displayRadioOkolicaStations(radioOkolicaStations)
-                updateStationCount(radioOkolicaStations.flatMap { it.stations }.size)
-                findViewById<TextView>(R.id.textView).text = "Wybierz Region"
             }
         }
 
         findViewById<LinearLayout>(R.id.swiatowe).setOnClickListener {
+            clearAllBackgrounds()
+            it.setBackgroundResource(R.drawable.corner_box_4)
             switchLayout(container, R.layout.radio_odkrywaj) {
                 displayRadioSwiatoweStations(radioSwiatowe)
-                updateStationCount(radioSwiatowe.flatMap { it.stations }.size)
-                findViewById<TextView>(R.id.textView).text = "Wybierz Kraj"
             }
         }
 
         findViewById<LinearLayout>(R.id.biblioteka).setOnClickListener {
+            clearAllBackgrounds()
+            it.setBackgroundResource(R.drawable.corner_box_4)
             switchLayout(container, R.layout.library_container) {
                 displayRadioLibrarySwiatowe(
                     radioSwiatowe.flatMap { it.stations },
                     radioOkolicaStations.flatMap { it.stations }
                 )
-                findViewById<TextView>(R.id.station_count_view).text = "Ulubione"
-                findViewById<TextView>(R.id.textView).text = "To co misie lubią najbardziej"
             }
         }
 
         findViewById<View>(R.id.settings).setOnClickListener {
+            clearAllBackgrounds()
+
             switchLayout(container, R.layout.settings) { setupSettingsInteractions() }
-            findViewById<TextView>(R.id.textView).text = "Ustawienia"
-            findViewById<TextView>(R.id.station_count_view).text = ":)"
 
             val checkBoxLight = findViewById<View>(R.id.check_box_light_theme)
             val checkBoxDark = findViewById<View>(R.id.check_box_dark_theme)
@@ -436,14 +469,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun clearAllBackgrounds() {
+        findViewById<LinearLayout>(R.id.krajowe).background = null
+        findViewById<LinearLayout>(R.id.biblioteka).background = null
+        findViewById<LinearLayout>(R.id.w_okolicy).background = null
+        findViewById<LinearLayout>(R.id.swiatowe).background = null
+    }
+
     private fun switchLayout(container: LinearLayout, layoutResId: Int, setup: (() -> Unit)? = null) {
         container.removeAllViews()
         LayoutInflater.from(this).inflate(layoutResId, container, true)
         setup?.invoke()
-    }
-
-    private fun updateStationCount(count: Int) {
-        findViewById<TextView>(R.id.station_count_view).text = "$count"
     }
 
     private fun setupSettingsInteractions() {
@@ -549,9 +585,6 @@ class MainActivity : AppCompatActivity() {
         findViewById<LinearLayout>(R.id.tworcy)?.setOnClickListener {
             val container: LinearLayout = findViewById(R.id.container)
 
-            findViewById<TextView>(R.id.textView).text = "Zobacz kto mnie stworzył"
-            findViewById<TextView>(R.id.station_count_view).text = ":)"
-
             switchLayout(container, R.layout.creators)
         }
     }
@@ -608,9 +641,9 @@ class MainActivity : AppCompatActivity() {
                 val wasFavorite = favorites.contains(station.name)
 
                 if (wasFavorite) {
-                    starView.setBackgroundResource(R.drawable.star)
+                    starView.setBackgroundResource(R.drawable.heart_active)
                 } else {
-                    starView.setBackgroundResource(R.drawable.star_2)
+                    starView.setBackgroundResource(R.drawable.heart)
                 }
 
                 radioView.setOnClickListener {
@@ -652,9 +685,9 @@ class MainActivity : AppCompatActivity() {
                 val wasFavorite = favorites.contains(station.name)
 
                 if (wasFavorite) {
-                    starView.setBackgroundResource(R.drawable.star)
+                    starView.setBackgroundResource(R.drawable.heart_active)
                 } else {
-                    starView.setBackgroundResource(R.drawable.star_2)
+                    starView.setBackgroundResource(R.drawable.heart)
                 }
 
                 radioView.setOnClickListener {
@@ -695,9 +728,6 @@ class MainActivity : AppCompatActivity() {
             wojView.setOnClickListener {
                 switchLayout(container, R.layout.radio_okolica_container) {
                     displayRadioStationsOkolica(wojewodztwo.stations)
-                    findViewById<TextView>(R.id.textView).text = "${wojewodztwo.woj}"
-                    findViewById<TextView>(R.id.station_count_view).text =
-                        "${wojewodztwo.stations.size}"
                 }
             }
 
@@ -763,9 +793,9 @@ class MainActivity : AppCompatActivity() {
 
         val favorites = getFavorites(context)
         if (favorites.contains(name)) {
-            starView.setBackgroundResource(R.drawable.star)
+            starView.setBackgroundResource(R.drawable.heart_active)
         } else {
-            starView.setBackgroundResource(R.drawable.star_2)
+            starView.setBackgroundResource(R.drawable.heart)
         }
 
         radioView.setOnClickListener {
@@ -800,9 +830,6 @@ class MainActivity : AppCompatActivity() {
             worldView.setOnClickListener {
                 switchLayout(container, R.layout.world_container) {
                     displayRadioStationsSwiatowe(swiatowe.stations)
-                    findViewById<TextView>(R.id.textView).text = "${swiatowe.country}"
-                    findViewById<TextView>(R.id.station_count_view).text =
-                        "${swiatowe.stations.size}"
                 }
             }
 
@@ -838,9 +865,9 @@ class MainActivity : AppCompatActivity() {
                 val wasFavorite = favorites.contains(station.name)
 
                 if (wasFavorite) {
-                    starView.setBackgroundResource(R.drawable.star)
+                    starView.setBackgroundResource(R.drawable.heart_active)
                 } else {
-                    starView.setBackgroundResource(R.drawable.star_2)
+                    starView.setBackgroundResource(R.drawable.heart)
                 }
 
                 radioView.setOnClickListener {
@@ -1013,10 +1040,10 @@ class MainActivity : AppCompatActivity() {
 
         if (wasFavorite) {
             favorites.remove(stationName)
-            starView.setBackgroundResource(R.drawable.star_2)
+            starView.setBackgroundResource(R.drawable.heart)
         } else {
             favorites.add(stationName)
-            starView.setBackgroundResource(R.drawable.star)
+            starView.setBackgroundResource(R.drawable.heart_active)
         }
 
         saveFavorites(context, favorites)
@@ -1095,6 +1122,61 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             Toast.makeText(this, "Brak pliku player.json!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun isInternetAvailable(): Boolean {
+        return try {
+            val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+            val network = connectivityManager.activeNetwork
+            val capabilities = connectivityManager.getNetworkCapabilities(network)
+            capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true &&
+                    capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+        } catch (e: Exception) {
+            Log.e("Network", "Error checking internet connectivity: ${e.message}")
+            false
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun refreshDataIfPossible() {
+        if (isInternetAvailable()) {
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    val stationsJson = fetchFromAPI("https://api.goflux.pl/__api/radio24/stations")
+                    val okolicaJson = fetchFromAPI("https://api.goflux.pl/__api/radio24/okolice")
+                    val swiatoweJson = fetchFromAPI("https://api.goflux.pl/__api/radio24/swiat")
+
+                    saveToFile(STATIONS_FILE, stationsJson)
+                    saveToFile(OKOLICE_FILE, okolicaJson)
+                    saveToFile(SWIAT_FILE, swiatoweJson)
+
+                    radioStationsCache = Gson().fromJson(stationsJson, object : TypeToken<List<RadioStation>>() {}.type)
+                    radioOkolicaCache = Gson().fromJson(okolicaJson, object : TypeToken<List<Wojewodztwo>>() {}.type)
+                    radioSwiatoweCache = Gson().fromJson(swiatoweJson, object : TypeToken<List<Swiatowe>>() {}.type)
+
+                    withContext(Dispatchers.Main) {
+                        setupUIAfterDataLoad()
+                    }
+
+                    Log.d("Refresh", "Data refreshed successfully")
+                } catch (e: Exception) {
+                    Log.e("Refresh", "Error refreshing data: ${e.message}")
+                    withContext(Dispatchers.Main) {
+                        Toast.makeText(this@MainActivity, "Nie udało się odświeżyć danych", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun saveToFile(fileName: String, jsonData: String) {
+        try {
+            val file = File(File(filesDir, DATABASE_DIR), fileName)
+            file.writeText(jsonData)
+            Log.d("File", "Saved $fileName successfully")
+        } catch (e: Exception) {
+            Log.e("File", "Error saving $fileName: ${e.message}")
         }
     }
 
