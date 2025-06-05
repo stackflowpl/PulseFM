@@ -24,6 +24,7 @@ class SplashActivity : ComponentActivity() {
 
     private lateinit var statusText: TextView
     private lateinit var statusTextAwait: TextView
+    private lateinit var statusTextFinish: TextView
 
     private val API_STATIONS = "https://api.goflux.pl/__api/radio24/stations"
     private val API_OKOLICE = "https://api.goflux.pl/__api/radio24/okolice"
@@ -46,6 +47,7 @@ class SplashActivity : ComponentActivity() {
 
         statusText = findViewById(R.id.statusText)
         statusTextAwait = findViewById(R.id.statusTextAwiat)
+        statusTextFinish = findViewById(R.id.statusTextFinish)
 
         initializeDatabase()
         checkInternetAndLoadData()
@@ -67,10 +69,12 @@ class SplashActivity : ComponentActivity() {
         statusTextAwait.text = "Sprawdzanie połączenia..."
 
         if (isInternetAvailable()) {
-            statusTextAwait.text = "Połączenie ustanowione. Pobieranie danych..."
+            statusTextAwait.text = "Połączenie ustanowione."
+            statusTextFinish.text = "Pobieranie danych..."
             loadDataFromAPI()
         } else {
-            statusTextAwait.text = "Brak dostępu do internetu. Sprawdzanie ponownie..."
+            statusTextAwait.text = "Brak dostępu do internetu."
+            statusTextFinish.text = "Sprawdzanie ponownie..."
             Handler(Looper.getMainLooper()).postDelayed({
                 checkInternetAndLoadData()
             }, 2000)
@@ -126,13 +130,15 @@ class SplashActivity : ComponentActivity() {
                 }
 
                 withContext(Dispatchers.Main) {
-                    if (successCount > 0) {
-                        statusTextAwait.text = "Dane załadowane pomyślnie ($successCount/$totalAPIs). Uruchamianie aplikacji..."
+                    if (successCount > 2) {
+                        statusTextAwait.text = "Dane załadowane pomyślnie ($successCount/$totalAPIs)."
+                        statusTextFinish.text = "Uruchamianie aplikacji..."
                         Handler(Looper.getMainLooper()).postDelayed({
                             proceedToMainActivity()
                         }, 1000)
                     } else {
-                        statusTextAwait.text = "Nie udało się pobrać żadnych danych. Sprawdzanie ponownie..."
+                        statusTextAwait.text = "Nie udało się pobrać żadnych danych."
+                        statusTextFinish.text = "Sprawdzanie ponownie..."
                         Handler(Looper.getMainLooper()).postDelayed({
                             checkInternetAndLoadData()
                         }, 3000)
@@ -142,7 +148,8 @@ class SplashActivity : ComponentActivity() {
             } catch (e: Exception) {
                 Log.e("API", "General error loading data: ${e.message}")
                 withContext(Dispatchers.Main) {
-                    statusTextAwait.text = "Błąd podczas pobierania danych. Ponowienie próby..."
+                    statusTextAwait.text = "Błąd podczas pobierania danych."
+                    statusTextFinish.text = "Ponowienie próby..."
                     Handler(Looper.getMainLooper()).postDelayed({
                         checkInternetAndLoadData()
                     }, 3000)

@@ -62,5 +62,10 @@
             android:name=".CarActivity"
             android:exported="false">
         </activity>
+
+        <activity
+            android:name=".SnakeGame"
+            android:exported="false">
+        </activity>
     </application>
 </manifest>

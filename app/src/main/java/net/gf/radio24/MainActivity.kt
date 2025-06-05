@@ -17,8 +17,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -33,8 +31,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.net.HttpURLConnection
-import java.net.URL
 
 import com.google.android.ump.ConsentInformation
 import com.google.android.ump.ConsentRequestParameters
@@ -95,7 +91,7 @@ class MainActivity : AppCompatActivity() {
 
         exoPlayer = ExoPlayer.Builder(application).build()
 
-        sharedPreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE)
+        sharedPreferences = getSharedPreferences("MODE", MODE_PRIVATE)
         nightMode = sharedPreferences.getBoolean("nightMode", false)
 
         initializeDatabase()
@@ -132,7 +128,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
-            Context.RECEIVER_NOT_EXPORTED
+            RECEIVER_NOT_EXPORTED
         } else {
             0
         }
@@ -144,26 +140,33 @@ class MainActivity : AppCompatActivity() {
         loadDataFromAPI()
 
         findViewById<View>(R.id.car_mode).setOnClickListener {
-            val intent = Intent(this, CarActivity::class.java)
-            startActivity(intent)
-            finish()
-            overridePendingTransition(0, 0)
-
             val file = getPlayerFile()
-            if (!file.exists());
 
-            val jsonString = file.readText()
-            if (jsonString.isEmpty());
+            if (!file.exists() || file.readText().isBlank()) {
+                Toast.makeText(this, "Brak zapisanej stacji radiowej", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
 
-            val jsonObject = JSONObject(jsonString)
+            try {
+                val jsonString = file.readText()
+                val jsonObject = JSONObject(jsonString)
 
-            val isPlaying = jsonObject.getBoolean("isPlaying")
-            val url = jsonObject.optString("url", "")
-            val city = jsonObject.optString("city", "")
-            val stationName = jsonObject.optString("stationName", "")
-            val icon = jsonObject.optString("icon", "")
+                val isPlaying = jsonObject.optBoolean("isPlaying", false)
+                val url = jsonObject.optString("url", "")
+                val city = jsonObject.optString("city", "")
+                val stationName = jsonObject.optString("stationName", "")
+                val icon = jsonObject.optString("icon", "")
 
-            if (isPlaying) {
+                if (!isPlaying || url.isBlank() || stationName.isBlank()) {
+                    Toast.makeText(this, "Brak poprawnie zapisanej stacji", Toast.LENGTH_SHORT).show()
+                    return@setOnClickListener
+                }
+
+                val intent = Intent(this, CarActivity::class.java)
+                startActivity(intent)
+                finish()
+                overridePendingTransition(0, 0)
+
                 val jsonObjectToSave = JSONObject().apply {
                     put("change_theme", true)
                     put("isPlaying", true)
@@ -173,8 +176,13 @@ class MainActivity : AppCompatActivity() {
                     put("icon", icon)
                 }
                 file.writeText(jsonObjectToSave.toString())
+
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this, "Błąd odczytu danych stacji", Toast.LENGTH_SHORT).show()
             }
         }
+
 
         findViewById<ImageView>(R.id.radio_player).setOnClickListener {
             togglePlayPause(it as ImageView)
@@ -311,28 +319,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun fetchFromAPI(urlString: String): String {
-        return withContext(Dispatchers.IO) {
-            val url = URL(urlString)
-            val connection = url.openConnection() as HttpURLConnection
-            try {
-                connection.requestMethod = "GET"
-                connection.connectTimeout = 15000
-                connection.readTimeout = 15000
-                connection.setRequestProperty("Accept", "application/json")
-                connection.setRequestProperty("User-Agent", "Radio24-Android")
-
-                if (connection.responseCode == HttpURLConnection.HTTP_OK) {
-                    connection.inputStream.bufferedReader().use { it.readText() }
-                } else {
-                    throw Exception("HTTP ${connection.responseCode}: ${connection.responseMessage}")
-                }
-            } finally {
-                connection.disconnect()
-            }
-        }
-    }
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupUIAfterDataLoad() {
         val container: LinearLayout = findViewById(R.id.container)
@@ -365,8 +351,9 @@ class MainActivity : AppCompatActivity() {
                     resources.getIdentifier(icon.replace("@drawable/", ""), "drawable", packageName)
                 )
             }
-            nameViewPlayer.text = stationName
-            cityViewPlayer.text = city
+
+            nameViewPlayer.text = if (!stationName.isNullOrBlank()) stationName else "Nie wybrano radia"
+            cityViewPlayer.text = if (!city.isNullOrBlank()) city else "Brak informacji"
 
             val viewPlayer: ImageView = findViewById(R.id.radio_player)
             if (isPlaying == true) {
@@ -437,6 +424,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        findViewById<View>(R.id.game_mode).setOnClickListener {
+            clearAllBackgrounds()
+            switchLayout(container, R.layout.game_container)
+
+            val snakeLayout = container.findViewById<LinearLayout>(R.id.snake)
+            snakeLayout.setOnClickListener {
+                val intent = Intent(this, SnakeGame::class.java)
+                startActivity(intent)
+                finish()
+                overridePendingTransition(0, 0)
+            }
+        }
+
         findViewById<LinearLayout>(R.id.biblioteka).setOnClickListener {
             clearAllBackgrounds()
             it.setBackgroundResource(R.drawable.corner_box_4)
@@ -456,7 +456,7 @@ class MainActivity : AppCompatActivity() {
             val checkBoxLight = findViewById<View>(R.id.check_box_light_theme)
             val checkBoxDark = findViewById<View>(R.id.check_box_dark_theme)
 
-            sharedPreferences = getSharedPreferences("MODE", Context.MODE_PRIVATE)
+            sharedPreferences = getSharedPreferences("MODE", MODE_PRIVATE)
             nightMode = sharedPreferences.getBoolean("nightMode", false)
 
             if (nightMode) {
@@ -484,7 +484,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupSettingsInteractions() {
         findViewById<LinearLayout>(R.id.discord)?.setOnClickListener {
-            openWebsite("https://discord.gg/hernrd9VWc")
+            openWebsite("https://discord.gg/MtPs7WXyJu")
         }
 
         findViewById<LinearLayout>(R.id.github)?.setOnClickListener {
@@ -1122,61 +1122,6 @@ class MainActivity : AppCompatActivity() {
             }
         } else {
             Toast.makeText(this, "Brak pliku player.json!", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    private fun isInternetAvailable(): Boolean {
-        return try {
-            val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-            val network = connectivityManager.activeNetwork
-            val capabilities = connectivityManager.getNetworkCapabilities(network)
-            capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true &&
-                    capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
-        } catch (e: Exception) {
-            Log.e("Network", "Error checking internet connectivity: ${e.message}")
-            false
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun refreshDataIfPossible() {
-        if (isInternetAvailable()) {
-            CoroutineScope(Dispatchers.IO).launch {
-                try {
-                    val stationsJson = fetchFromAPI("https://api.goflux.pl/__api/radio24/stations")
-                    val okolicaJson = fetchFromAPI("https://api.goflux.pl/__api/radio24/okolice")
-                    val swiatoweJson = fetchFromAPI("https://api.goflux.pl/__api/radio24/swiat")
-
-                    saveToFile(STATIONS_FILE, stationsJson)
-                    saveToFile(OKOLICE_FILE, okolicaJson)
-                    saveToFile(SWIAT_FILE, swiatoweJson)
-
-                    radioStationsCache = Gson().fromJson(stationsJson, object : TypeToken<List<RadioStation>>() {}.type)
-                    radioOkolicaCache = Gson().fromJson(okolicaJson, object : TypeToken<List<Wojewodztwo>>() {}.type)
-                    radioSwiatoweCache = Gson().fromJson(swiatoweJson, object : TypeToken<List<Swiatowe>>() {}.type)
-
-                    withContext(Dispatchers.Main) {
-                        setupUIAfterDataLoad()
-                    }
-
-                    Log.d("Refresh", "Data refreshed successfully")
-                } catch (e: Exception) {
-                    Log.e("Refresh", "Error refreshing data: ${e.message}")
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(this@MainActivity, "Nie udało się odświeżyć danych", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            }
-        }
-    }
-
-    private fun saveToFile(fileName: String, jsonData: String) {
-        try {
-            val file = File(File(filesDir, DATABASE_DIR), fileName)
-            file.writeText(jsonData)
-            Log.d("File", "Saved $fileName successfully")
-        } catch (e: Exception) {
-            Log.e("File", "Error saving $fileName: ${e.message}")
         }
     }
 

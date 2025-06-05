@@ -48,8 +48,17 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_gravity="center"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/car_alt"
+                android:backgroundTint="@color/text_color"
+                android:padding="10sp" />
+
+            <View
+                android:id="@+id/game_mode"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="@drawable/gamepad"
                 android:backgroundTint="@color/text_color"
                 android:padding="10sp" />
 
@@ -85,7 +94,7 @@
                     android:layout_gravity="center"
                     android:text="POCZĄTEK"
                     android:textSize="11sp"
-                    android:textColor="#787b82"/>
+                    android:textColor="@color/text_color_menu"/>
             </LinearLayout>
 
             <View
@@ -110,7 +119,7 @@
                     android:text="BIBLIOTEKA"
                     android:textSize="11sp"
                     android:textFontWeight="500"
-                    android:textColor="#787b82"/>
+                    android:textColor="@color/text_color_menu"/>
             </LinearLayout>
 
             <View
@@ -135,7 +144,7 @@
                     android:text="W OKOLICY"
                     android:textSize="11sp"
                     android:textFontWeight="500"
-                    android:textColor="#787b82"/>
+                    android:textColor="@color/text_color_menu"/>
             </LinearLayout>
 
             <View
@@ -160,7 +169,7 @@
                     android:text="ŚWIAT"
                     android:textSize="11sp"
                     android:textFontWeight="500"
-                    android:textColor="#787b82"/>
+                    android:textColor="@color/text_color_menu"/>
             </LinearLayout>
 
             <View
@@ -185,15 +194,22 @@
 
         </ScrollView>
 
-        <com.google.android.gms.ads.AdView
-            xmlns:ads="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/adView"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            ads:adSize="BANNER"
-            ads:adUnitId="ca-app-pub-6928750575920542/5559177964">
-        </com.google.android.gms.ads.AdView>
+            android:orientation="vertical"
+            android:layout_gravity="center">
+
+            <com.google.android.gms.ads.AdView
+                xmlns:ads="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/adView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                ads:adSize="BANNER"
+                ads:adUnitId="ca-app-pub-6928750575920542/5559177964">
+            </com.google.android.gms.ads.AdView>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

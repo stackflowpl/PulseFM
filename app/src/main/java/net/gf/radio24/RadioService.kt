@@ -108,7 +108,7 @@ class RadioService : Service() {
         }
 
         return NotificationCompat.Builder(this, "radio_channel")
-            .setSmallIcon(iconRes)
+            .setSmallIcon(R.drawable.radio24_trans)
             .setContentTitle(stationName ?: "Radio24")
             .setContentText("Odtwarzanie na żywo")
             .setLargeIcon(largeIcon)

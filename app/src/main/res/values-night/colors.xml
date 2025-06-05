@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#1a272f</color>
+    <color name="background">#0D0D0D</color>
     <color name="background_ads">#131E24</color>
-    <color name="background_search">#162128</color>
+    <color name="background_search">#212121</color>
     <color name="text_color">#C4C5C7</color>
-    <color name="corner_player">#0E171B</color>
-    <color name="corner_player_button">#070C0F</color>
+    <color name="corner_player">#1D1D1D</color>
+    <color name="corner_player_button">#0D0D0D</color>
     <color name="icon_color">#5f686f</color>
     <color name="corner_radio">#0D151A</color>
     <color name="settings_icon">#9AC4C5C7</color>
     <color name="settings_text">#A69FA0A2</color>
+
+    <color name="background_player_main_corner">#141414</color>
+    <color name="background_player_main">#212121</color>
+    <color name="corner_player_main">#1D1D1D</color>
+    <color name="corner_radio_main">#121111</color>
+    <color name="text_color_menu">#F0F0F0</color>
 </resources>

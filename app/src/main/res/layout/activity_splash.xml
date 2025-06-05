@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/gradient_background_splash_activity"
+    android:background="#0D0D0D"
     android:orientation="vertical"
     android:fitsSystemWindows="true">
 
@@ -20,8 +20,8 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/radio_card"
-            android:layout_width="115dp"
-            android:layout_height="115dp"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             app:cardCornerRadius="8dp"
@@ -29,14 +29,14 @@
             app:cardBackgroundColor="@android:color/transparent">
 
             <ImageButton
-                android:layout_width="115dp"
-                android:layout_height="115dp"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
                 android:layout_gravity="center"
                 android:background="@null"
                 tools:ignore="UseAppTint"
                 android:contentDescription="przycisk menu"
                 android:scaleType="fitCenter"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@drawable/radio24_trans" />
         </androidx.cardview.widget.CardView>
 
         <LinearLayout
@@ -60,6 +60,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="..."
+                android:textSize="14sp"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:layout_marginBottom="5sp"/>
+
+            <TextView
+                android:id="@+id/statusTextFinish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
                 android:textSize="14sp"
                 android:textColor="#FFFFFF"
                 android:gravity="center"
