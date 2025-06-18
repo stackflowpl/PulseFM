@@ -16,4 +16,7 @@
     <color name="corner_player_main">#1D1D1D</color>
     <color name="corner_radio_main">#121111</color>
     <color name="text_color_menu">#F0F0F0</color>
+
+    <color name="windowBackground">#0D0D0D</color>
+    <color name="colorPrimary">#C4C5C7</color>
 </resources>

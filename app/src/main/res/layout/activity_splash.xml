@@ -89,14 +89,14 @@
             android:orientation="vertical">
 
             <ImageButton
-                android:layout_width="70dp"
+                android:layout_width="110dp"
                 android:layout_height="45dp"
                 android:layout_gravity="end"
                 android:background="@null"
                 tools:ignore="UseAppTint"
                 android:contentDescription="przycisk menu"
                 android:scaleType="fitCenter"
-                android:src="@drawable/goflux" />
+                android:src="@drawable/stackflow_branding" />
 
         </LinearLayout>
 

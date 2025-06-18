@@ -44,16 +44,6 @@
                 android:layout_weight="1" />
 
             <View
-                android:id="@+id/car_mode"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_gravity="center"
-                android:layout_marginEnd="20dp"
-                android:background="@drawable/car_alt"
-                android:backgroundTint="@color/text_color"
-                android:padding="10sp" />
-
-            <View
                 android:id="@+id/game_mode"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -61,7 +51,6 @@
                 android:background="@drawable/gamepad"
                 android:backgroundTint="@color/text_color"
                 android:padding="10sp" />
-
         </LinearLayout>
 
         <LinearLayout
@@ -218,6 +207,7 @@
             android:padding="6dp">
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/player"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"

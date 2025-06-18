@@ -15,7 +15,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONObject
 import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
@@ -26,9 +25,9 @@ class SplashActivity : ComponentActivity() {
     private lateinit var statusTextAwait: TextView
     private lateinit var statusTextFinish: TextView
 
-    private val API_STATIONS = "https://api.goflux.pl/__api/radio24/stations"
-    private val API_OKOLICE = "https://api.goflux.pl/__api/radio24/okolice"
-    private val API_SWIAT = "https://api.goflux.pl/__api/radio24/swiat"
+    private val API_STATIONS = "https://api.stackflow.pl/__api/radio24/stations"
+    private val API_OKOLICE = "https://api.stackflow.pl/__api/radio24/okolice"
+    private val API_SWIAT = "https://api.stackflow.pl/__api/radio24/swiat"
 
     data class Swiatowe(val country: String, val icon: String, val stations: List<RadioSwiatowe>)
     data class RadioSwiatowe(val name: String, val city: String, val url: String, val icon: String)

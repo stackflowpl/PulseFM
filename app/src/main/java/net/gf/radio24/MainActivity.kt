@@ -139,51 +139,6 @@ class MainActivity : AppCompatActivity() {
 
         loadDataFromAPI()
 
-        findViewById<View>(R.id.car_mode).setOnClickListener {
-            val file = getPlayerFile()
-
-            if (!file.exists() || file.readText().isBlank()) {
-                Toast.makeText(this, "Brak zapisanej stacji radiowej", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            try {
-                val jsonString = file.readText()
-                val jsonObject = JSONObject(jsonString)
-
-                val isPlaying = jsonObject.optBoolean("isPlaying", false)
-                val url = jsonObject.optString("url", "")
-                val city = jsonObject.optString("city", "")
-                val stationName = jsonObject.optString("stationName", "")
-                val icon = jsonObject.optString("icon", "")
-
-                if (!isPlaying || url.isBlank() || stationName.isBlank()) {
-                    Toast.makeText(this, "Brak poprawnie zapisanej stacji", Toast.LENGTH_SHORT).show()
-                    return@setOnClickListener
-                }
-
-                val intent = Intent(this, CarActivity::class.java)
-                startActivity(intent)
-                finish()
-                overridePendingTransition(0, 0)
-
-                val jsonObjectToSave = JSONObject().apply {
-                    put("change_theme", true)
-                    put("isPlaying", true)
-                    put("url", url)
-                    put("city", city)
-                    put("stationName", stationName)
-                    put("icon", icon)
-                }
-                file.writeText(jsonObjectToSave.toString())
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(this, "Błąd odczytu danych stacji", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-
         findViewById<ImageView>(R.id.radio_player).setOnClickListener {
             togglePlayPause(it as ImageView)
         }
