@@ -58,6 +58,7 @@ android {
 }
 
 dependencies {
+    // Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.8.0"))
     implementation("com.google.firebase:firebase-crashlytics")
     implementation("com.google.firebase:firebase-crashlytics-ndk")
@@ -69,22 +70,35 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     implementation("com.google.firebase:firebase-perf")
 
+    // UMP Consent
     implementation("com.google.android.ump:user-messaging-platform:2.1.0")
 
+    // Networking
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
 
-    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
-    implementation("com.google.android.exoplayer:exoplayer:2.18.1")
-
-    implementation("androidx.media:media:1.6.0")
-
+    // Ads
     implementation("com.google.android.gms:play-services-ads:23.0.0")
 
-    implementation("androidx.cardview:cardview:1.0.0")
+    // ExoPlayer
+    implementation("com.google.android.exoplayer:exoplayer:2.19.1")
+    implementation("com.google.android.exoplayer:exoplayer-core:2.19.1")
+    implementation("com.google.android.exoplayer:exoplayer-ui:2.19.1")
 
+    // AndroidX / Jetpack
+    implementation("androidx.constraintlayout:constraintlayout:2.1.0")
+    implementation("androidx.cardview:cardview:1.0.0")
+    implementation("androidx.media:media:1.6.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
+    // Lifecycle
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
+
+    // Compose + AndroidX
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -95,6 +109,8 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.recyclerview)
+
+    // Testy
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -102,5 +118,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
 }

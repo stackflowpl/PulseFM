@@ -28,17 +28,20 @@ class SplashActivity : ComponentActivity() {
     private val API_STATIONS = "https://api.stackflow.pl/__api/radio24/stations"
     private val API_OKOLICE = "https://api.stackflow.pl/__api/radio24/okolice"
     private val API_SWIAT = "https://api.stackflow.pl/__api/radio24/swiat"
+    private val API_TOP10POP = "https://api.stackflow.pl/__api/radio24/top10pop"
 
     data class Swiatowe(val country: String, val icon: String, val stations: List<RadioSwiatowe>)
     data class RadioSwiatowe(val name: String, val city: String, val url: String, val icon: String)
     data class Wojewodztwo(val woj: String, val icon: String, val stations: List<RadioStationOkolica>)
     data class RadioStationOkolica(val name: String, val city: String, val url: String, val icon: String)
     data class RadioStation(val name: String, val city: String, val url: String, val icon: String)
+    data class Top10popStation(val name: String, val city: String, val url: String, val icon: String)
 
     private val DATABASE_DIR = "database"
     private val STATIONS_FILE = "stations.json"
     private val OKOLICE_FILE = "okolice.json"
     private val SWIAT_FILE = "swiat.json"
+    private val TOP10POP_FILE = "top10pop.json"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +87,7 @@ class SplashActivity : ComponentActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 var successCount = 0
-                var totalAPIs = 3
+                var totalAPIs = 4
 
                 withContext(Dispatchers.Main) {
                     statusTextAwait.text = "Pobieranie stacji krajowych..."
@@ -129,7 +132,21 @@ class SplashActivity : ComponentActivity() {
                 }
 
                 withContext(Dispatchers.Main) {
-                    if (successCount > 2) {
+                    statusTextAwait.text = "Pobieranie stacji top 10 pop..."
+                }
+
+                try {
+                    val top10popJson = fetchFromAPI(API_TOP10POP)
+                    val top10pop: List<Top10popStation> = Gson().fromJson(top10popJson, object : TypeToken<List<Top10popStation>>() {}.type)
+                    saveToFile(TOP10POP_FILE, top10popJson)
+                    successCount++
+                    Log.d("API", "Top10pop loaded successfully: ${top10pop.size} regions")
+                } catch (e: Exception) {
+                    Log.e("API", "Error loading okolica: ${e.message}")
+                }
+
+                withContext(Dispatchers.Main) {
+                    if (successCount > 3) {
                         statusTextAwait.text = "Dane załadowane pomyślnie ($successCount/$totalAPIs)."
                         statusTextFinish.text = "Uruchamianie aplikacji..."
                         Handler(Looper.getMainLooper()).postDelayed({

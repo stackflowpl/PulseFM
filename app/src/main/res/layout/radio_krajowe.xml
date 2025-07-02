@@ -16,8 +16,8 @@
 
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:scrollbars="none">
 
         <LinearLayout
@@ -27,4 +27,73 @@
             android:orientation="horizontal"/>
 
     </HorizontalScrollView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TOP 10 Pop"
+        android:textColor="@color/text_color"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:textSize="16sp" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:id="@+id/radio_container_krajowe_pop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"/>
+
+    </HorizontalScrollView>
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="TOP 10 Rap / Hip‑Hop"-->
+<!--        android:textColor="@color/text_color"-->
+<!--        android:textStyle="bold"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:textSize="16sp" />-->
+
+<!--    <HorizontalScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:scrollbars="none">-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/radio_container_krajowe_rap"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"/>-->
+
+<!--    </HorizontalScrollView>-->
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="TOP 10 Disco Polo"-->
+<!--        android:textColor="@color/text_color"-->
+<!--        android:textStyle="bold"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:textSize="16sp" />-->
+
+<!--    <HorizontalScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:scrollbars="none">-->
+
+<!--        <LinearLayout-->
+<!--            android:id="@+id/radio_container_krajowe_disco"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="horizontal"/>-->
+
+<!--    </HorizontalScrollView>-->
 </LinearLayout>
