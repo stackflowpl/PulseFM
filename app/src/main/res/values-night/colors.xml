@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="background">#0D0D0D</color>
+    <color name="background">#09080F</color>
     <color name="background_ads">#131E24</color>
     <color name="background_search">#212121</color>
     <color name="text_color">#C4C5C7</color>
@@ -19,4 +19,11 @@
 
     <color name="windowBackground">#0D0D0D</color>
     <color name="colorPrimary">#C4C5C7</color>
+
+    <color name="colorBackgroudNavar">#1C1C29</color>
+
+    <color name="station_active">#4CAF50</color>
+    <color name="station_inactive">#757575</color>
+    <color name="map_background">#1a1a1a</color>
+    <color name="header_background">#2d2d2d</color>
 </resources>

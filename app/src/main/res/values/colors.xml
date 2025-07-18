@@ -3,7 +3,7 @@
     <color name="background">#FAFAFA</color>
     <color name="background_ads">#C4C5C7</color>
     <color name="background_search">#DDDEE0</color>
-    <color name="text_color">#0F0F0F</color>
+    <color name="text_color">#141414</color>
     <color name="corner_player">#FFFFFF</color>
     <color name="corner_player_button">#FAFAFA</color>
     <color name="icon_color">#000</color>
@@ -19,4 +19,11 @@
 
     <color name="windowBackground">#FAFAFA</color>
     <color name="colorPrimary">#0F0F0F</color>
+
+    <color name="colorBackgroudNavar">#C4C5C7</color>
+
+    <color name="station_active">#4CAF50</color>
+    <color name="station_inactive">#757575</color>
+    <color name="map_background">#1a1a1a</color>
+    <color name="header_background">#2d2d2d</color>
 </resources>

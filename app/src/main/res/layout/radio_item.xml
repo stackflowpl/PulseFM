@@ -7,7 +7,7 @@
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="190dp"
+        android:layout_width="160dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
         android:background="@drawable/corner_radio_main"
@@ -16,16 +16,16 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/radio_card"
-            android:layout_width="match_parent"
-            android:layout_height="110dp"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="0dp"
             app:cardBackgroundColor="@android:color/transparent">
 
             <ImageView
                 android:id="@+id/radio_icon"
-                android:layout_width="match_parent"
-                android:layout_height="110dp"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
                 android:background="@drawable/rounded_corners"
                 android:scaleType="centerCrop" />
         </androidx.cardview.widget.CardView>
@@ -70,8 +70,8 @@
 
             <ImageView
                 android:id="@+id/radio_favorite"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:background="@drawable/heart"

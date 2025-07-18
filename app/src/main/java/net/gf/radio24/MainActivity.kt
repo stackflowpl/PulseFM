@@ -9,6 +9,8 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.content.SharedPreferences
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -525,26 +527,29 @@ class MainActivity : AppCompatActivity() {
         radioSwiatowe: List<Swiatowe>,
         radioTop10pop: List<Top10popStation>
     ) {
-        findViewById<LinearLayout>(R.id.krajowe).setOnClickListener {
+        findViewById<LinearLayout>(R.id.krajowe_layout).setOnClickListener {
             clearAllBackgrounds()
-            it.setBackgroundResource(R.drawable.corner_box_4)
+            val layout = findViewById<LinearLayout>(R.id.krajowe)
+            layout.setBackgroundResource(R.drawable.corner_box_4)
             switchLayout(container, R.layout.radio_krajowe) {
                 displayRadioStations(radioStations)
                 displayTop10popStations(radioTop10pop)
             }
         }
 
-        findViewById<LinearLayout>(R.id.w_okolicy).setOnClickListener {
+        findViewById<LinearLayout>(R.id.w_okolicy_layout).setOnClickListener {
             clearAllBackgrounds()
-            it.setBackgroundResource(R.drawable.corner_box_4)
+            val layout = findViewById<LinearLayout>(R.id.w_okolicy)
+            layout.setBackgroundResource(R.drawable.corner_box_4)
             switchLayout(container, R.layout.radio_okolice) {
                 displayRadioOkolicaStations(radioOkolicaStations)
             }
         }
 
-        findViewById<LinearLayout>(R.id.swiatowe).setOnClickListener {
+        findViewById<LinearLayout>(R.id.swiatowe_layout).setOnClickListener {
             clearAllBackgrounds()
-            it.setBackgroundResource(R.drawable.corner_box_4)
+            val layout = findViewById<LinearLayout>(R.id.swiatowe)
+            layout.setBackgroundResource(R.drawable.corner_box_4)
             switchLayout(container, R.layout.radio_odkrywaj) {
                 displayRadioSwiatoweStations(radioSwiatowe)
             }
@@ -562,9 +567,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<LinearLayout>(R.id.biblioteka).setOnClickListener {
+        findViewById<LinearLayout>(R.id.biblioteka_layout).setOnClickListener {
             clearAllBackgrounds()
-            it.setBackgroundResource(R.drawable.corner_box_4)
             switchLayout(container, R.layout.library_container) {
                 displayRadioLibrarySwiatowe(
                     radioSwiatowe.flatMap { it.stations },
@@ -573,12 +577,20 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        findViewById<View>(R.id.settings).setOnClickListener {
+        findViewById<View>(R.id.settings_layout).setOnClickListener {
             clearAllBackgrounds()
+            val layout = findViewById<LinearLayout>(R.id.settings)
+            layout.setBackgroundResource(R.drawable.corner_box_4)
             switchLayout(container, R.layout.settings) {
                 setupSettingsInteractions()
             }
             updateThemeCheckboxes()
+        }
+
+        findViewById<LinearLayout>(R.id.car_mode)?.setOnClickListener {
+            val intent = Intent(this, CarActivity::class.java)
+            startActivity(intent)
+            overridePendingTransition(0, 0)
         }
     }
 
@@ -597,9 +609,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun clearAllBackgrounds() {
         findViewById<LinearLayout>(R.id.krajowe)?.background = null
-        findViewById<LinearLayout>(R.id.biblioteka)?.background = null
         findViewById<LinearLayout>(R.id.w_okolicy)?.background = null
         findViewById<LinearLayout>(R.id.swiatowe)?.background = null
+        findViewById<LinearLayout>(R.id.settings)?.background = null
     }
 
     private fun switchLayout(container: LinearLayout, layoutResId: Int, setup: (() -> Unit)? = null) {
@@ -611,6 +623,10 @@ class MainActivity : AppCompatActivity() {
     private fun setupSettingsInteractions() {
         findViewById<LinearLayout>(R.id.discord)?.setOnClickListener {
             openWebsite("https://discord.gg/MtPs7WXyJu")
+        }
+
+        findViewById<LinearLayout>(R.id.dotacja)?.setOnClickListener {
+            openWebsite("https://tipply.pl/@stackflow")
         }
 
         findViewById<LinearLayout>(R.id.github)?.setOnClickListener {
@@ -749,6 +765,12 @@ class MainActivity : AppCompatActivity() {
             if (favorites.contains(name)) R.drawable.heart_active
             else R.drawable.heart
         )
+
+        if (favorites.contains(name)) {
+            starView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF0000"))
+        } else {
+            starView.backgroundTintList = null
+        }
 
         val viewPlayer = findViewById<ImageView>(R.id.radio_player)
         radioView.setOnClickListener {
@@ -918,9 +940,11 @@ class MainActivity : AppCompatActivity() {
         if (wasFavorite) {
             favorites.remove(stationName)
             starView.setBackgroundResource(R.drawable.heart)
+            starView.backgroundTintList = null
         } else {
             favorites.add(stationName)
             starView.setBackgroundResource(R.drawable.heart_active)
+            starView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF0000"))
         }
 
         saveFavorites(context, favorites)

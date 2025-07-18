@@ -35,7 +35,6 @@
             android:layout_height="0dp"
             android:layout_weight="1" />
 
-
         <androidx.cardview.widget.CardView
             android:id="@+id/radio_card"
             android:layout_width="250dp"
@@ -65,7 +64,38 @@
             android:layout_gravity="center"
             android:text="No information about the radio"
             android:textColor="#fff"
-            android:textSize="15sp" />
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="5dp" />
+
+        <!-- DODANE: Informacje o utworze -->
+        <TextView
+            android:id="@+id/radio_track_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Na żywo"
+            android:textColor="#cccccc"
+            android:textSize="14sp"
+            android:layout_marginBottom="3dp"
+            android:maxLines="2"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:scrollHorizontally="true"
+            android:singleLine="true" />
+
+        <!-- DODANE: Informacje o mieście -->
+        <TextView
+            android:id="@+id/radio_city_info"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Brak informacji"
+            android:textColor="#999999"
+            android:textSize="12sp"
+            android:layout_marginBottom="10dp" />
 
         <View
             android:layout_width="0dp"
@@ -84,37 +114,37 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+<!--            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
 
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="15dp"
-                    android:background="@drawable/corner_player_button_car"
-                    android:orientation="vertical">
+<!--                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:padding="15dp"-->
+<!--                    android:background="@drawable/corner_player_button_car"-->
+<!--                    android:orientation="vertical">-->
 
-                    <ImageView
-                        android:id="@+id/radio_favorite"
-                        android:layout_width="60sp"
-                        android:layout_height="60sp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/heart"
-                        android:backgroundTint="#fefefe" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/radio_favorite"-->
+<!--                        android:layout_width="60sp"-->
+<!--                        android:layout_height="60sp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:background="@drawable/heart"-->
+<!--                        android:backgroundTint="#fefefe" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="Favorites"
-                    android:textColor="#fff"
-                    android:textSize="15sp" />
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:text="Favorites"-->
+<!--                    android:textColor="#fff"-->
+<!--                    android:textSize="15sp" />-->
+<!--            </LinearLayout>-->
 
             <View
                 android:layout_width="0dp"
@@ -158,37 +188,37 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+<!--            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical">-->
 
-                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="20dp"
-                    android:background="@drawable/corner_player_button_car"
-                    android:orientation="vertical">
+<!--                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:padding="20dp"-->
+<!--                    android:background="@drawable/corner_player_button_car"-->
+<!--                    android:orientation="vertical">-->
 
-                    <ImageView
-                        android:id="@+id/radio_search"
-                        android:layout_width="50sp"
-                        android:layout_height="50sp"
-                        android:layout_gravity="center"
-                        android:background="@drawable/search"
-                        android:backgroundTint="#fefefe" />
+<!--                    <ImageView-->
+<!--                        android:id="@+id/radio_search"-->
+<!--                        android:layout_width="50sp"-->
+<!--                        android:layout_height="50sp"-->
+<!--                        android:layout_gravity="center"-->
+<!--                        android:background="@drawable/search"-->
+<!--                        android:backgroundTint="#fefefe" />-->
 
-                </LinearLayout>
+<!--                </LinearLayout>-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_marginTop="10dp"
-                    android:text="Search"
-                    android:textColor="#fff"
-                    android:textSize="15sp" />
-            </LinearLayout>
+<!--                <TextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:text="Search"-->
+<!--                    android:textColor="#fff"-->
+<!--                    android:textSize="15sp" />-->
+<!--            </LinearLayout>-->
 
             <View
                 android:layout_width="0dp"

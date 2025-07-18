@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorPrimary">#FF6B35</item>
+        <item name="colorAccent">#FF6B35</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:background">#1A1A1A</item>
+        <item name="android:windowBackground">#1A1A1A</item>
+    </style>
+</resources>
