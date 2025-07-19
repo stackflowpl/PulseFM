@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">api.stackflow.pl</domain>
+        <trust-anchors>
+            <certificates src="system"/>
+        </trust-anchors>
         <domain includeSubdomains="true">radioluz.pwr.edu.pl</domain>
         <domain includeSubdomains="true">an.cdn.eurozet.pl</domain>
         <domain includeSubdomains="true">pldm.ml</domain>
@@ -219,4 +223,11 @@
         <domain includeSubdomains="true">live.antenne.at</domain>
         <domain includeSubdomains="true">radio.autoliferadio.com</domain>
     </domain-config>
+
+    <base-config cleartextTrafficPermitted="true">
+        <trust-anchors>
+            <certificates src="system"/>
+            <certificates src="user"/>
+        </trust-anchors>
+    </base-config>
 </network-security-config>

@@ -16,22 +16,26 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
 import java.io.File
+import java.io.IOException
 import java.net.HttpURLConnection
+import java.net.SocketTimeoutException
 import java.net.URL
+import java.net.UnknownHostException
+import java.security.cert.X509Certificate
+import javax.net.ssl.*
 
 class SplashActivity : ComponentActivity() {
 
     private lateinit var statusText: TextView
     private lateinit var statusTextAwait: TextView
     private lateinit var statusTextFinish: TextView
-
     private lateinit var sharedPreferences: SharedPreferences
-
-    private val activityScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
 
     private companion object {
         const val API_STATIONS = "https://api.stackflow.pl/__api/radio24/stations"
@@ -48,11 +52,14 @@ class SplashActivity : ComponentActivity() {
         const val PREF_NAME = "Radio24Preferences"
         const val PREF_PERMISSIONS_ACCEPTED = "permissions_accepted"
         const val PREF_DATA_CONSENT = "data_consent"
+        const val PREF_LAST_UPDATE = "last_update"
 
-        const val CONNECT_TIMEOUT = 15000
-        const val READ_TIMEOUT = 15000
-        const val RETRY_DELAY = 2000L
+        const val CONNECT_TIMEOUT = 30000
+        const val READ_TIMEOUT = 30000
+        const val MAX_RETRIES = 3
+        const val RETRY_DELAY_BASE = 1000L
         const val SUCCESS_DELAY = 1000L
+        const val CACHE_VALIDITY_HOURS = 24
     }
 
     data class Swiatowe(val country: String, val icon: String, val stations: List<RadioSwiatowe>)
@@ -76,14 +83,11 @@ class SplashActivity : ComponentActivity() {
         initializePreferences()
         initializeDatabase()
 
+        configureTrustManager()
+
         Handler(Looper.getMainLooper()).postDelayed({
             checkPermissionsAndConsent()
         }, 500)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        activityScope.cancel()
     }
 
     private fun initializeViews() {
@@ -91,9 +95,7 @@ class SplashActivity : ComponentActivity() {
         statusTextAwait = findViewById(R.id.statusTextAwiat)
         statusTextFinish = findViewById(R.id.statusTextFinish)
 
-        statusText.text = "Inicjalizacja aplikacji..."
-        statusTextAwait.text = "Przygotowywanie..."
-        statusTextFinish.text = ""
+        updateStatus("Inicjalizacja aplikacji...", "Przygotowywanie...", "")
     }
 
     private fun initializePreferences() {
@@ -112,6 +114,25 @@ class SplashActivity : ComponentActivity() {
         }
     }
 
+    private fun configureTrustManager() {
+        try {
+            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
+                val trustAllCerts = arrayOf<TrustManager>(object : X509TrustManager {
+                    override fun checkClientTrusted(chain: Array<X509Certificate>, authType: String) {}
+                    override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {}
+                    override fun getAcceptedIssuers(): Array<X509Certificate> = arrayOf()
+                })
+
+                val sslContext = SSLContext.getInstance("SSL")
+                sslContext.init(null, trustAllCerts, java.security.SecureRandom())
+                HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.socketFactory)
+                HttpsURLConnection.setDefaultHostnameVerifier { _, _ -> true }
+            }
+        } catch (e: Exception) {
+            Log.w("SSL", "Could not configure SSL for older devices", e)
+        }
+    }
+
     private fun checkPermissionsAndConsent() {
         val permissionsAccepted = sharedPreferences.getBoolean(PREF_PERMISSIONS_ACCEPTED, false)
         val dataConsentGiven = sharedPreferences.getBoolean(PREF_DATA_CONSENT, false)
@@ -126,20 +147,20 @@ class SplashActivity : ComponentActivity() {
                 showDataConsentDialog()
             }
             else -> {
-                updateStatus("Sprawdzam połączenie z internetem:", "Łączenie...", "")
-                checkInternetAndLoadData()
+                checkCacheAndLoadData()
             }
         }
     }
 
     private fun showPermissionDialog() {
+        if (isFinishing || isDestroyed) return
+
         AlertDialog.Builder(this, R.style.AlertDialogCustom)
             .setTitle("Uprawnienia aplikacji")
             .setMessage("""
                 Radio24 potrzebuje następujących uprawnień:
                 
                 • Powiadomienia - informacje o odtwarzanych stacjach
-                • Nagrywanie dźwięku - rozpoznawanie muzyki (opcjonalne)
                 • Dostęp do plików - zapisywanie ulubionych stacji
                 
                 Czy wyrażasz zgodę na udzielenie uprawnień?
@@ -156,6 +177,8 @@ class SplashActivity : ComponentActivity() {
     }
 
     private fun showPermissionDeniedDialog() {
+        if (isFinishing || isDestroyed) return
+
         AlertDialog.Builder(this, R.style.AlertDialogCustom)
             .setTitle("Uprawnienia wymagane")
             .setMessage("Aplikacja wymaga podstawowych uprawnień do prawidłowego działania.\n\nCzy chcesz spróbować ponownie?")
@@ -180,19 +203,10 @@ class SplashActivity : ComponentActivity() {
             }
         }
 
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO)
-            != PackageManager.PERMISSION_GRANTED) {
-            permissionsToRequest.add(Manifest.permission.RECORD_AUDIO)
-        }
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
                 permissionsToRequest.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            }
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-                permissionsToRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
         }
 
@@ -205,40 +219,31 @@ class SplashActivity : ComponentActivity() {
     }
 
     private fun handlePermissionResults(permissions: Map<String, Boolean>) {
-        val allGranted = permissions.values.all { it }
-        val criticalPermissionsDenied = permissions.entries.any { (permission, granted) ->
-            !granted && (permission == Manifest.permission.POST_NOTIFICATIONS ||
-                    permission == Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val criticalDenied = permissions.entries.any { (permission, granted) ->
+            !granted && permission == Manifest.permission.POST_NOTIFICATIONS &&
+                    Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
         }
 
-        when {
-            allGranted -> {
-                updateStatus("Uprawnienia przyznane", "Wszystko gotowe!", "")
-                savePermissionConsent(true)
-                Log.d("Permissions", "All permissions granted")
-            }
-            criticalPermissionsDenied -> {
-                updateStatus("Uprawnienia odrzucone", "Wymagana akceptacja", "")
-                showCriticalPermissionDialog()
-            }
-            else -> {
-                updateStatus("Uprawnienia częściowo przyznane", "Kontynuowanie...", "")
-                savePermissionConsent(true)
-                Log.d("Permissions", "Some optional permissions denied, continuing")
-            }
+        if (criticalDenied) {
+            updateStatus("Uprawnienia odrzucone", "Ograniczona funkcjonalność", "")
+            showCriticalPermissionDialog()
+        } else {
+            updateStatus("Uprawnienia przyznane", "Wszystko gotowe!", "")
+            savePermissionConsent(true)
         }
     }
 
     private fun showCriticalPermissionDialog() {
+        if (isFinishing || isDestroyed) return
+
         AlertDialog.Builder(this, R.style.AlertDialogCustom)
-            .setTitle("Krytyczne uprawnienia")
-            .setMessage("Niektóre kluczowe uprawnienia zostały odrzucone.\n\nAplikacja może nie działać prawidłowo.\n\nCzy chcesz spróbować ponownie?")
-            .setPositiveButton("Spróbuj ponownie") { _, _ ->
-                requestNecessaryPermissions()
-            }
-            .setNegativeButton("Kontynuuj mimo to") { _, _ ->
-                updateStatus("Kontynuowanie...", "Ograniczona funkcjonalność", "")
+            .setTitle("Ważne uprawnienia")
+            .setMessage("Niektóre uprawnienia zostały odrzucone. Aplikacja będzie działać z ograniczoną funkcjonalnością.\n\nCzy chcesz kontynuować?")
+            .setPositiveButton("Kontynuuj") { _, _ ->
                 savePermissionConsent(true)
+            }
+            .setNegativeButton("Spróbuj ponownie") { _, _ ->
+                requestNecessaryPermissions()
             }
             .setCancelable(false)
             .show()
@@ -259,15 +264,15 @@ class SplashActivity : ComponentActivity() {
     private fun checkDataConsent() {
         val dataConsentGiven = sharedPreferences.getBoolean(PREF_DATA_CONSENT, false)
         if (!dataConsentGiven) {
-            updateStatus("Sprawdzanie zgód...", "Wymagana akceptacja", "")
             showDataConsentDialog()
         } else {
-            updateStatus("Sprawdzam połączenie z internetem:", "Łączenie...", "")
-            checkInternetAndLoadData()
+            checkCacheAndLoadData()
         }
     }
 
     private fun showDataConsentDialog() {
+        if (isFinishing || isDestroyed) return
+
         AlertDialog.Builder(this, R.style.AlertDialogCustom)
             .setTitle("Zgoda na przetwarzanie danych")
             .setMessage("""
@@ -284,7 +289,7 @@ class SplashActivity : ComponentActivity() {
                 updateStatus("Zgoda udzielona", "Przygotowywanie...", "")
                 saveDataConsent(true)
                 Handler(Looper.getMainLooper()).postDelayed({
-                    checkInternetAndLoadData()
+                    checkCacheAndLoadData()
                 }, 500)
             }
             .setNegativeButton("Odrzuć") { _, _ ->
@@ -295,6 +300,8 @@ class SplashActivity : ComponentActivity() {
     }
 
     private fun showDataConsentDeniedDialog() {
+        if (isFinishing || isDestroyed) return
+
         AlertDialog.Builder(this, R.style.AlertDialogCustom)
             .setTitle("Zgoda wymagana")
             .setMessage("Bez zgody na przetwarzanie danych aplikacja nie może pobrać listy stacji radiowych.\n\nCzy chcesz zmienić decyzję?")
@@ -315,22 +322,54 @@ class SplashActivity : ComponentActivity() {
             .apply()
     }
 
-    private fun checkInternetAndLoadData() {
-        updateStatus("Sprawdzam połączenie z internetem:", "Testowanie połączenia...", "")
+    private fun checkCacheAndLoadData() {
+        val lastUpdate = sharedPreferences.getLong(PREF_LAST_UPDATE, 0)
+        val currentTime = System.currentTimeMillis()
+        val cacheAge = currentTime - lastUpdate
+        val cacheValidityMs = CACHE_VALIDITY_HOURS * 60 * 60 * 1000
 
+        val hasValidCache = cacheAge < cacheValidityMs && hasAllCachedFiles()
+
+        if (hasValidCache && !isInternetAvailable()) {
+            updateStatus("Brak internetu", "Używanie danych z pamięci podręcznej", "Uruchamianie...")
+            Handler(Looper.getMainLooper()).postDelayed({
+                proceedToMainActivity()
+            }, SUCCESS_DELAY)
+        } else {
+            updateStatus("Sprawdzam połączenie z internetem:", "Testowanie połączenia...", "")
+            checkInternetAndLoadData()
+        }
+    }
+
+    private fun hasAllCachedFiles(): Boolean {
+        val files = listOf(STATIONS_FILE, OKOLICE_FILE, SWIAT_FILE, TOP10POP_FILE)
+        return files.all { fileName ->
+            val file = File(File(filesDir, DATABASE_DIR), fileName)
+            file.exists() && file.length() > 0
+        }
+    }
+
+    private fun checkInternetAndLoadData() {
         if (isInternetAvailable()) {
             updateStatus("Sprawdzam połączenie z internetem:", "Połączenie ustanowione.", "Pobieranie danych...")
             Handler(Looper.getMainLooper()).postDelayed({
                 loadDataFromAPI()
             }, 800)
         } else {
-            updateStatus("Sprawdzam połączenie z internetem:", "Brak dostępu do internetu.", "Sprawdzanie ponownie...")
-            scheduleRetry { checkInternetAndLoadData() }
+            if (hasAllCachedFiles()) {
+                updateStatus("Brak internetu", "Używanie danych z pamięci podręcznej", "Uruchamianie...")
+                Handler(Looper.getMainLooper()).postDelayed({
+                    proceedToMainActivity()
+                }, SUCCESS_DELAY)
+            } else {
+                updateStatus("Sprawdzam połączenie z internetem:", "Brak dostępu do internetu.", "Sprawdzanie ponownie...")
+                scheduleRetry(1) { checkInternetAndLoadData() }
+            }
         }
     }
 
     private fun loadDataFromAPI() {
-        activityScope.launch {
+        lifecycleScope.launch {
             try {
                 val apiCalls = listOf(
                     APICall("stacji krajowych", API_STATIONS, STATIONS_FILE) { json ->
@@ -351,14 +390,16 @@ class SplashActivity : ComponentActivity() {
                 val totalAPIs = apiCalls.size
 
                 for ((index, apiCall) in apiCalls.withIndex()) {
+                    if (isFinishing || isDestroyed) return@launch
+
                     updateStatus(
-                        "Sprawdzam połączenie z internetem:",
-                        "Pobieranie ${apiCall.description}...",
+                        "Pobieranie danych:",
+                        "Ładowanie ${apiCall.description}...",
                         "Postęp: ${index + 1}/$totalAPIs"
                     )
 
                     try {
-                        val jsonData = fetchFromAPI(apiCall.url)
+                        val jsonData = fetchFromAPIWithRetry(apiCall.url)
                         val parsedData = apiCall.parser(jsonData)
                         saveToFile(apiCall.fileName, jsonData)
                         successCount++
@@ -367,38 +408,47 @@ class SplashActivity : ComponentActivity() {
                             is List<*> -> parsedData.size
                             else -> 0
                         }
-
                         Log.d("API", "${apiCall.description} loaded successfully: $itemCount items")
-
-                        delay(300)
-
+                        delay(200)
                     } catch (e: Exception) {
                         Log.e("API", "Error loading ${apiCall.description}", e)
                         updateStatus(
-                            "Sprawdzam połączenie z internetem:",
+                            "Pobieranie danych:",
                             "Błąd pobierania ${apiCall.description}",
                             "Kontynuowanie..."
                         )
-                        delay(500)
+                        delay(300)
                     }
                 }
 
                 handleLoadingResult(successCount, totalAPIs)
-
             } catch (e: Exception) {
                 Log.e("API", "General error loading data", e)
-                updateStatus("Sprawdzam połączenie z internetem:", "Błąd podczas pobierania danych.", "Ponowienie próby...")
-                scheduleRetry { checkInternetAndLoadData() }
+                if (hasAllCachedFiles()) {
+                    updateStatus("Błąd pobierania", "Używanie danych z pamięci podręcznej", "Uruchamianie...")
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        proceedToMainActivity()
+                    }, SUCCESS_DELAY)
+                } else {
+                    updateStatus("Błąd pobierania danych", "Ponowienie próby...", "")
+                    scheduleRetry(1) { checkInternetAndLoadData() }
+                }
             }
         }
     }
 
     private suspend fun handleLoadingResult(successCount: Int, totalAPIs: Int) {
         withContext(Dispatchers.Main) {
+            if (isFinishing || isDestroyed) return@withContext
+
             when {
                 successCount >= totalAPIs -> {
+                    sharedPreferences.edit()
+                        .putLong(PREF_LAST_UPDATE, System.currentTimeMillis())
+                        .apply()
+
                     updateStatus(
-                        "Sprawdzam połączenie z internetem:",
+                        "Pobieranie danych:",
                         "Dane załadowane pomyślnie ($successCount/$totalAPIs).",
                         "Uruchamianie aplikacji..."
                     )
@@ -406,65 +456,161 @@ class SplashActivity : ComponentActivity() {
                         proceedToMainActivity()
                     }, SUCCESS_DELAY)
                 }
+                successCount > 0 -> {
+                    updateStatus(
+                        "Pobieranie danych:",
+                        "Częściowo załadowane ($successCount/$totalAPIs).",
+                        "Uruchamianie aplikacji..."
+                    )
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        proceedToMainActivity()
+                    }, SUCCESS_DELAY)
+                }
+                hasAllCachedFiles() -> {
+                    updateStatus(
+                        "Błąd pobierania",
+                        "Używanie danych z pamięci podręcznej",
+                        "Uruchamianie..."
+                    )
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        proceedToMainActivity()
+                    }, SUCCESS_DELAY)
+                }
                 else -> {
                     updateStatus(
-                        "Sprawdzam połączenie z internetem:",
-                        "Nie udało się pobrać danych.",
-                        "Sprawdzanie ponownie..."
+                        "Błąd pobierania danych",
+                        "Ponowienie próby...",
+                        ""
                     )
-                    scheduleRetry { checkInternetAndLoadData() }
+                    scheduleRetry(1) { checkInternetAndLoadData() }
                 }
+            }
+        }
+    }
+
+    private suspend fun fetchFromAPIWithRetry(urlString: String, retryCount: Int = 0): String {
+        return try {
+            fetchFromAPI(urlString)
+        } catch (e: Exception) {
+            if (retryCount < MAX_RETRIES) {
+                val delayMs = RETRY_DELAY_BASE * (retryCount + 1)
+                Log.w("API", "Retry ${retryCount + 1}/$MAX_RETRIES for $urlString after ${delayMs}ms", e)
+                delay(delayMs)
+                fetchFromAPIWithRetry(urlString, retryCount + 1)
+            } else {
+                throw e
             }
         }
     }
 
     private suspend fun fetchFromAPI(urlString: String): String {
         return withContext(Dispatchers.IO) {
-            val url = URL(urlString)
-            val connection = url.openConnection() as HttpURLConnection
-
+            var connection: HttpURLConnection? = null
             try {
+                val url = URL(urlString)
+                connection = url.openConnection() as HttpURLConnection
+
                 connection.apply {
                     requestMethod = "GET"
                     connectTimeout = CONNECT_TIMEOUT
                     readTimeout = READ_TIMEOUT
                     setRequestProperty("Accept", "application/json")
-                    setRequestProperty("User-Agent", "Radio24-Android")
+                    setRequestProperty("User-Agent", "Radio24-Android/${getAppVersion()}")
                     setRequestProperty("Cache-Control", "no-cache")
+                    setRequestProperty("Accept-Encoding", "gzip, deflate")
+
+                    // Dodatkowe nagłówki dla kompatybilności
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+                        setRequestProperty("Connection", "close")
+                    }
                 }
 
-                when (connection.responseCode) {
+                val responseCode = connection.responseCode
+                Log.d("API", "Response code for $urlString: $responseCode")
+
+                when (responseCode) {
                     HttpURLConnection.HTTP_OK -> {
-                        connection.inputStream.bufferedReader().use { it.readText() }
+                        val inputStream = if (connection.contentEncoding == "gzip") {
+                            java.util.zip.GZIPInputStream(connection.inputStream)
+                        } else {
+                            connection.inputStream
+                        }
+
+                        inputStream.bufferedReader(Charsets.UTF_8).use { reader ->
+                            val response = reader.readText()
+                            if (response.isBlank()) {
+                                throw IOException("Empty response from server")
+                            }
+
+                            try {
+                                Gson().fromJson(response, Any::class.java)
+                            } catch (e: JsonSyntaxException) {
+                                throw IOException("Invalid JSON response", e)
+                            }
+
+                            response
+                        }
+                    }
+                    HttpURLConnection.HTTP_NOT_FOUND -> {
+                        throw IOException("API endpoint not found (404)")
+                    }
+                    HttpURLConnection.HTTP_INTERNAL_ERROR -> {
+                        throw IOException("Server error (500)")
                     }
                     else -> {
-                        throw Exception("HTTP ${connection.responseCode}: ${connection.responseMessage}")
+                        throw IOException("HTTP $responseCode: ${connection.responseMessage}")
                     }
                 }
+            } catch (e: SocketTimeoutException) {
+                throw IOException("Connection timeout", e)
+            } catch (e: UnknownHostException) {
+                throw IOException("Cannot resolve host", e)
+            } catch (e: Exception) {
+                throw IOException("Network error: ${e.message}", e)
             } finally {
-                connection.disconnect()
+                connection?.disconnect()
             }
+        }
+    }
+
+    private fun getAppVersion(): String {
+        return try {
+            packageManager.getPackageInfo(packageName, 0).versionName ?: "1.0"
+        } catch (e: Exception) {
+            "1.0"
         }
     }
 
     private fun saveToFile(fileName: String, jsonData: String) {
         try {
-            val file = File(File(filesDir, DATABASE_DIR), fileName)
-            file.writeText(jsonData)
+            val databaseDir = File(filesDir, DATABASE_DIR)
+            if (!databaseDir.exists()) {
+                databaseDir.mkdirs()
+            }
+
+            val file = File(databaseDir, fileName)
+            file.writeText(jsonData, Charsets.UTF_8)
             Log.d("File", "Successfully saved $fileName (${jsonData.length} bytes)")
         } catch (e: Exception) {
             Log.e("File", "Error saving $fileName", e)
+            throw e
         }
     }
 
     private fun isInternetAvailable(): Boolean {
         return try {
             val connectivityManager = getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
-            val network = connectivityManager.activeNetwork ?: return false
-            val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
 
-            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
-                    capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                val network = connectivityManager.activeNetwork ?: return false
+                val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+                capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                        capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+            } else {
+                @Suppress("DEPRECATION")
+                val networkInfo = connectivityManager.activeNetworkInfo
+                networkInfo?.isConnected == true
+            }
         } catch (e: Exception) {
             Log.e("Network", "Error checking internet connectivity", e)
             false
@@ -472,22 +618,47 @@ class SplashActivity : ComponentActivity() {
     }
 
     private fun updateStatus(status: String, await: String, finish: String) {
+        if (isFinishing || isDestroyed) return
+
         runOnUiThread {
-            if (status.isNotEmpty()) statusText.text = status
-            if (await.isNotEmpty()) statusTextAwait.text = await
-            if (finish.isNotEmpty()) statusTextFinish.text = finish
+            try {
+                if (status.isNotEmpty()) statusText.text = status
+                if (await.isNotEmpty()) statusTextAwait.text = await
+                if (finish.isNotEmpty()) statusTextFinish.text = finish
+            } catch (e: Exception) {
+                Log.e("UI", "Error updating status", e)
+            }
         }
     }
 
-    private fun scheduleRetry(action: () -> Unit) {
-        Handler(Looper.getMainLooper()).postDelayed(action, RETRY_DELAY)
+    private fun scheduleRetry(attempt: Int, action: () -> Unit) {
+        if (isFinishing || isDestroyed) return
+
+        val delay = RETRY_DELAY_BASE * attempt
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (!isFinishing && !isDestroyed) {
+                action()
+            }
+        }, delay)
     }
 
     private fun proceedToMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
-        finish()
-        overridePendingTransition(0, 0)
+        if (isFinishing || isDestroyed) return
+
+        try {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+            overridePendingTransition(0, 0)
+        } catch (e: Exception) {
+            Log.e("Navigation", "Error starting MainActivity", e)
+            finish()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        lifecycleScope.cancel()
     }
 
     private data class APICall(
