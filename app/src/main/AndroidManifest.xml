@@ -113,7 +113,7 @@
         <activity
             android:name=".CarActivity"
             android:exported="false"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Flux">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

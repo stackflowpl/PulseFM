@@ -519,7 +519,6 @@ class SplashActivity : ComponentActivity() {
                     setRequestProperty("Cache-Control", "no-cache")
                     setRequestProperty("Accept-Encoding", "gzip, deflate")
 
-                    // Dodatkowe nagłówki dla kompatybilności
                     if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
                         setRequestProperty("Connection", "close")
                     }

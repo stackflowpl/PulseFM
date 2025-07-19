@@ -24,7 +24,6 @@
         android:padding="10dp">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/radio_card"
             android:layout_width="200sp"
             android:layout_height="200sp"
             app:cardCornerRadius="8dp"
