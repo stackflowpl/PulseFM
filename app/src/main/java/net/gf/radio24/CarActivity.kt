@@ -52,14 +52,12 @@ class CarActivity : AppCompatActivity() {
             val binder = service as RadioService.RadioBinder
             radioService = binder.getService()
             isServiceBound = true
-            Log.d("CarActivity", "Service connected - syncing state")
             updatePlayerStateFromService()
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
             radioService = null
             isServiceBound = false
-            Log.d("CarActivity", "Service disconnected")
         }
     }
 
@@ -85,31 +83,16 @@ class CarActivity : AppCompatActivity() {
         }
 
         findViewById<ImageView>(R.id.radio_player).setOnClickListener {
-            togglePlayPause(it as ImageView)
+            togglePlayPause()
         }
-
-//        findViewById<ImageView>(R.id.radio_favorite).setOnClickListener {
-//            toggleFavorite()
-//        }
-//
-//        findViewById<ImageView>(R.id.radio_search).setOnClickListener {
-//            Toast.makeText(this, "Funkcja wyszukiwania w przygotowaniu", Toast.LENGTH_SHORT).show()
-//        }
     }
 
     private fun setupBroadcastReceiver() {
-        Log.d("CarActivity", "Setting up LOCAL broadcast receivers")
-
         playbackStateReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
-                Log.d("CarActivity", "LOCAL BroadcastReceiver onReceive called with action: ${intent?.action}")
-
                 if (intent?.action == RadioService.BROADCAST_PLAYBACK_STATE) {
                     val isPlaying = intent.getBooleanExtra(RadioService.EXTRA_IS_PLAYING, false)
                     val isBuffering = intent.getBooleanExtra(RadioService.EXTRA_IS_BUFFERING, false)
-                    val stationName = intent.getStringExtra("EXTRA_STATION_NAME")
-
-                    Log.d("CarActivity", "LOCAL BROADCAST RECEIVED - Playing: $isPlaying, Buffering: $isBuffering, Station: $stationName")
 
                     currentPlayerState = currentPlayerState.copy(
                         isPlaying = isPlaying,
@@ -126,7 +109,6 @@ class CarActivity : AppCompatActivity() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (intent?.action == RadioService.BROADCAST_TRACK_CHANGED) {
                     val trackInfo = intent.getStringExtra(RadioService.EXTRA_TRACK_INFO)
-                    Log.d("CarActivity", "Track change LOCAL broadcast received - Info: $trackInfo")
                     updateTrackInfo(trackInfo ?: "")
                 }
             }
@@ -135,7 +117,6 @@ class CarActivity : AppCompatActivity() {
         try {
             localBroadcastManager.registerReceiver(playbackStateReceiver, IntentFilter(RadioService.BROADCAST_PLAYBACK_STATE))
             localBroadcastManager.registerReceiver(trackChangeReceiver!!, IntentFilter(RadioService.BROADCAST_TRACK_CHANGED))
-            Log.d("CarActivity", "LOCAL broadcast receivers registered successfully")
         } catch (e: Exception) {
             Log.e("CarActivity", "Error registering LOCAL broadcast receivers: ${e.message}")
         }
@@ -150,7 +131,6 @@ class CarActivity : AppCompatActivity() {
                 trackInfoView.text = trackInfo
                 currentPlayerState = currentPlayerState.copy(trackInfo = trackInfo)
                 savePlayerState()
-                Log.d("CarActivity", "Track info updated to: $trackInfo")
             } else {
                 cityInfoView.text = currentPlayerState.city.takeIf { it.isNotEmpty() } ?: "Brak informacji"
             }
@@ -160,7 +140,6 @@ class CarActivity : AppCompatActivity() {
     }
 
     private fun bindToRadioService() {
-        Log.d("CarActivity", "Binding to RadioService")
         val intent = Intent(this, RadioService::class.java)
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
     }
@@ -170,8 +149,6 @@ class CarActivity : AppCompatActivity() {
             val serviceIsPlaying = service.isCurrentlyPlaying()
             val serviceIsBuffering = service.isCurrentlyBuffering()
             val trackInfo = service.getCurrentTrackInfo()
-
-            Log.d("CarActivity", "Syncing with service - Service Playing: $serviceIsPlaying, Service Buffering: $serviceIsBuffering")
 
             currentPlayerState = currentPlayerState.copy(
                 isPlaying = serviceIsPlaying,
@@ -205,8 +182,6 @@ class CarActivity : AppCompatActivity() {
                 icon = jsonObject.optString("icon", ""),
                 trackInfo = jsonObject.optString("trackInfo", "")
             )
-
-            Log.d("CarActivity", "Player state loaded - Playing: ${currentPlayerState.isPlaying}, Station: ${currentPlayerState.stationName}")
         } catch (e: Exception) {
             Log.e("loadPlayerState", "Error loading player state: ${e.message}")
         }
@@ -224,7 +199,6 @@ class CarActivity : AppCompatActivity() {
                 put("trackInfo", currentPlayerState.trackInfo)
             }
             getPlayerFile().writeText(jsonObject.toString())
-            Log.d("CarActivity", "Player state saved - Playing: ${currentPlayerState.isPlaying}")
         } catch (e: Exception) {
             Log.e("savePlayerState", "Error saving player state: ${e.message}")
         }
@@ -275,96 +249,16 @@ class CarActivity : AppCompatActivity() {
 
             playButton.setImageResource(buttonResource)
             textPlayStatus.text = statusText
-
-            updateFavoriteButton()
-
-            Log.d("CarActivity", "UI updated - Playing: ${currentPlayerState.isPlaying}, Buffering: ${currentPlayerState.isBuffering}")
-
         } catch (e: Exception) {
             Log.e("updateUI", "Error updating UI: ${e.message}")
         }
     }
 
-    private fun updateFavoriteButton() {
-        try {
-            val favoriteButton: ImageView = findViewById(R.id.radio_favorite)
-            val favorites = getFavorites()
-
-            val isFavorite = favorites.contains(currentPlayerState.stationName)
-            favoriteButton.setBackgroundResource(
-                if (isFavorite) R.drawable.heart_active else R.drawable.heart
-            )
-        } catch (e: Exception) {
-            Log.e("updateFavoriteButton", "Error updating favorite button: ${e.message}")
-        }
-    }
-
-    private fun toggleFavorite() {
-        if (currentPlayerState.stationName.isEmpty()) {
-            Toast.makeText(this, "Brak wybranej stacji!", Toast.LENGTH_SHORT).show()
-            return
-        }
-
-        val favorites = getFavorites()
-        val wasFavorite = favorites.contains(currentPlayerState.stationName)
-
-        if (wasFavorite) {
-            favorites.remove(currentPlayerState.stationName)
-            Toast.makeText(this, "Usunięto z ulubionych", Toast.LENGTH_SHORT).show()
-        } else {
-            favorites.add(currentPlayerState.stationName)
-            Toast.makeText(this, "Dodano do ulubionych", Toast.LENGTH_SHORT).show()
-        }
-
-        saveFavorites(favorites)
-        updateFavoriteButton()
-    }
-
-    private fun getFavorites(): MutableSet<String> {
-        val file = File(File(filesDir, DATABASE_DIR), "favorites.json")
-        if (!file.exists()) return mutableSetOf()
-
-        return try {
-            val json = file.readText()
-            if (json.isNotEmpty()) {
-                val jsonObject = JSONObject(json)
-                val favoritesArray = jsonObject.optJSONArray("favorites")
-                val favorites = mutableSetOf<String>()
-
-                favoritesArray?.let {
-                    for (i in 0 until it.length()) {
-                        favorites.add(it.getString(i))
-                    }
-                }
-                favorites
-            } else {
-                mutableSetOf()
-            }
-        } catch (e: Exception) {
-            Log.e("getFavorites", "Error reading favorites: ${e.message}")
-            mutableSetOf()
-        }
-    }
-
-    private fun saveFavorites(favorites: MutableSet<String>) {
-        try {
-            val file = File(File(filesDir, DATABASE_DIR), "favorites.json")
-            val jsonObject = JSONObject().apply {
-                put("favorites", org.json.JSONArray(favorites.toList()))
-            }
-            file.writeText(jsonObject.toString())
-        } catch (e: Exception) {
-            Log.e("saveFavorites", "Error saving favorites: ${e.message}")
-        }
-    }
-
-    private fun togglePlayPause(viewPlayer: ImageView) {
+    private fun togglePlayPause() {
         if (currentPlayerState.url.isEmpty()) {
             Toast.makeText(this, "Brak danych o stacji radiowej!", Toast.LENGTH_SHORT).show()
             return
         }
-
-        Log.d("CarActivity", "Toggle play/pause - Current state: Playing=${currentPlayerState.isPlaying}, Buffering=${currentPlayerState.isBuffering}")
 
         val iconResId = resources.getIdentifier(
             currentPlayerState.icon.replace("@drawable/", ""), "drawable", packageName
@@ -379,17 +273,14 @@ class CarActivity : AppCompatActivity() {
         when {
             currentPlayerState.isPlaying -> {
                 intent.action = RadioService.ACTION_PAUSE
-                Log.d("CarActivity", "Sending PAUSE action")
             }
             currentPlayerState.isBuffering -> {
                 intent.action = RadioService.ACTION_STOP
-                Log.d("CarActivity", "Sending STOP action (interrupting buffering)")
             }
             else -> {
                 intent.action = RadioService.ACTION_PLAY
                 currentPlayerState = currentPlayerState.copy(isBuffering = true, isPlaying = false)
                 updateUI()
-                Log.d("CarActivity", "Sending PLAY action")
             }
         }
 
@@ -409,8 +300,6 @@ class CarActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        Log.d("CarActivity", "onResume - loading state and updating UI")
-
         loadPlayerState()
         updateUI()
 
@@ -423,15 +312,12 @@ class CarActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.d("CarActivity", "onDestroy called")
-
         exoPlayer?.release()
         exoPlayer = null
 
         try {
             localBroadcastManager.unregisterReceiver(playbackStateReceiver)
             trackChangeReceiver?.let { localBroadcastManager.unregisterReceiver(it) }
-            Log.d("CarActivity", "LOCAL broadcast receivers unregistered")
         } catch (e: Exception) {
             Log.e("onDestroy", "Error unregistering LOCAL receiver: ${e.message}")
         }
@@ -439,7 +325,6 @@ class CarActivity : AppCompatActivity() {
         if (isServiceBound) {
             unbindService(serviceConnection)
             isServiceBound = false
-            Log.d("CarActivity", "Service unbound")
         }
 
         savePlayerState()

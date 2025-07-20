@@ -106,8 +106,7 @@ class SplashActivity : ComponentActivity() {
         try {
             val databaseDir = File(filesDir, DATABASE_DIR)
             if (!databaseDir.exists()) {
-                val created = databaseDir.mkdirs()
-                Log.d("Database", "Database directory created: $created")
+                databaseDir.mkdirs()
             }
         } catch (e: Exception) {
             Log.e("Database", "Error initializing database", e)
@@ -408,7 +407,6 @@ class SplashActivity : ComponentActivity() {
                             is List<*> -> parsedData.size
                             else -> 0
                         }
-                        Log.d("API", "${apiCall.description} loaded successfully: $itemCount items")
                         delay(200)
                     } catch (e: Exception) {
                         Log.e("API", "Error loading ${apiCall.description}", e)
@@ -456,16 +454,6 @@ class SplashActivity : ComponentActivity() {
                         proceedToMainActivity()
                     }, SUCCESS_DELAY)
                 }
-                successCount > 0 -> {
-                    updateStatus(
-                        "Pobieranie danych:",
-                        "Częściowo załadowane ($successCount/$totalAPIs).",
-                        "Uruchamianie aplikacji..."
-                    )
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        proceedToMainActivity()
-                    }, SUCCESS_DELAY)
-                }
                 hasAllCachedFiles() -> {
                     updateStatus(
                         "Błąd pobierania",
@@ -494,7 +482,6 @@ class SplashActivity : ComponentActivity() {
         } catch (e: Exception) {
             if (retryCount < MAX_RETRIES) {
                 val delayMs = RETRY_DELAY_BASE * (retryCount + 1)
-                Log.w("API", "Retry ${retryCount + 1}/$MAX_RETRIES for $urlString after ${delayMs}ms", e)
                 delay(delayMs)
                 fetchFromAPIWithRetry(urlString, retryCount + 1)
             } else {
@@ -525,7 +512,6 @@ class SplashActivity : ComponentActivity() {
                 }
 
                 val responseCode = connection.responseCode
-                Log.d("API", "Response code for $urlString: $responseCode")
 
                 when (responseCode) {
                     HttpURLConnection.HTTP_OK -> {
@@ -589,7 +575,6 @@ class SplashActivity : ComponentActivity() {
 
             val file = File(databaseDir, fileName)
             file.writeText(jsonData, Charsets.UTF_8)
-            Log.d("File", "Successfully saved $fileName (${jsonData.length} bytes)")
         } catch (e: Exception) {
             Log.e("File", "Error saving $fileName", e)
             throw e

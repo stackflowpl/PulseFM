@@ -97,14 +97,12 @@ class MainActivity : AppCompatActivity() {
             radioService = binder.getService()
             isServiceBound = true
 
-            Log.d("MainActivity", "Service connected - forcing immediate sync")
             updatePlayerUIFromService()
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
             radioService = null
             isServiceBound = false
-            Log.d("MainActivity", "Service disconnected")
         }
     }
 
@@ -131,7 +129,7 @@ class MainActivity : AppCompatActivity() {
         loadDataFromAPI()
 
         findViewById<ImageView>(R.id.radio_player).setOnClickListener {
-            togglePlayPause(it as ImageView)
+            togglePlayPause()
         }
 
         bindToRadioService()
@@ -139,9 +137,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
-        Log.d("MainActivity", "onResume - loading state and updating UI")
-
         loadPlayerState()
         updatePlayerUI()
 
@@ -159,33 +154,23 @@ class MainActivity : AppCompatActivity() {
             else AppCompatDelegate.MODE_NIGHT_NO
         )
 
-        Log.d("MainActivity", "onStart - forcing sync if service bound")
         if (isServiceBound) {
             forceSyncWithService()
         }
     }
 
     private fun bindToRadioService() {
-        Log.d("MainActivity", "Binding to RadioService")
         val intent = Intent(this, RadioService::class.java)
         bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupBroadcastReceiver() {
-        Log.d("MainActivity", "Setting up LOCAL broadcast receivers")
-
         playbackStateReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
-                Log.d("MainActivity", "LOCAL BroadcastReceiver onReceive called with action: ${intent?.action}")
-
                 if (intent?.action == RadioService.BROADCAST_PLAYBACK_STATE) {
                     val isPlaying = intent.getBooleanExtra(RadioService.EXTRA_IS_PLAYING, false)
                     val isBuffering = intent.getBooleanExtra(RadioService.EXTRA_IS_BUFFERING, false)
-                    val stationName = intent.getStringExtra("EXTRA_STATION_NAME")
-                    val timestamp = intent.getLongExtra("EXTRA_TIMESTAMP", 0)
-
-                    Log.d("MainActivity", "LOCAL BROADCAST RECEIVED - Playing: $isPlaying, Buffering: $isBuffering, Station: $stationName, Time: $timestamp")
 
                     currentPlayerState = currentPlayerState.copy(
                         isPlaying = isPlaying,
@@ -194,8 +179,6 @@ class MainActivity : AppCompatActivity() {
 
                     savePlayerState()
                     updatePlayerUI()
-
-                    Log.d("MainActivity", "UI updated after LOCAL broadcast")
                 }
             }
         }
@@ -203,12 +186,7 @@ class MainActivity : AppCompatActivity() {
         trackChangeReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (intent?.action == RadioService.BROADCAST_TRACK_CHANGED) {
-                    val trackTitle = intent.getStringExtra(RadioService.EXTRA_TRACK_TITLE)
-                    val trackArtist = intent.getStringExtra(RadioService.EXTRA_TRACK_ARTIST)
                     val trackInfo = intent.getStringExtra(RadioService.EXTRA_TRACK_INFO)
-
-                    Log.d("MainActivity", "Track change LOCAL broadcast received - Info: $trackInfo")
-
                     updateTrackInfo(trackInfo ?: "")
                 }
             }
@@ -217,7 +195,6 @@ class MainActivity : AppCompatActivity() {
         try {
             localBroadcastManager.registerReceiver(playbackStateReceiver, IntentFilter(RadioService.BROADCAST_PLAYBACK_STATE))
             localBroadcastManager.registerReceiver(trackChangeReceiver!!, IntentFilter(RadioService.BROADCAST_TRACK_CHANGED))
-            Log.d("MainActivity", "LOCAL broadcast receivers registered successfully")
         } catch (e: Exception) {
             Log.e("MainActivity", "Error registering LOCAL broadcast receivers: ${e.message}")
         }
@@ -228,7 +205,6 @@ class MainActivity : AppCompatActivity() {
             val cityViewPlayer: TextView = findViewById(R.id.radio_container_city)
             if (trackInfo.isNotEmpty() && trackInfo != "Na żywo" && trackInfo != "Wstrzymane") {
                 cityViewPlayer.text = trackInfo
-                Log.d("MainActivity", "Track info updated to: $trackInfo")
             }
         } catch (e: Exception) {
             Log.e("updateTrackInfo", "Error updating track info: ${e.message}")
@@ -239,8 +215,6 @@ class MainActivity : AppCompatActivity() {
         radioService?.let { service ->
             val serviceIsPlaying = service.isCurrentlyPlaying()
             val serviceIsBuffering = service.isCurrentlyBuffering()
-
-            Log.d("MainActivity", "Syncing with service - Service Playing: $serviceIsPlaying, Service Buffering: $serviceIsBuffering")
 
             currentPlayerState = currentPlayerState.copy(
                 isPlaying = serviceIsPlaying,
@@ -254,13 +228,10 @@ class MainActivity : AppCompatActivity() {
 
             savePlayerState()
             updatePlayerUI()
-
-            Log.d("MainActivity", "Service sync completed")
         } ?: Log.w("MainActivity", "Cannot sync - service is null")
     }
 
     private fun forceSyncWithService() {
-        Log.d("MainActivity", "Forcing sync with service")
         if (isServiceBound) {
             updatePlayerUIFromService()
         } else {
@@ -273,19 +244,16 @@ class MainActivity : AppCompatActivity() {
             val databaseDir = File(filesDir, DATABASE_DIR)
             if (!databaseDir.exists()) {
                 databaseDir.mkdirs()
-                Log.d("Database", "Created database directory")
             }
 
             val playerFile = getPlayerFile()
             if (!playerFile.exists()) {
                 savePlayerState()
-                Log.d("Database", "Created player.json with default data")
             }
 
             val favoritesFile = getFavoritesFile()
             if (!favoritesFile.exists()) {
-                saveFavorites(this, mutableSetOf())
-                Log.d("Database", "Created favorites.json with empty array")
+                saveFavorites(mutableSetOf())
             }
         } catch (e: Exception) {
             Log.e("Database", "Error initializing database: ${e.message}")
@@ -304,7 +272,6 @@ class MainActivity : AppCompatActivity() {
                 put("icon", currentPlayerState.icon)
             }
             getPlayerFile().writeText(jsonObject.toString())
-            Log.d("MainActivity", "Player state saved - Playing: ${currentPlayerState.isPlaying}, Buffering: ${currentPlayerState.isBuffering}")
         } catch (e: Exception) {
             Log.e("savePlayerState", "Error saving player state: ${e.message}")
         }
@@ -326,8 +293,6 @@ class MainActivity : AppCompatActivity() {
                 stationName = jsonObject.optString("stationName", ""),
                 icon = jsonObject.optString("icon", "")
             )
-
-            Log.d("MainActivity", "Player state loaded - Playing: ${currentPlayerState.isPlaying}, Buffering: ${currentPlayerState.isBuffering}")
         } catch (e: Exception) {
             Log.e("loadPlayerState", "Error loading player state: ${e.message}")
         }
@@ -368,9 +333,6 @@ class MainActivity : AppCompatActivity() {
 
             playButton.setImageResource(buttonResource)
             playButton.isEnabled = true
-
-            Log.d("MainActivity", "UI updated - Playing: ${currentPlayerState.isPlaying}, Buffering: ${currentPlayerState.isBuffering}, Button: $buttonResource")
-
         } catch (e: Exception) {
             Log.e("updatePlayerUI", "Error updating UI: ${e.message}")
         }
@@ -407,14 +369,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun loadStationsFromFile() {
+    private fun loadStationsFromFile() {
         try {
             val file = File(File(filesDir, DATABASE_DIR), STATIONS_FILE)
             if (file.exists()) {
                 val json = file.readText()
                 if (json.isNotEmpty()) {
                     radioStationsCache = Gson().fromJson(json, object : TypeToken<List<RadioStation>>() {}.type)
-                    Log.d("File", "Loaded ${radioStationsCache?.size} stations from file")
                 } else {
                     radioStationsCache = emptyList()
                 }
@@ -427,14 +388,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun loadTop10popFromFile() {
+    private fun loadTop10popFromFile() {
         try {
             val file = File(File(filesDir, DATABASE_DIR), TOP10POP_FILE)
             if (file.exists()) {
                 val json = file.readText()
                 if (json.isNotEmpty()) {
                     radioTop10popCache = Gson().fromJson(json, object : TypeToken<List<Top10popStation>>() {}.type)
-                    Log.d("File", "Loaded ${radioTop10popCache?.size} top10pop stations from file")
                 } else {
                     radioTop10popCache = emptyList()
                 }
@@ -447,14 +407,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun loadOkolicaFromFile() {
+    private fun loadOkolicaFromFile() {
         try {
             val file = File(File(filesDir, DATABASE_DIR), OKOLICE_FILE)
             if (file.exists()) {
                 val json = file.readText()
                 if (json.isNotEmpty()) {
                     radioOkolicaCache = Gson().fromJson(json, object : TypeToken<List<Wojewodztwo>>() {}.type)
-                    Log.d("File", "Loaded ${radioOkolicaCache?.size} regions from file")
                 } else {
                     radioOkolicaCache = emptyList()
                 }
@@ -467,14 +426,13 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun loadSwiatoweFromFile() {
+    private fun loadSwiatoweFromFile() {
         try {
             val file = File(File(filesDir, DATABASE_DIR), SWIAT_FILE)
             if (file.exists()) {
                 val json = file.readText()
                 if (json.isNotEmpty()) {
                     radioSwiatoweCache = Gson().fromJson(json, object : TypeToken<List<Swiatowe>>() {}.type)
-                    Log.d("File", "Loaded ${radioSwiatoweCache?.size} countries from file")
                 } else {
                     radioSwiatoweCache = emptyList()
                 }
@@ -690,7 +648,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun <T> onRadioStationSelected(station: T, viewPlayer: ImageView) where T : Any {
+    private fun <T> onRadioStationSelected(station: T) where T : Any {
         val (name, city, url, icon) = when (station) {
             is RadioStation -> listOf(station.name, station.city, station.url, station.icon)
             is RadioStationOkolica -> listOf(station.name, station.city, station.url, station.icon)
@@ -698,8 +656,6 @@ class MainActivity : AppCompatActivity() {
             is Top10popStation -> listOf(station.name, station.city, station.url, station.icon)
             else -> return
         }
-
-        Log.d("MainActivity", "Station selected: $name")
 
         currentPlayerState = PlayerState(
             isPlaying = false,
@@ -729,21 +685,18 @@ class MainActivity : AppCompatActivity() {
         } else {
             startService(intent)
         }
-
-        Log.d("MainActivity", "Service started for station: $name")
     }
 
     private fun <T> createRadioView(
         station: T,
         layoutId: Int,
-        container: LinearLayout,
         favorites: MutableSet<String>
     ): View where T : Any {
-        val (name, city, url, icon) = when (station) {
+        val (name, city, _, icon) = when (station) {
             is RadioStation -> listOf(station.name, station.city, station.url, station.icon)
             is RadioStationOkolica -> listOf(station.name, station.city, station.url, station.icon)
             is RadioSwiatowe -> listOf(station.name, station.city, station.url, station.icon)
-            is Top10popStation -> listOf(station.name, station.city, station.url, station.icon) // DODAJ TĘ LINIĘ
+            is Top10popStation -> listOf(station.name, station.city, station.url, station.icon)
             else -> return View(this)
         }
 
@@ -772,13 +725,13 @@ class MainActivity : AppCompatActivity() {
             starView.backgroundTintList = null
         }
 
-        val viewPlayer = findViewById<ImageView>(R.id.radio_player)
+        findViewById<ImageView>(R.id.radio_player)
         radioView.setOnClickListener {
-            onRadioStationSelected(station, viewPlayer)
+            onRadioStationSelected(station)
         }
 
         starView.setOnClickListener {
-            toggleFavorite(this, name, starView)
+            toggleFavorite(name, starView)
         }
 
         return radioView
@@ -787,10 +740,10 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayRadioStations(radioStations: List<RadioStation>) {
         val radioContainer = findViewById<LinearLayout>(R.id.radio_container_krajowe) ?: return
-        val favorites = getFavorites(this)
+        val favorites = getFavorites()
 
         radioStations.forEach { station ->
-            val radioView = createRadioView(station, R.layout.radio_item, radioContainer, favorites)
+            val radioView = createRadioView(station, R.layout.radio_item, favorites)
             radioContainer.addView(radioView)
         }
     }
@@ -798,10 +751,10 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayTop10popStations(radioStations: List<Top10popStation>) {
         val radioContainer = findViewById<LinearLayout>(R.id.radio_container_krajowe_pop) ?: return
-        val favorites = getFavorites(this)
+        val favorites = getFavorites()
 
         radioStations.forEach { station ->
-            val radioView = createRadioView(station, R.layout.radio_item, radioContainer, favorites)
+            val radioView = createRadioView(station, R.layout.radio_item, favorites)
             radioContainer.addView(radioView)
         }
     }
@@ -809,10 +762,10 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayRadioStationsOkolica(radioStations: List<RadioStationOkolica>) {
         val radioContainer = findViewById<LinearLayout>(R.id.radio_okolice_container) ?: return
-        val favorites = getFavorites(this)
+        val favorites = getFavorites()
 
         radioStations.forEach { station ->
-            val radioView = createRadioView(station, R.layout.okolice_item, radioContainer, favorites)
+            val radioView = createRadioView(station, R.layout.okolice_item, favorites)
             radioContainer.addView(radioView)
         }
     }
@@ -849,19 +802,19 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayRadioLibrarySwiatowe(radioSwiatowe: List<RadioSwiatowe>, radioStations: List<RadioStationOkolica>) {
         val radioContainer = findViewById<LinearLayout>(R.id.radio_library_container) ?: return
-        val favorites = getFavorites(this)
+        val favorites = getFavorites()
         val addedStations = mutableSetOf<String>()
 
         radioStations.forEach { station ->
             if (favorites.contains(station.name) && addedStations.add(station.name)) {
-                val radioView = createRadioView(station, R.layout.library_item, radioContainer, favorites)
+                val radioView = createRadioView(station, R.layout.library_item, favorites)
                 radioContainer.addView(radioView)
             }
         }
 
         radioSwiatowe.forEach { station ->
             if (favorites.contains(station.name) && addedStations.add(station.name)) {
-                val radioView = createRadioView(station, R.layout.library_item, radioContainer, favorites)
+                val radioView = createRadioView(station, R.layout.library_item, favorites)
                 radioContainer.addView(radioView)
             }
         }
@@ -899,15 +852,15 @@ class MainActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O)
     private fun displayRadioStationsSwiatowe(radioSwiatowe: List<RadioSwiatowe>) {
         val radioContainer = findViewById<LinearLayout>(R.id.radio_swiat_container) ?: return
-        val favorites = getFavorites(this)
+        val favorites = getFavorites()
 
         radioSwiatowe.forEach { station ->
-            val radioView = createRadioView(station, R.layout.okolice_item, radioContainer, favorites)
+            val radioView = createRadioView(station, R.layout.okolice_item, favorites)
             radioContainer.addView(radioView)
         }
     }
 
-    private fun getFavorites(context: Context): MutableSet<String> {
+    private fun getFavorites(): MutableSet<String> {
         val file = getFavoritesFile()
         if (!file.exists()) return mutableSetOf()
 
@@ -925,7 +878,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun saveFavorites(context: Context, favorites: MutableSet<String>) {
+    private fun saveFavorites(favorites: MutableSet<String>) {
         try {
             getFavoritesFile().writeText(Gson().toJson(favorites))
         } catch (e: Exception) {
@@ -933,8 +886,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun toggleFavorite(context: Context, stationName: String, starView: ImageView) {
-        val favorites = getFavorites(context)
+    private fun toggleFavorite(stationName: String, starView: ImageView) {
+        val favorites = getFavorites()
         val wasFavorite = favorites.contains(stationName)
 
         if (wasFavorite) {
@@ -947,7 +900,7 @@ class MainActivity : AppCompatActivity() {
             starView.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FF0000"))
         }
 
-        saveFavorites(context, favorites)
+        saveFavorites(favorites)
     }
 
     private fun createNotificationChannel() {
@@ -961,13 +914,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun togglePlayPause(viewPlayer: ImageView) {
+    private fun togglePlayPause() {
         if (currentPlayerState.url.isEmpty()) {
             Toast.makeText(this, "Brak danych o stacji radiowej!", Toast.LENGTH_SHORT).show()
             return
         }
-
-        Log.d("MainActivity", "Toggle play/pause - Current state: Playing=${currentPlayerState.isPlaying}, Buffering=${currentPlayerState.isBuffering}")
 
         val iconResId = resources.getIdentifier(
             currentPlayerState.icon.replace("@drawable/", ""), "drawable", packageName
@@ -982,17 +933,14 @@ class MainActivity : AppCompatActivity() {
         when {
             currentPlayerState.isPlaying -> {
                 intent.action = RadioService.ACTION_PAUSE
-                Log.d("MainActivity", "Sending PAUSE action")
             }
             currentPlayerState.isBuffering -> {
                 intent.action = RadioService.ACTION_STOP
-                Log.d("MainActivity", "Sending STOP action (interrupting buffering)")
             }
             else -> {
                 intent.action = RadioService.ACTION_PLAY
                 currentPlayerState = currentPlayerState.copy(isBuffering = true, isPlaying = false)
                 updatePlayerUI()
-                Log.d("MainActivity", "Sending PLAY action")
             }
         }
 
@@ -1006,15 +954,12 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
 
-        Log.d("MainActivity", "onDestroy called")
-
         exoPlayer?.release()
         exoPlayer = null
 
         try {
             localBroadcastManager.unregisterReceiver(playbackStateReceiver)
             trackChangeReceiver?.let { localBroadcastManager.unregisterReceiver(it) }
-            Log.d("MainActivity", "LOCAL broadcast receivers unregistered")
         } catch (e: Exception) {
             Log.e("onDestroy", "Error unregistering LOCAL receiver: ${e.message}")
         }
@@ -1022,7 +967,6 @@ class MainActivity : AppCompatActivity() {
         if (isServiceBound) {
             unbindService(serviceConnection)
             isServiceBound = false
-            Log.d("MainActivity", "Service unbound")
         }
 
         currentPlayerState = currentPlayerState.copy(isPlaying = false, isBuffering = false)

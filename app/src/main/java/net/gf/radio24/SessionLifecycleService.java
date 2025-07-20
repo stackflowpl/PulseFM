@@ -16,25 +16,18 @@ public class SessionLifecycleService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        logDebug("SessionLifecycleService created");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        logDebug("SessionLifecycleService started");
-
         executorService.execute(() -> {
             try {
-                logDebug("Performing background operation");
-
                 performLongOperation();
 
                 mainHandler.post(() -> {
-                    logDebug("Background operation completed");
                     stopSelf(startId);
                 });
             } catch (Exception e) {
-                logError("Error in background operation", e);
                 stopSelf(startId);
             }
         });
@@ -44,7 +37,6 @@ public class SessionLifecycleService extends Service {
 
     private void performLongOperation() throws InterruptedException {
         Thread.sleep(5000);
-        logDebug("Long operation completed");
     }
 
     @Override
@@ -56,16 +48,6 @@ public class SessionLifecycleService extends Service {
     public void onDestroy() {
         super.onDestroy();
         executorService.shutdown();
-        logDebug("SessionLifecycleService destroyed");
-    }
-
-    private void logDebug(String message) {
-        System.out.println("[DEBUG] " + message);
-    }
-
-    private void logError(String message, Exception e) {
-        System.err.println("[ERROR] " + message);
-        e.printStackTrace();
     }
 }
 

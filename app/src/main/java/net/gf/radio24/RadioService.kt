@@ -669,7 +669,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
         val intent = Intent(BROADCAST_PLAYBACK_STATE).apply {
             putExtra(EXTRA_IS_PLAYING, playing)
             putExtra(EXTRA_IS_BUFFERING, isBuffering)
-            // Dodaj dodatkowe informacje dla debugowania
             putExtra("EXTRA_STATION_NAME", currentStationName)
             putExtra("EXTRA_TIMESTAMP", System.currentTimeMillis())
         }
@@ -703,7 +702,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
         return isBuffering
     }
 
-    fun getCurrentStation(): String? = currentStationName
     fun getCurrentTrackInfo(): String = getDisplayTrackInfo()
 
     override fun onBind(intent: Intent?): IBinder {

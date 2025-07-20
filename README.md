@@ -1,6 +1,6 @@
 # Radio24
 
-Oficjalna aplikacja od **Flux Software**, dostępna na licencji [MIT License](LICENSE).  
+Oficjalna aplikacja od **Stackflow Studios**, dostępna na licencji [MIT License](LICENSE).  
 Wszystkie polskie stacje radiowe w jednym miejscu – szybko, wygodnie i bezpośrednio.
 
 ## Funkcje jakie posiada Radio24
@@ -15,15 +15,13 @@ Wszystkie polskie stacje radiowe w jednym miejscu – szybko, wygodnie i bezpoś
 
 ## Pobierz aplikację
 
-Najświeższą wersję możesz pobrać z naszej strony.
-
-https://goflux.pl/__api/download/radio24
+W najbliższym czasie zostanie opublikowana na sklepie play
 
 ## Współpraca
 
 Dołóż swoją cegiełkę do projektu, tworząc społeczność lub zgłaszając issue na GitHub.
 
-Znasz radio którego nie dodaliśmy? Napisz do nas na discordzie [Serwer Discord](https://discord.gg/MtPs7WXyJu) lub w wiadomości e-mail [support@goflux.pl](mailto:support@goflux.pl)
+Znasz radio którego nie dodaliśmy? Napisz do nas na discordzie [Serwer Discord](https://discord.gg/MtPs7WXyJu) lub w wiadomości e-mail [support@stackflow.pl](mailto:support@stackflow.pl)
 
 ---
 
