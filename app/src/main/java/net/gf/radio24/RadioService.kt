@@ -63,8 +63,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
         setupMediaSession()
         setupExoPlayer()
         createNotificationChannel()
-
-        Log.d(TAG, "RadioService created with LocalBroadcastManager")
     }
 
     private fun setupMediaSession() {
@@ -82,12 +80,10 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                 }
 
                 override fun onPause() {
-                    Log.d(TAG, "MediaSession onPause")
                     pauseRadio()
                 }
 
                 override fun onStop() {
-                    Log.d(TAG, "MediaSession onStop")
                     stopRadio()
                 }
             })
@@ -131,14 +127,11 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
 
                     val playerListener = object : Player.Listener {
                         override fun onPlaybackStateChanged(playbackState: Int) {
-                            Log.d(TAG, "Playback state changed: $playbackState")
                             when (playbackState) {
                                 Player.STATE_BUFFERING -> {
-                                    Log.d(TAG, "Player buffering - updating state")
                                     updateState(isPlaying = false, isBuffering = true)
                                 }
                                 Player.STATE_READY -> {
-                                    Log.d(TAG, "Player ready - updating state")
                                     if (hasAudioFocus) {
                                         retryCount = 0
                                         updateState(isPlaying = true, isBuffering = false)
@@ -147,12 +140,10 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                                     }
                                 }
                                 Player.STATE_ENDED -> {
-                                    Log.d(TAG, "Player ended")
                                     updateState(isPlaying = false, isBuffering = false)
                                     handlePlaybackError()
                                 }
                                 Player.STATE_IDLE -> {
-                                    Log.d(TAG, "Player idle")
                                     updateState(isPlaying = false, isBuffering = false)
                                 }
                             }
@@ -165,23 +156,18 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                         }
 
                         override fun onIsPlayingChanged(playing: Boolean) {
-                            Log.d(TAG, "Is playing changed: $playing")
                             if (!isBuffering) {
                                 updateState(isPlaying = playing, isBuffering = false)
                             }
                         }
 
                         override fun onMetadata(metadata: Metadata) {
-                            Log.d(TAG, "Metadata received: ${metadata.length()} entries")
-
                             for (i in 0 until metadata.length()) {
                                 val entry = metadata.get(i)
-                                Log.d(TAG, "Metadata entry: ${entry.javaClass.simpleName}")
 
                                 when (entry) {
                                     is IcyInfo -> {
                                         val title = entry.title
-                                        Log.d(TAG, "ICY Info - Title: $title")
 
                                         if (!title.isNullOrBlank()) {
                                             parseTrackInfo(title)
@@ -200,25 +186,18 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
 
                     addListener(playerListener)
                 }
-
-            Log.d(TAG, "ExoPlayer configured successfully")
-
         } catch (e: Exception) {
             Log.e(TAG, "Error setting up ExoPlayer", e)
         }
     }
 
     private fun updateState(isPlaying: Boolean, isBuffering: Boolean) {
-        Log.d(TAG, "Updating state - Playing: $isPlaying, Buffering: $isBuffering")
-
         this.isPlaying = isPlaying
         this.isBuffering = isBuffering
 
         updateNotification()
         updatePlaybackState()
         notifyMainActivity(isPlaying)
-
-        Log.d(TAG, "State updated and LOCAL broadcasted")
     }
 
     private fun parseTrackInfo(rawTitle: String) {
@@ -260,9 +239,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                     currentTrackArtist = null
                 }
             }
-
-            Log.d(TAG, "Parsed track - Artist: '$currentTrackArtist', Title: '$currentTrackTitle'")
-
         } catch (e: Exception) {
             Log.e(TAG, "Error parsing track info: $rawTitle", e)
             currentTrackInfo = rawTitle
@@ -307,8 +283,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d(TAG, "onStartCommand: ${intent?.action}")
-
         MediaButtonReceiver.handleIntent(mediaSession, intent)
 
         when (intent?.action) {
@@ -316,8 +290,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                 val stationUrl = intent.getStringExtra(EXTRA_STATION_URL)
                 val stationName = intent.getStringExtra(EXTRA_STATION_NAME)
                 val iconRes = intent.getIntExtra(EXTRA_ICON_RES, 0)
-
-                Log.d(TAG, "Play action - URL: $stationUrl, Name: $stationName")
 
                 if (stationUrl != null) {
                     currentStationUrl = stationUrl
@@ -330,17 +302,14 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
 
                     serviceScope.launch {
                         delay(1000)
-                        Log.d(TAG, "=== TESTING LOCAL BROADCAST AFTER 1 SECOND ===")
                         notifyMainActivity(isPlaying)
                     }
                 }
             }
             ACTION_STOP -> {
-                Log.d(TAG, "Stop action")
                 stopRadio()
             }
             ACTION_PAUSE -> {
-                Log.d(TAG, "Pause action")
                 pauseRadio()
             }
         }
@@ -355,8 +324,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
     private fun resumeRadio() {
-        Log.d(TAG, "Resuming radio")
-
         currentStationUrl?.let { url ->
             if (requestAudioFocus()) {
                 exoPlayer?.play()
@@ -366,8 +333,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
     private fun requestAudioFocus(): Boolean {
-        Log.d(TAG, "Requesting audio focus")
-
         val result = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             audioFocusRequest = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
                 .setAudioAttributes(
@@ -391,14 +356,10 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
         }
 
         hasAudioFocus = result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
-        Log.d(TAG, "Audio focus result: $result, hasAudioFocus: $hasAudioFocus")
-
         return hasAudioFocus
     }
 
     private fun abandonAudioFocus() {
-        Log.d(TAG, "Abandoning audio focus")
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             audioFocusRequest?.let {
                 audioManager?.abandonAudioFocusRequest(it)
@@ -413,11 +374,8 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
     override fun onAudioFocusChange(focusChange: Int) {
-        Log.d(TAG, "Audio focus change: $focusChange")
-
         when (focusChange) {
             AudioManager.AUDIOFOCUS_GAIN -> {
-                Log.d(TAG, "Audio focus gained")
                 hasAudioFocus = true
                 exoPlayer?.volume = 1.0f
 
@@ -426,28 +384,22 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                 }
             }
             AudioManager.AUDIOFOCUS_LOSS -> {
-                Log.d(TAG, "Audio focus lost permanently")
                 hasAudioFocus = false
                 stopRadio()
             }
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT -> {
-                Log.d(TAG, "Audio focus lost temporarily")
                 hasAudioFocus = false
                 pauseRadio()
             }
             AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
-                Log.d(TAG, "Audio focus lost - can duck")
                 exoPlayer?.volume = 0.3f
             }
         }
     }
 
     private fun playRadio(url: String) {
-        Log.d(TAG, "Playing radio: $url")
-
         try {
             if (!requestAudioFocus()) {
-                Log.w(TAG, "Could not get audio focus")
                 updateState(isPlaying = false, isBuffering = false)
                 return
             }
@@ -474,9 +426,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
             updateMediaMetadata()
             val notification = createNotification()
             startForeground(NOTIFICATION_ID, notification)
-
-            Log.d(TAG, "Radio playback started")
-
         } catch (e: Exception) {
             Log.e(TAG, "Error playing radio", e)
             updateState(isPlaying = false, isBuffering = false)
@@ -485,15 +434,11 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
     private fun pauseRadio() {
-        Log.d(TAG, "Pausing radio")
-
         exoPlayer?.pause()
         updateState(isPlaying = false, isBuffering = false)
     }
 
     private fun stopRadio() {
-        Log.d(TAG, "Stopping radio")
-
         retryJob?.cancel()
 
         exoPlayer?.apply {
@@ -510,17 +455,12 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
     private fun handlePlaybackError() {
-        Log.d(TAG, "Handling playback error, retry count: $retryCount")
-
         if (retryCount < maxRetries && hasAudioFocus) {
             retryCount++
-            Log.d(TAG, "Retrying playback, attempt $retryCount/$maxRetries")
-
             retryJob?.cancel()
             retryJob = serviceScope.launch {
                 delay(2000L * retryCount)
                 currentStationUrl?.let {
-                    Log.d(TAG, "Retry attempt $retryCount for URL: $it")
                     playRadio(it)
                 }
             }
@@ -564,8 +504,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
     private fun createNotification(): Notification {
-        Log.d(TAG, "Creating notification - isPlaying: $isPlaying, isBuffering: $isBuffering")
-
         val playPauseAction = if (isPlaying) {
             NotificationCompat.Action.Builder(
                 android.R.drawable.ic_media_pause,
@@ -630,13 +568,10 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
     private fun updateNotification() {
-        Log.d(TAG, "Updating notification - isPlaying: $isPlaying, isBuffering: $isBuffering")
-
         try {
             val notification = createNotification()
             val notificationManager = getSystemService(NotificationManager::class.java)
             notificationManager?.notify(NOTIFICATION_ID, notification)
-            Log.d(TAG, "Notification updated successfully")
         } catch (e: Exception) {
             Log.e(TAG, "Error updating notification", e)
         }
@@ -662,10 +597,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
     private fun notifyMainActivity(playing: Boolean) {
-        Log.d(TAG, "=== PREPARING LOCAL BROADCAST ===")
-        Log.d(TAG, "Sending LOCAL broadcast - Playing: $playing, Buffering: $isBuffering")
-        Log.d(TAG, "LOCAL Broadcast action: $BROADCAST_PLAYBACK_STATE")
-
         val intent = Intent(BROADCAST_PLAYBACK_STATE).apply {
             putExtra(EXTRA_IS_PLAYING, playing)
             putExtra(EXTRA_IS_BUFFERING, isBuffering)
@@ -675,8 +606,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
 
         try {
             localBroadcastManager.sendBroadcast(intent)
-            Log.d(TAG, "=== LOCAL BROADCAST SENT SUCCESSFULLY ===")
-            Log.d(TAG, "Intent extras: Playing=$playing, Buffering=$isBuffering, Station=$currentStationName")
         } catch (e: Exception) {
             Log.e(TAG, "Error sending LOCAL broadcast: ${e.message}", e)
         }
@@ -689,29 +618,23 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
             putExtra(EXTRA_TRACK_INFO, getDisplayTrackInfo())
         }
         localBroadcastManager.sendBroadcast(intent)
-        Log.d(TAG, "Track change LOCAL broadcast sent")
     }
 
     fun isCurrentlyPlaying(): Boolean {
-        Log.d(TAG, "isCurrentlyPlaying() called - returning: $isPlaying")
         return isPlaying
     }
 
     fun isCurrentlyBuffering(): Boolean {
-        Log.d(TAG, "isCurrentlyBuffering() called - returning: $isBuffering")
         return isBuffering
     }
 
     fun getCurrentTrackInfo(): String = getDisplayTrackInfo()
 
     override fun onBind(intent: Intent?): IBinder {
-        Log.d(TAG, "Service bound")
         return binder
     }
 
     override fun onDestroy() {
-        Log.d(TAG, "RadioService destroyed")
-
         serviceScope.cancel()
         retryJob?.cancel()
 
