@@ -107,9 +107,7 @@
                     android:padding="10sp" />
 
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
 
     <LinearLayout
@@ -125,6 +123,82 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Wsparcie"
+            android:textColor="@color/text_color"
+            android:textFontWeight="600"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:id="@+id/dotacja"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/corner_settings"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp">
+
+            <View
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/heart_active"
+                android:backgroundTint="@color/settings_icon"
+                android:padding="10sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Wspomóż projekt"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/settings_text"
+                android:textFontWeight="600"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/corner_settings"
+            android:padding="10dp"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp">
+
+            <View
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/ad_paid"
+                android:backgroundTint="@color/settings_icon"
+                android:padding="10sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Obejrzyj reklamę"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/settings_text"
+                android:textFontWeight="600"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/corner_radio"
+        android:padding="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Techniczne"
             android:textColor="@color/text_color"
             android:textFontWeight="600"
             android:textSize="12sp" />
@@ -151,35 +225,6 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Serwer wsparcia Discord"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/settings_text"
-                android:textFontWeight="600"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/dotacja"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:background="@drawable/corner_settings"
-            android:padding="10dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp">
-
-            <View
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:background="@drawable/heart_active"
-                android:backgroundTint="@color/settings_icon"
-                android:padding="10sp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Wspomóż projekt"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/settings_text"
                 android:textFontWeight="600"

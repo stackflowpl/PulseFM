@@ -29,7 +29,10 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -91,6 +94,8 @@ class MainActivity : AppCompatActivity() {
     private fun getPlayerFile(): File = File(File(filesDir, DATABASE_DIR), PLAYER_FILE)
     private fun getFavoritesFile(): File = File(File(filesDir, DATABASE_DIR), FAVORITES_FILE)
 
+    private var interstitialAd: InterstitialAd? = null
+
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
             val binder = service as RadioService.RadioBinder
@@ -120,6 +125,7 @@ class MainActivity : AppCompatActivity() {
         initializeDatabase()
         initializeConsent()
         initializeAds()
+        loadInterstitialAd()
         FirebaseFirestore.setLoggingEnabled(true)
         createNotificationChannel()
         setupBroadcastReceiver()
@@ -156,6 +162,33 @@ class MainActivity : AppCompatActivity() {
 
         if (isServiceBound) {
             forceSyncWithService()
+        }
+    }
+
+    private fun loadInterstitialAd() {
+        val adRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(
+            this,
+            "ca-app-pub-6928750575920542/6038628804",
+            adRequest,
+            object : InterstitialAdLoadCallback() {
+                override fun onAdLoaded(ad: InterstitialAd) {
+                    interstitialAd = ad
+                }
+
+                override fun onAdFailedToLoad(adError: LoadAdError) {
+                    interstitialAd = null
+                }
+            })
+    }
+
+    private fun showInterstitialAd() {
+        if (interstitialAd != null) {
+            interstitialAd?.show(this)
+        } else {
+            Toast.makeText(this, "Reklama niezaładowana, spróbuj ponownie.", Toast.LENGTH_SHORT).show()
+            loadInterstitialAd()
         }
     }
 
@@ -585,6 +618,10 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<LinearLayout>(R.id.dotacja)?.setOnClickListener {
             openWebsite("https://tipply.pl/@stackflow")
+        }
+
+        findViewById<LinearLayout>(R.id.ad)?.setOnClickListener {
+            showInterstitialAd()
         }
 
         findViewById<LinearLayout>(R.id.github)?.setOnClickListener {
