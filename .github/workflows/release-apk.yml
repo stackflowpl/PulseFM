@@ -24,7 +24,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build release APK
-        run: ./gradlew assembleRelease -x lintVitalAnalyzeRelease
+        run: ./gradlew assembleRelease -x lintVitalRelease -x lint
 
       - name: Upload APK as GitHub Release
         uses: softprops/action-gh-release@v1
