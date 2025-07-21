@@ -44,14 +44,6 @@ android {
         }
     }
 
-    applicationVariants.all { variant ->
-        if (variant.buildType.name == "release") {
-            variant.outputs.all { output ->
-                output.outputFileName = "Radio24.apk"
-            }
-        }
-    }
-
     lint {
         checkReleaseBuilds = false
         abortOnError = false
