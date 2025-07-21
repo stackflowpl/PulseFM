@@ -30,6 +30,7 @@ android {
             isMinifyEnabled = true
             isShrinkResources = false
             isDebuggable = false
+            signingConfig = signingConfigs.release
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -41,6 +42,14 @@ android {
         debug {
             isMinifyEnabled = false
             isDebuggable = true
+        }
+    }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name == "release") {
+            variant.outputs.all { output ->
+                output.outputFileName = "Radio24.apk"
+            }
         }
     }
 
