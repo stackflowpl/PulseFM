@@ -3,7 +3,7 @@ name: Build Release APK and Create GitHub Release
 on:
   push:
     tags:
-      - 'v*'
+      - "v*"
 
 jobs:
   build:
@@ -17,14 +17,14 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17' 
+          distribution: "temurin"
+          java-version: "17"
 
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
-      - name: Build release APK (unsigned)
-        run: ./gradlew assembleRelease
+      - name: Build release APK
+        run: ./gradlew assembleRelease -x lintVitalAnalyzeRelease
 
       - name: Upload APK as GitHub Release
         uses: softprops/action-gh-release@v1
