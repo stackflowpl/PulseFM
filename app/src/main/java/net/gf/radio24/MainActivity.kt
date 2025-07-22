@@ -573,7 +573,7 @@ class MainActivity : AppCompatActivity() {
             val layout = findViewById<LinearLayout>(R.id.settings)
             layout.setBackgroundResource(R.drawable.corner_box_4)
             switchLayout(container, R.layout.settings) {
-                setupSettingsInteractions()
+                setupSettingsInteractions(container)
             }
             updateThemeCheckboxes()
         }
@@ -611,7 +611,7 @@ class MainActivity : AppCompatActivity() {
         setup?.invoke()
     }
 
-    private fun setupSettingsInteractions() {
+    private fun setupSettingsInteractions(container: LinearLayout) {
         findViewById<LinearLayout>(R.id.discord)?.setOnClickListener {
             openWebsite("https://discord.gg/MtPs7WXyJu")
         }
@@ -621,19 +621,20 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<LinearLayout>(R.id.ad)?.setOnClickListener {
+            loadInterstitialAd()
             showInterstitialAd()
         }
 
         findViewById<LinearLayout>(R.id.github)?.setOnClickListener {
-            openWebsite("https://github.com/gofluxpl/Radio24")
+            openWebsite("https://github.com/stackflowpl/PulseFM")
         }
 
         findViewById<LinearLayout>(R.id.theme_light)?.setOnClickListener {
-            changeTheme(false)
+            changeTheme(false, container)
         }
 
         findViewById<LinearLayout>(R.id.theme_dark)?.setOnClickListener {
-            changeTheme(true)
+            changeTheme(true, container)
         }
 
         findViewById<LinearLayout>(R.id.tworcy)?.setOnClickListener {
@@ -642,7 +643,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun changeTheme(isDark: Boolean) {
+    private fun changeTheme(isDark: Boolean, container: LinearLayout) {
         val editor = sharedPreferences.edit()
         editor.putBoolean("nightMode", isDark)
         editor.apply()

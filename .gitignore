@@ -10,6 +10,8 @@
 .DS_Store
 /captures
 /build
+/tools
+crowdin.yaml
 .externalNativeBuild
 .cxx
 local.properties

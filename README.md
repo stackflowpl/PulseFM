@@ -1,9 +1,9 @@
-# Radio24
+# PulseFM
 
 Oficjalna aplikacja od **Stackflow Studios**, dostępna na licencji [MIT License](LICENSE).  
 Wszystkie polskie stacje radiowe w jednym miejscu – szybko, wygodnie i bezpośrednio.
 
-## Funkcje jakie posiada Radio24
+## Funkcje jakie posiada PulseFM
 
 - Radia z całego świata
 - Zmiana wyglądu aplikacji
@@ -25,4 +25,4 @@ Znasz radio którego nie dodaliśmy? Napisz do nas na discordzie [Serwer Discord
 
 ---
 
-**Radio24** – Twoje ulubione stacje radiowe w jednym kliknięciu!
+**PulseFM** – Twoje ulubione stacje radiowe w jednym kliknięciu!

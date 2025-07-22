@@ -301,7 +301,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Twórcy aplikacji Radio24"
+                android:text="Twórcy aplikacji PulseFM"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/settings_text"
                 android:textFontWeight="600"

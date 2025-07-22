@@ -157,7 +157,7 @@ class SplashActivity : ComponentActivity() {
         AlertDialog.Builder(this, R.style.AlertDialogCustom)
             .setTitle("Uprawnienia aplikacji")
             .setMessage("""
-                Radio24 potrzebuje następujących uprawnień:
+                PulseFM potrzebuje następujących uprawnień:
                 
                 • Powiadomienia - informacje o odtwarzanych stacjach
                 • Dostęp do plików - zapisywanie ulubionych stacji
@@ -275,7 +275,7 @@ class SplashActivity : ComponentActivity() {
         AlertDialog.Builder(this, R.style.AlertDialogCustom)
             .setTitle("Zgoda na przetwarzanie danych")
             .setMessage("""
-                Radio24 będzie:
+                PulseFM będzie:
                 
                 • Pobierać listę stacji radiowych z internetu
                 • Zapisywać dane w pamięci podręcznej urządzenia
@@ -502,7 +502,7 @@ class SplashActivity : ComponentActivity() {
                     connectTimeout = CONNECT_TIMEOUT
                     readTimeout = READ_TIMEOUT
                     setRequestProperty("Accept", "application/json")
-                    setRequestProperty("User-Agent", "Radio24-Android/${getAppVersion()}")
+                    setRequestProperty("User-Agent", "PulseFM-Android/${getAppVersion()}")
                     setRequestProperty("Cache-Control", "no-cache")
                     setRequestProperty("Accept-Encoding", "gzip, deflate")
 

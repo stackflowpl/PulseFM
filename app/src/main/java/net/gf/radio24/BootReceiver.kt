@@ -24,7 +24,7 @@ class BootReceiver : BroadcastReceiver() {
     }
 
     private fun handleBootCompleted(context: Context) {
-        val sharedPreferences = context.getSharedPreferences("Radio24Preferences", Context.MODE_PRIVATE)
+        val sharedPreferences = context.getSharedPreferences("PulseFMPreferences", Context.MODE_PRIVATE)
         val lastUpdate = sharedPreferences.getLong("last_update", 0)
 
         val currentTime = System.currentTimeMillis()

@@ -30,13 +30,13 @@ jobs:
         run: ./gradlew assembleDebug
 
       - name: Rename APK
-        run: mv app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/Radio24.apk
+        run: mv app/build/outputs/apk/debug/app-debug.apk app/build/outputs/apk/debug/PulseFM.apk
 
       - name: Upload APK as GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           name: Release ${{ github.ref_name }}
           tag_name: ${{ github.ref_name }}
-          files: app/build/outputs/apk/debug/Radio24.apk
+          files: app/build/outputs/apk/debug/PulseFM.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

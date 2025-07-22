@@ -15,7 +15,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
 
     companion object {
         private const val TAG = "FCMService"
-        private const val CHANNEL_ID = "radio24_notifications"
+        private const val CHANNEL_ID = "Radio24_notifications"
         private const val NOTIFICATION_ID = 1001
     }
 
@@ -42,7 +42,7 @@ class FirebaseMessagingService : FirebaseMessagingService() {
     }
 
     private fun handleDataMessage(data: Map<String, String>) {
-        val title = data["title"] ?: "Radio24"
+        val title = data["title"] ?: "PulseFM"
         val body = data["body"] ?: ""
         val action = data["action"]
 
@@ -87,10 +87,10 @@ class FirebaseMessagingService : FirebaseMessagingService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
-                "Radio24 Notifications",
+                "PulseFM Notifications",
                 NotificationManager.IMPORTANCE_DEFAULT
             ).apply {
-                description = "Powiadomienia z aplikacji Radio24"
+                description = "Powiadomienia z aplikacji PulseFM"
             }
 
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
