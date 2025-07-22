@@ -26,8 +26,8 @@ jobs:
       - name: Make Gradle executable
         run: chmod +x ./gradlew
 
-      - name: Build release APK
-        run: ./gradlew assembleRelease
+      - name: Build Android APK
+        run: ./gradlew assembleDebug
 
       - name: List files in APK output directory
         run: ls -R app/build/outputs/apk/
