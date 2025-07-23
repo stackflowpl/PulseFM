@@ -9,6 +9,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.net.Uri
@@ -134,6 +135,27 @@ class MainActivity : AppCompatActivity() {
         loadLayout(R.layout.radio_krajowe, container)
         loadDataFromAPI()
 
+        val logo: ImageView = findViewById(R.id.logo_application)
+        val logo_current = getCurrentAppIconAlias()
+
+        getCurrentAppIconAlias()?.let { Log.d("skibidi", it) }
+
+        if (logo_current == "net.gf.radio24.IconBlue") {
+            logo.setImageResource(R.drawable.pulsefm_blue)
+        } else if (logo_current == "net.gf.radio24.IconGreen") {
+            logo.setImageResource(R.drawable.pulsefm_green)
+        } else if (logo_current == "net.gf.radio24.IconRed") {
+            logo.setImageResource(R.drawable.pulsefm_red)
+        } else if (logo_current == "net.gf.radio24.IconGold") {
+            logo.setImageResource(R.drawable.pulsefm_gold)
+        } else if (logo_current == "net.gf.radio24.IconPurple") {
+            logo.setImageResource(R.drawable.pulsefm_purple)
+        } else if (logo_current == "net.gf.radio24.IconGray") {
+            logo.setImageResource(R.drawable.pulsefm_gray)
+        } else {
+            logo.setImageResource(R.drawable.pulsefm_blue)
+        }
+
         findViewById<ImageView>(R.id.radio_player).setOnClickListener {
             togglePlayPause()
         }
@@ -163,6 +185,52 @@ class MainActivity : AppCompatActivity() {
         if (isServiceBound) {
             forceSyncWithService()
         }
+    }
+
+    private fun changeAppIcon(aliasName: String) {
+        val pm = packageManager
+        val aliases = listOf(
+            "net.gf.radio24.IconBlue",
+            "net.gf.radio24.IconGold",
+            "net.gf.radio24.IconGreen",
+            "net.gf.radio24.IconRed",
+            "net.gf.radio24.IconPurple",
+            "net.gf.radio24.IconGray"
+        )
+
+        for (alias in aliases) {
+            val state = if (alias == aliasName)
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+            else
+                PackageManager.COMPONENT_ENABLED_STATE_DISABLED
+
+            pm.setComponentEnabledSetting(
+                ComponentName(this, alias),
+                state,
+                PackageManager.DONT_KILL_APP
+            )
+        }
+    }
+
+    private fun getCurrentAppIconAlias(): String? {
+        val pm = packageManager
+        val aliases = listOf(
+            "net.gf.radio24.IconBlue",
+            "net.gf.radio24.IconGold",
+            "net.gf.radio24.IconGreen",
+            "net.gf.radio24.IconRed",
+            "net.gf.radio24.IconPurple",
+            "net.gf.radio24.IconGray"
+        )
+
+        for (alias in aliases) {
+            val state = pm.getComponentEnabledSetting(ComponentName(this, alias))
+            if (state == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+                return alias
+            }
+        }
+
+        return "net.gf.radio24.IconBlue"
     }
 
     private fun loadInterstitialAd() {
@@ -611,7 +679,60 @@ class MainActivity : AppCompatActivity() {
         setup?.invoke()
     }
 
+    private fun setupChangeIconInteractions() {
+        findViewById<LinearLayout>(R.id.blue)?.setOnClickListener {
+            changeAppIcon("net.gf.radio24.IconBlue")
+        }
+
+        findViewById<LinearLayout>(R.id.gold)?.setOnClickListener {
+            changeAppIcon("net.gf.radio24.IconGold")
+        }
+
+        findViewById<LinearLayout>(R.id.gray)?.setOnClickListener {
+            changeAppIcon("net.gf.radio24.IconGray")
+        }
+
+        findViewById<LinearLayout>(R.id.green)?.setOnClickListener {
+            changeAppIcon("net.gf.radio24.IconGreen")
+        }
+
+        findViewById<LinearLayout>(R.id.purple)?.setOnClickListener {
+            changeAppIcon("net.gf.radio24.IconPurple")
+        }
+
+        findViewById<LinearLayout>(R.id.red)?.setOnClickListener {
+            changeAppIcon("net.gf.radio24.IconRed")
+        }
+    }
+
     private fun setupSettingsInteractions(container: LinearLayout) {
+        val logo: ImageView = findViewById(R.id.change_icon_img)
+        val logo_current = getCurrentAppIconAlias()
+
+        if (logo_current == "net.gf.radio24.IconBlue") {
+            logo.setBackgroundResource(R.drawable.pulsefm_blue)
+        } else if (logo_current == "net.gf.radio24.IconGreen") {
+            logo.setBackgroundResource(R.drawable.pulsefm_green)
+        } else if (logo_current == "net.gf.radio24.IconRed") {
+            logo.setBackgroundResource(R.drawable.pulsefm_red)
+        } else if (logo_current == "net.gf.radio24.IconGold") {
+            logo.setBackgroundResource(R.drawable.pulsefm_gold)
+        } else if (logo_current == "net.gf.radio24.IconPurple") {
+            logo.setBackgroundResource(R.drawable.pulsefm_purple)
+        } else if (logo_current == "net.gf.radio24.IconGray") {
+            logo.setBackgroundResource(R.drawable.pulsefm_gray)
+        } else {
+            logo.setBackgroundResource(R.drawable.pulsefm_blue)
+        }
+
+        findViewById<LinearLayout>(R.id.change_icon).setOnClickListener {
+            val layout = findViewById<LinearLayout>(R.id.settings)
+            layout.setBackgroundResource(R.drawable.corner_box_4)
+            switchLayout(container, R.layout.activity_logo_change) {
+                setupChangeIconInteractions()
+            }
+        }
+
         findViewById<LinearLayout>(R.id.discord)?.setOnClickListener {
             openWebsite("https://discord.gg/MtPs7WXyJu")
         }
@@ -630,11 +751,11 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<LinearLayout>(R.id.theme_light)?.setOnClickListener {
-            changeTheme(false, container)
+            changeTheme(false)
         }
 
         findViewById<LinearLayout>(R.id.theme_dark)?.setOnClickListener {
-            changeTheme(true, container)
+            changeTheme(true)
         }
 
         findViewById<LinearLayout>(R.id.tworcy)?.setOnClickListener {
@@ -643,7 +764,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun changeTheme(isDark: Boolean, container: LinearLayout) {
+    private fun changeTheme(isDark: Boolean) {
         val editor = sharedPreferences.edit()
         editor.putBoolean("nightMode", isDark)
         editor.apply()
