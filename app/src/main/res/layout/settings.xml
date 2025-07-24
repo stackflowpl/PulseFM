@@ -112,6 +112,61 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Konto PulseFM"
+        android:textColor="@color/text_color"
+        android:textFontWeight="600"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/corner_radio"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp">
+
+        <LinearLayout
+            android:id="@+id/stats"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <View
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:background="@drawable/chart_histogram"
+                android:backgroundTint="@color/settings_icon"
+                android:padding="10sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Statystyki"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/settings_text"
+                android:textFontWeight="600"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <View
+                android:layout_width="25sp"
+                android:layout_height="25sp"
+                android:layout_gravity="center"
+                android:background="@drawable/angle_small_right"
+                android:backgroundTint="@color/settings_icon" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Ustawienia aplikacji"
         android:textColor="@color/text_color"
         android:textFontWeight="600"
@@ -177,7 +232,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Wsparcie"
+        android:text="Wsparcie projektu"
         android:textColor="@color/text_color"
         android:textFontWeight="600"
         android:textSize="12sp" />
@@ -209,7 +264,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Wspomóż projekt"
+                android:text="Przekaż darowiznę"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/settings_text"
                 android:textFontWeight="600"

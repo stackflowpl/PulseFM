@@ -30,6 +30,7 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
+import com.google.android.gms.ads.FullScreenContentCallback
 import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.interstitial.InterstitialAd
@@ -58,6 +59,8 @@ class MainActivity : AppCompatActivity() {
 
     private var radioService: RadioService? = null
     private var isServiceBound = false
+
+    private lateinit var adCounterManager: AdCounterManager
 
     private lateinit var localBroadcastManager: LocalBroadcastManager
 
@@ -130,6 +133,7 @@ class MainActivity : AppCompatActivity() {
         FirebaseFirestore.setLoggingEnabled(true)
         createNotificationChannel()
         setupBroadcastReceiver()
+        adCounterManager = AdCounterManager(this)
 
         val container: LinearLayout = findViewById(R.id.container)
         loadLayout(R.layout.radio_krajowe, container)
@@ -253,6 +257,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun showInterstitialAd() {
         if (interstitialAd != null) {
+            interstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback() {
+                override fun onAdDismissedFullScreenContent() {
+                    adCounterManager.incrementAdCount()
+                    loadInterstitialAd()
+                }
+            }
             interstitialAd?.show(this)
         } else {
             Toast.makeText(this, "Reklama niezaładowana, spróbuj ponownie.", Toast.LENGTH_SHORT).show()
@@ -705,6 +715,12 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupStatsInteractions() {
+        val adsWatched = adCounterManager.getAdCount()
+        val numberAds: TextView = findViewById(R.id.number_ads)
+        numberAds.text = "$adsWatched"
+    }
+
     private fun setupSettingsInteractions(container: LinearLayout) {
         val logo: ImageView = findViewById(R.id.change_icon_img)
         val logo_current = getCurrentAppIconAlias()
@@ -726,10 +742,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         findViewById<LinearLayout>(R.id.change_icon).setOnClickListener {
-            val layout = findViewById<LinearLayout>(R.id.settings)
-            layout.setBackgroundResource(R.drawable.corner_box_4)
             switchLayout(container, R.layout.activity_logo_change) {
                 setupChangeIconInteractions()
+            }
+        }
+
+        findViewById<LinearLayout>(R.id.stats)?.setOnClickListener {
+            val container: LinearLayout = findViewById(R.id.container)
+            switchLayout(container, R.layout.activity_stats) {
+                setupStatsInteractions()
             }
         }
 
