@@ -24,30 +24,24 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSource
 import kotlinx.coroutines.*
 
 class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
-
     private var exoPlayer: ExoPlayer? = null
     private var mediaSession: MediaSessionCompat? = null
     private var audioManager: AudioManager? = null
     private var audioFocusRequest: AudioFocusRequest? = null
-
     private var isPlaying = false
     private var isBuffering = false
     private var currentStationUrl: String? = null
     private var currentStationName: String? = null
     private var currentIconRes: Int = 0
     private var hasAudioFocus = false
-
     private var currentTrackTitle: String? = null
     private var currentTrackArtist: String? = null
     private var currentTrackInfo: String? = null
-
     private val serviceScope = CoroutineScope(Dispatchers.Main + SupervisorJob())
     private var retryJob: Job? = null
     private var retryCount = 0
     private val maxRetries = 3
-
     private val binder = RadioBinder()
-
     private lateinit var localBroadcastManager: LocalBroadcastManager
 
     inner class RadioBinder : Binder() {
@@ -56,9 +50,7 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     override fun onCreate() {
         super.onCreate()
-
         localBroadcastManager = LocalBroadcastManager.getInstance(this)
-
         audioManager = getSystemService(AUDIO_SERVICE) as AudioManager
         setupMediaSession()
         setupExoPlayer()
@@ -68,7 +60,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     private fun setupMediaSession() {
         mediaSession = MediaSessionCompat(this, "RadioService").apply {
             setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS or MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS)
-
             setCallback(object : MediaSessionCompat.Callback() {
                 override fun onPlay() {
                     Log.d(TAG, "MediaSession onPlay")
@@ -78,16 +69,13 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                         currentStationUrl?.let { playRadio(it) }
                     }
                 }
-
                 override fun onPause() {
                     pauseRadio()
                 }
-
                 override fun onStop() {
                     stopRadio()
                 }
             })
-
             isActive = true
         }
     }
@@ -95,11 +83,10 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     private fun setupExoPlayer() {
         try {
             val httpDataSourceFactory = DefaultHttpDataSource.Factory()
-                .setUserAgent("Radio24/1.0 (Android)")
+                .setUserAgent("PulseFM/1.0 (Android)")
                 .setConnectTimeoutMs(15000)
                 .setReadTimeoutMs(15000)
                 .setAllowCrossProtocolRedirects(true)
-
             val loadControl = DefaultLoadControl.Builder()
                 .setBufferDurationsMs(
                     DefaultLoadControl.DEFAULT_MIN_BUFFER_MS,
@@ -110,21 +97,17 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                 .setTargetBufferBytes(DefaultLoadControl.DEFAULT_TARGET_BUFFER_BYTES)
                 .setPrioritizeTimeOverSizeThresholds(true)
                 .build()
-
             exoPlayer = ExoPlayer.Builder(this)
                 .setMediaSourceFactory(
                     com.google.android.exoplayer2.source.DefaultMediaSourceFactory(httpDataSourceFactory)
                 )
                 .setLoadControl(loadControl)
                 .build().apply {
-
                     val audioAttributes = AudioAttributes.Builder()
                         .setContentType(C.AUDIO_CONTENT_TYPE_MUSIC)
                         .setUsage(C.USAGE_MEDIA)
                         .build()
-
                     setAudioAttributes(audioAttributes, false)
-
                     val playerListener = object : Player.Listener {
                         override fun onPlaybackStateChanged(playbackState: Int) {
                             when (playbackState) {
@@ -148,27 +131,22 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                                 }
                             }
                         }
-
                         override fun onPlayerError(error: PlaybackException) {
                             Log.e(TAG, "Player error: ${error.message}", error)
                             updateState(isPlaying = false, isBuffering = false)
                             handlePlaybackError()
                         }
-
                         override fun onIsPlayingChanged(playing: Boolean) {
                             if (!isBuffering) {
                                 updateState(isPlaying = playing, isBuffering = false)
                             }
                         }
-
                         override fun onMetadata(metadata: Metadata) {
                             for (i in 0 until metadata.length()) {
                                 val entry = metadata.get(i)
-
                                 when (entry) {
                                     is IcyInfo -> {
                                         val title = entry.title
-
                                         if (!title.isNullOrBlank()) {
                                             parseTrackInfo(title)
                                             updateMediaMetadata()
@@ -183,7 +161,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                             }
                         }
                     }
-
                     addListener(playerListener)
                 }
         } catch (e: Exception) {
@@ -194,7 +171,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     private fun updateState(isPlaying: Boolean, isBuffering: Boolean) {
         this.isPlaying = isPlaying
         this.isBuffering = isBuffering
-
         updateNotification()
         updatePlaybackState()
         notifyMainActivity(isPlaying)
@@ -203,14 +179,12 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     private fun parseTrackInfo(rawTitle: String) {
         try {
             currentTrackInfo = rawTitle.trim()
-
             when {
                 rawTitle.contains(" - ") -> {
                     val parts = rawTitle.split(" - ", limit = 2)
                     if (parts.size == 2) {
                         val first = parts[0].trim()
                         val second = parts[1].trim()
-
                         if (first.length > second.length * 1.5) {
                             currentTrackTitle = first
                             currentTrackArtist = second
@@ -276,7 +250,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                 lockscreenVisibility = Notification.VISIBILITY_PUBLIC
                 setSound(null, null)
             }
-
             val notificationManager = getSystemService(NotificationManager::class.java)
             notificationManager?.createNotificationChannel(channel)
         }
@@ -284,22 +257,18 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         MediaButtonReceiver.handleIntent(mediaSession, intent)
-
         when (intent?.action) {
             ACTION_PLAY -> {
                 val stationUrl = intent.getStringExtra(EXTRA_STATION_URL)
                 val stationName = intent.getStringExtra(EXTRA_STATION_NAME)
                 val iconRes = intent.getIntExtra(EXTRA_ICON_RES, 0)
-
                 if (stationUrl != null) {
                     currentStationUrl = stationUrl
                     currentStationName = stationName
                     currentIconRes = iconRes
-
                     clearTrackInfo()
                     updateState(isPlaying = false, isBuffering = true)
                     playRadio(stationUrl)
-
                     serviceScope.launch {
                         delay(1000)
                         notifyMainActivity(isPlaying)
@@ -313,7 +282,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                 pauseRadio()
             }
         }
-
         return START_STICKY
     }
 
@@ -344,7 +312,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                 .setAcceptsDelayedFocusGain(true)
                 .setOnAudioFocusChangeListener(this)
                 .build()
-
             audioManager?.requestAudioFocus(audioFocusRequest!!)
         } else {
             @Suppress("DEPRECATION")
@@ -354,7 +321,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                 AudioManager.AUDIOFOCUS_GAIN
             )
         }
-
         hasAudioFocus = result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED
         return hasAudioFocus
     }
@@ -369,7 +335,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
             @Suppress("DEPRECATION")
             audioManager?.abandonAudioFocus(this)
         }
-
         hasAudioFocus = false
     }
 
@@ -378,7 +343,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
             AudioManager.AUDIOFOCUS_GAIN -> {
                 hasAudioFocus = true
                 exoPlayer?.volume = 1.0f
-
                 if (currentStationUrl != null && !isPlaying) {
                     exoPlayer?.play()
                 }
@@ -403,11 +367,9 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                 updateState(isPlaying = false, isBuffering = false)
                 return
             }
-
             exoPlayer?.apply {
                 stop()
                 clearMediaItems()
-
                 val mediaItem = MediaItem.Builder()
                     .setUri(url)
                     .setLiveConfiguration(
@@ -417,12 +379,10 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                             .build()
                     )
                     .build()
-
                 setMediaItem(mediaItem)
                 prepare()
                 play()
             }
-
             updateMediaMetadata()
             val notification = createNotification()
             startForeground(NOTIFICATION_ID, notification)
@@ -440,16 +400,13 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
 
     private fun stopRadio() {
         retryJob?.cancel()
-
         exoPlayer?.apply {
             stop()
             clearMediaItems()
         }
-
         clearTrackInfo()
         abandonAudioFocus()
         updateState(isPlaying = false, isBuffering = false)
-
         stopForeground(true)
         stopSelf()
     }
@@ -471,16 +428,14 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     }
 
     private fun updateMediaMetadata() {
-        val title = currentTrackTitle ?: currentStationName ?: "Radio24"
+        val title = currentTrackTitle ?: currentStationName ?: "PulseFM"
         val artist = currentTrackArtist ?: "Na żywo"
-
         val metadata = MediaMetadataCompat.Builder()
             .putString(MediaMetadataCompat.METADATA_KEY_TITLE, title)
             .putString(MediaMetadataCompat.METADATA_KEY_ARTIST, artist)
-            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentStationName ?: "Radio24")
+            .putString(MediaMetadataCompat.METADATA_KEY_ALBUM, currentStationName ?: "PulseFM")
             .putLong(MediaMetadataCompat.METADATA_KEY_DURATION, -1L)
             .build()
-
         mediaSession?.setMetadata(metadata)
     }
 
@@ -490,7 +445,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
             isPlaying -> PlaybackStateCompat.STATE_PLAYING
             else -> PlaybackStateCompat.STATE_PAUSED
         }
-
         val playbackState = PlaybackStateCompat.Builder()
             .setActions(
                 PlaybackStateCompat.ACTION_PLAY or
@@ -499,7 +453,6 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
             )
             .setState(state, PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, 1.0f)
             .build()
-
         mediaSession?.setPlaybackState(playbackState)
     }
 
@@ -517,13 +470,11 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
                 createPendingIntent(ACTION_PLAY, 2)
             ).build()
         }
-
         val stopAction = NotificationCompat.Action.Builder(
             android.R.drawable.ic_delete,
             "Stop",
             createPendingIntent(ACTION_STOP, 3)
         ).build()
-
         val largeIcon = try {
             if (currentIconRes != 0) {
                 BitmapFactory.decodeResource(resources, currentIconRes)
@@ -532,23 +483,19 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
             Log.e(TAG, "Error loading large icon", e)
             null
         }
-
         val mainActivityIntent = Intent(this, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
-
         val contentIntent = PendingIntent.getActivity(
             this,
             0,
             mainActivityIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-
         val displayTrackInfo = getDisplayTrackInfo()
-
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.radio24_trans)
-            .setContentTitle(currentStationName ?: "Radio24")
+            .setContentTitle(currentStationName ?: "PulseFM")
             .setContentText(displayTrackInfo)
             .setLargeIcon(largeIcon)
             .setContentIntent(contentIntent)
@@ -580,14 +527,12 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     private fun createPendingIntent(action: String, requestCode: Int): PendingIntent {
         val intent = Intent(this, RadioService::class.java).apply {
             this.action = action
-
             if (action == ACTION_PLAY) {
                 putExtra(EXTRA_STATION_URL, currentStationUrl)
                 putExtra(EXTRA_STATION_NAME, currentStationName)
                 putExtra(EXTRA_ICON_RES, currentIconRes)
             }
         }
-
         return PendingIntent.getService(
             this,
             requestCode,
@@ -603,12 +548,23 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
             putExtra("EXTRA_STATION_NAME", currentStationName)
             putExtra("EXTRA_TIMESTAMP", System.currentTimeMillis())
         }
-
         try {
             localBroadcastManager.sendBroadcast(intent)
         } catch (e: Exception) {
             Log.e(TAG, "Error sending LOCAL broadcast: ${e.message}", e)
         }
+
+        WidgetUpdateHelper.updateAllWidgets(
+            this,
+            isPlaying,
+            isBuffering,
+            currentStationName,
+            currentTrackTitle,
+            currentTrackArtist,
+            getDisplayTrackInfo(),
+            currentStationUrl,
+            currentIconRes
+        )
     }
 
     private fun notifyMainActivityTrackChanged() {
@@ -637,15 +593,11 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
     override fun onDestroy() {
         serviceScope.cancel()
         retryJob?.cancel()
-
         exoPlayer?.release()
         exoPlayer = null
-
         mediaSession?.release()
         mediaSession = null
-
         abandonAudioFocus()
-
         super.onDestroy()
     }
 
@@ -653,21 +605,17 @@ class RadioService : Service(), AudioManager.OnAudioFocusChangeListener {
         private const val TAG = "RadioService"
         const val CHANNEL_ID = "radio_channel"
         const val NOTIFICATION_ID = 1
-
         const val ACTION_PLAY = "ACTION_PLAY"
         const val ACTION_PAUSE = "ACTION_PAUSE"
         const val ACTION_STOP = "ACTION_STOP"
-
         const val EXTRA_STATION_URL = "EXTRA_STATION_URL"
         const val EXTRA_STATION_NAME = "EXTRA_STATION_NAME"
         const val EXTRA_ICON_RES = "EXTRA_ICON_RES"
         const val EXTRA_IS_PLAYING = "EXTRA_IS_PLAYING"
         const val EXTRA_IS_BUFFERING = "EXTRA_IS_BUFFERING"
-
         const val EXTRA_TRACK_TITLE = "EXTRA_TRACK_TITLE"
         const val EXTRA_TRACK_ARTIST = "EXTRA_TRACK_ARTIST"
         const val EXTRA_TRACK_INFO = "EXTRA_TRACK_INFO"
-
         const val BROADCAST_PLAYBACK_STATE = "net.gf.radio24.PLAYBACK_STATE"
         const val BROADCAST_TRACK_CHANGED = "net.gf.radio24.TRACK_CHANGED"
     }
