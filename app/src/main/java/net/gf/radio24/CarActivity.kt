@@ -10,11 +10,12 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.firebase.firestore.FirebaseFirestore
@@ -22,7 +23,6 @@ import org.json.JSONObject
 import java.io.File
 
 class CarActivity : AppCompatActivity() {
-
     private var exoPlayer: ExoPlayer? = null
     private var radioService: RadioService? = null
     private var isServiceBound = false
@@ -41,7 +41,6 @@ class CarActivity : AppCompatActivity() {
     )
 
     private var currentPlayerState = PlayerState()
-
     private val DATABASE_DIR = "database"
     private val PLAYER_FILE = "player.json"
 
@@ -61,21 +60,18 @@ class CarActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_car)
 
-        window.setDecorFitsSystemWindows(false)
+        setupWindowInsets()
 
         exoPlayer = ExoPlayer.Builder(application).build()
         localBroadcastManager = LocalBroadcastManager.getInstance(this)
-
         setupBroadcastReceiver()
         loadPlayerState()
         updateUI()
         bindToRadioService()
-
         FirebaseFirestore.setLoggingEnabled(true)
 
         findViewById<ImageView>(R.id.radio_exit).setOnClickListener {
@@ -87,18 +83,31 @@ class CarActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupWindowInsets() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            window.setDecorFitsSystemWindows(false)
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            WindowCompat.setDecorFitsSystemWindows(window, false)
+        } else {
+            @Suppress("DEPRECATION")
+            window.decorView.systemUiVisibility = (
+                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or
+                            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or
+                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    )
+        }
+    }
+
     private fun setupBroadcastReceiver() {
         playbackStateReceiver = object : BroadcastReceiver() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (intent?.action == RadioService.BROADCAST_PLAYBACK_STATE) {
                     val isPlaying = intent.getBooleanExtra(RadioService.EXTRA_IS_PLAYING, false)
                     val isBuffering = intent.getBooleanExtra(RadioService.EXTRA_IS_BUFFERING, false)
-
                     currentPlayerState = currentPlayerState.copy(
                         isPlaying = isPlaying,
                         isBuffering = isBuffering
                     )
-
                     savePlayerState()
                     updateUI()
                 }
@@ -126,7 +135,6 @@ class CarActivity : AppCompatActivity() {
         try {
             val trackInfoView: TextView = findViewById(R.id.radio_track_info)
             val cityInfoView: TextView = findViewById(R.id.radio_city_info)
-
             if (trackInfo.isNotEmpty() && trackInfo != "Na żywo" && trackInfo != "Wstrzymane") {
                 trackInfoView.text = trackInfo
                 currentPlayerState = currentPlayerState.copy(trackInfo = trackInfo)
@@ -149,17 +157,14 @@ class CarActivity : AppCompatActivity() {
             val serviceIsPlaying = service.isCurrentlyPlaying()
             val serviceIsBuffering = service.isCurrentlyBuffering()
             val trackInfo = service.getCurrentTrackInfo()
-
             currentPlayerState = currentPlayerState.copy(
                 isPlaying = serviceIsPlaying,
                 isBuffering = serviceIsBuffering,
                 trackInfo = trackInfo
             )
-
             if (trackInfo.isNotEmpty()) {
                 updateTrackInfo(trackInfo)
             }
-
             savePlayerState()
             updateUI()
         }
@@ -168,11 +173,9 @@ class CarActivity : AppCompatActivity() {
     private fun loadPlayerState() {
         val file = getPlayerFile()
         if (!file.exists()) return
-
         try {
             val jsonString = file.readText().takeIf { it.isNotEmpty() } ?: return
             val jsonObject = JSONObject(jsonString)
-
             currentPlayerState = PlayerState(
                 isPlaying = jsonObject.optBoolean("isPlaying", false),
                 isBuffering = jsonObject.optBoolean("isBuffering", false),
@@ -302,7 +305,6 @@ class CarActivity : AppCompatActivity() {
         super.onResume()
         loadPlayerState()
         updateUI()
-
         if (!isServiceBound) {
             bindToRadioService()
         } else {
@@ -314,19 +316,16 @@ class CarActivity : AppCompatActivity() {
         super.onDestroy()
         exoPlayer?.release()
         exoPlayer = null
-
         try {
             localBroadcastManager.unregisterReceiver(playbackStateReceiver)
             trackChangeReceiver?.let { localBroadcastManager.unregisterReceiver(it) }
         } catch (e: Exception) {
             Log.e("onDestroy", "Error unregistering LOCAL receiver: ${e.message}")
         }
-
         if (isServiceBound) {
             unbindService(serviceConnection)
             isServiceBound = false
         }
-
         savePlayerState()
     }
 }
