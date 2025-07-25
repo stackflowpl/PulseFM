@@ -12,6 +12,9 @@ Wszystkie polskie stacje radiowe w jednym miejscu – szybko, wygodnie i bezpoś
 - Motyw dla kierowców
 - Zarządzanie odtwarzaniem radia poza aplikacją
 - Reklamy umożliwiające wsparcie projektu
+- Zmiana ikony aplikacji
+- Widgety aplikacji
+- Mini gry
 
 ## Pobierz aplikację
 
