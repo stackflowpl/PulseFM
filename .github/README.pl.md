@@ -5,14 +5,15 @@ Wszystkie polskie stacje radiowe w jednym miejscu – szybko, wygodnie i bezpoś
 
 ## Język:
 
-[🇬🇧 English](README.md) |
-[🇵🇱 Polski](.github/README.pl.md) |
-[🇩🇪 Deutsch](.github/README.de.md) |
-[🇷🇺 Русский](.github/README.ru.md) |
-[🇺🇦 Українська](.github/README.uk.md) |
-[🇮🇹 Italiano](.github/README.it.md) |
-[🇵🇹 Português](.github/README.pt.md) |
-[🇪🇸 Español](.github/README.es.md)
+[🇬🇧 English](https://github.com/stackflowpl/PulseFM/blob/master/README.md) |
+[🇵🇱 Polski ✅](https://github.com/stackflowpl/PulseFM/blob/master/.github/README.pl.md) |
+[🇩🇪 Deutsch](https://github.com/stackflowpl/PulseFM/blob/master/.github/README.de.md) |
+[🇷🇺 Русский](https://github.com/stackflowpl/PulseFM/blob/master/.github/README.ru.md) |
+[🇫🇷 Français](https://github.com/stackflowpl/PulseFM/blob/master/.github/README.fr.md) |
+[🇺🇦 Українська](https://github.com/stackflowpl/PulseFM/blob/master/.github/README.uk.md) |
+[🇮🇹 Italiano](https://github.com/stackflowpl/PulseFM/blob/master/.github/README.it.md) |
+[🇵🇹 Português](https://github.com/stackflowpl/PulseFM/blob/master/.github/README.pt.md) |
+[🇪🇸 Español](https://github.com/stackflowpl/PulseFM/blob/master/.github/README.es.md)
 
 ## Funkcje jakie posiada PulseFM
 
