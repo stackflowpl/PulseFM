@@ -17,8 +17,8 @@ android {
         applicationId = "net.gf.radio24"
         minSdk = 23
         targetSdk = 35
-        versionCode = 19
-        versionName = "10008"
+        versionCode = 20
+        versionName = "10009"
 
         vectorDrawables {
             useSupportLibrary = true
