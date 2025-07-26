@@ -721,6 +721,9 @@ class MainActivity : AppCompatActivity() {
         numberAds.text = "$adsWatched"
     }
 
+    private fun setupScreensaverInteractions() {
+    }
+
     private fun setupSettingsInteractions(container: LinearLayout) {
         val logo: ImageView = findViewById(R.id.change_icon_img)
         val logo_current = getCurrentAppIconAlias()
@@ -744,6 +747,12 @@ class MainActivity : AppCompatActivity() {
         findViewById<LinearLayout>(R.id.change_icon).setOnClickListener {
             switchLayout(container, R.layout.activity_logo_change) {
                 setupChangeIconInteractions()
+            }
+        }
+
+        findViewById<LinearLayout>(R.id.wygaszacz).setOnClickListener {
+            switchLayout(container, R.layout.activity_screensaver) {
+                setupScreensaverInteractions()
             }
         }
 

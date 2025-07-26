@@ -130,6 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:background="@drawable/corner_settings_box"
             android:padding="10dp">
 
             <View
@@ -160,6 +161,49 @@
                 android:layout_gravity="center"
                 android:background="@drawable/angle_small_right"
                 android:backgroundTint="@color/settings_icon" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/wygaszacz"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <View
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center"
+                android:background="@drawable/power"
+                android:backgroundTint="@color/settings_icon"
+                android:padding="10sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wygaszanie ekranu"
+                android:layout_gravity="center"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/settings_text"
+                android:textFontWeight="600"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/wygaszacz_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Włączone"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/settings_text"
+                android:textStyle="bold"
+                android:textSize="12sp" />
 
         </LinearLayout>
     </LinearLayout>
@@ -508,7 +552,7 @@
                 android:text="@string/version_app"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/settings_text"
-                android:textFontWeight="600"
+                android:textStyle="bold"
                 android:textSize="12sp" />
 
         </LinearLayout>
